@@ -3,9 +3,7 @@ module Main exposing (main)
 import Html exposing (div)
 import Html.Attributes as Attr
 import Css
-
 import Json.Decode as Decode
-
 import Http
 
 

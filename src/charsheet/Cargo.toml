@@ -1,0 +1,8 @@
+[package]
+name = "charsheet"
+version = "0.1.0"
+authors = ["Quinten Palmer <quintenpalmer@gmail.com>"]
+
+[dependencies]
+libpathfinder = {path = "../libpathfinder"}
+rustc-serialize = "0.3.23"

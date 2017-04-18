@@ -1,0 +1,10 @@
+[package]
+name = "pathserver"
+version = "0.1.0"
+authors = ["Quinten Palmer <quintenpalmer@gmail.com>"]
+
+[dependencies]
+libpathfinder = {path = "../libpathfinder"}
+iron = "0.5.1"
+urlencoded = "0.5.0"
+rustc-serialize = "0.3.23"

@@ -31,7 +31,7 @@ fn parse_query_param(req: &mut iron::Request) -> IronResult<String> {
                       webshared::bad_request("must supply 'name' query parameter".to_owned()));
 
     let name = itry!(if names.len() == 1 {
-                         Ok(names.get(0).unwrap())
+                         Ok(names.get(0).unwrap().to_uppercase())
                      } else {
                          Err(Error::TooManyQueryParams(key))
                      },

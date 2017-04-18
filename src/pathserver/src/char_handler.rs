@@ -1,9 +1,6 @@
-use rustc_serialize::json;
-
 use iron;
 use iron::IronResult;
 use iron::Plugin;
-use iron::status;
 
 use urlencoded::UrlEncodedQuery;
 
@@ -19,11 +16,9 @@ pub fn character_handler(req: &mut iron::Request) -> IronResult<iron::Response> 
 
     let c = models::Character::new(name);
 
-    let resp = itry!(json::encode(&webshared::Response { data: c }),
-                     webshared::server_error("could not encode json response".to_owned()));
+    let resp = try!(webshared::Response { data: c }.encode());
 
-    println!("responding with: {}", resp);
-    return Ok(iron::Response::with((status::Ok, resp)));
+    return Ok(resp);
 }
 
 fn parse_query_param(req: &mut iron::Request) -> IronResult<String> {

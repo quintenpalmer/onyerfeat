@@ -1,11 +1,11 @@
 use std::fmt;
 use std::error::Error as StdError;
 
-use iron;
+use serde_json;
 
 #[derive(Debug)]
 pub enum Error {
-    IronHttpError(iron::error::HttpError),
+    Json(serde_json::Error),
     MissingQueryParam(String),
     TooManyQueryParams(String),
 }
@@ -19,7 +19,7 @@ impl fmt::Display for Error {
 impl StdError for Error {
     fn description(&self) -> &str {
         match *self {
-            Error::IronHttpError(ref err) => err.description(),
+            Error::Json(ref err) => err.description(),
             Error::MissingQueryParam(_) => "could not find expected query param",
             Error::TooManyQueryParams(_) => "found too many query param values",
         }
@@ -27,7 +27,7 @@ impl StdError for Error {
 
     fn cause(&self) -> Option<&StdError> {
         match *self {
-            Error::IronHttpError(ref err) => Some(err),
+            Error::Json(ref err) => Some(err),
             _ => None,
         }
     }

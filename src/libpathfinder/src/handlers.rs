@@ -4,7 +4,7 @@ use iron::Plugin;
 
 use urlencoded::UrlEncodedQuery;
 
-use libpf::models;
+use models;
 
 use webshared;
 use error::Error;

@@ -1,17 +1,17 @@
-use rustc_serialize;
-use rustc_serialize::json;
+use serde;
+use serde_json;
 
 use iron;
 use iron::status;
 
-#[derive(RustcDecodable, RustcEncodable)]
-pub struct Response<T: rustc_serialize::Encodable> {
+#[derive(Serialize, Deserialize)]
+pub struct Response<T: serde::Serialize> {
     pub data: T,
 }
 
-impl<T: rustc_serialize::Encodable> Response<T> {
+impl<T: serde::Serialize> Response<T> {
     pub fn encode(&self) -> iron::IronResult<iron::Response> {
-        let msg = itry!(json::encode(self),
+        let msg = itry!(serde_json::to_string(self),
                         server_error("could not encode json response".to_owned()));
 
         println!("responding with: {}", msg);
@@ -21,8 +21,8 @@ impl<T: rustc_serialize::Encodable> Response<T> {
     }
 }
 
-#[derive(RustcDecodable, RustcEncodable)]
-pub struct ErrMessage<T: rustc_serialize::Encodable> {
+#[derive(Serialize, Deserialize)]
+pub struct ErrMessage<T: serde::Serialize> {
     pub error: T,
 }
 
@@ -35,6 +35,6 @@ pub fn bad_request(msg: String) -> (status::Status, String) {
 }
 
 fn status_message(s: status::Status, msg: String) -> (status::Status, String) {
-    let json_msg = json::encode(&ErrMessage { error: msg }).unwrap();
+    let json_msg = serde_json::to_string(&ErrMessage { error: msg }).unwrap();
     return (s, json_msg);
 }

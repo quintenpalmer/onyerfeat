@@ -8,5 +8,4 @@ extern crate urlencoded;
 
 pub mod error;
 pub mod models;
-pub mod webshared;
-pub mod handlers;
+pub mod web;

@@ -22,7 +22,7 @@ impl IronHttpError {
 
 fn run_app() -> Result<(), IronHttpError> {
     println!("serving pathfinder characters");
-    try!(iron::Iron::new(libpf::handlers::character_handler)
+    try!(iron::Iron::new(libpf::web::character_handler)
         .http("localhost:3000")
         .map_err(IronHttpError::new));
     println!("finished serving; exiting");

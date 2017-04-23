@@ -1,16 +1,5 @@
 extern crate libpathfinder as libpf;
-extern crate serde;
-extern crate serde_json;
-#[macro_use]
-extern crate serde_derive;
-#[macro_use]
 extern crate iron;
-extern crate urlencoded;
-
-mod webshared;
-mod error;
-mod char_handler;
-use error::Error;
 
 fn main() {
     match run_app() {
@@ -19,11 +8,23 @@ fn main() {
     }
 }
 
-fn run_app() -> Result<(), Error> {
+
+#[derive(Debug)]
+struct IronHttpError {
+    err: iron::error::HttpError,
+}
+
+impl IronHttpError {
+    fn new(err: iron::error::HttpError) -> IronHttpError {
+        IronHttpError { err: err }
+    }
+}
+
+fn run_app() -> Result<(), IronHttpError> {
     println!("serving pathfinder characters");
-    try!(iron::Iron::new(char_handler::character_handler)
+    try!(iron::Iron::new(libpf::web::character_handler)
         .http("localhost:3000")
-        .map_err(Error::IronHttpError));
+        .map_err(IronHttpError::new));
     println!("finished serving; exiting");
     return Ok(());
 }

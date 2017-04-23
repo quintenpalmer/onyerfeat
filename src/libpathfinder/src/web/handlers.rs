@@ -4,9 +4,9 @@ use iron::Plugin;
 
 use urlencoded::UrlEncodedQuery;
 
-use libpf::models;
+use models;
 
-use webshared;
+use web::webshared;
 use error::Error;
 
 pub fn character_handler(req: &mut iron::Request) -> IronResult<iron::Response> {

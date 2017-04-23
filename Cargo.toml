@@ -1,6 +1,5 @@
 [workspace]
 members = [
   "src/libpathfinder/",
-  "src/charsheet/",
   "src/pathserver/",
 ]

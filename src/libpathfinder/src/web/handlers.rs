@@ -35,7 +35,7 @@ fn index_handler(req: &mut iron::Request) -> IronResult<iron::Response> {
 
     let name = try!(parse_query_param_name(req));
 
-    let c = models::Character::new(name);
+    let c = models::Character::new(1, name);
 
     let resp = try!(webshared::Response { data: c }.encode());
 

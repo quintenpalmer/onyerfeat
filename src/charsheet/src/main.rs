@@ -1,7 +1,5 @@
 extern crate libpathfinder as libpf;
-extern crate rustc_serialize;
-
-use rustc_serialize::json;
+extern crate serde_json;
 
 use libpf::models;
 
@@ -15,6 +13,6 @@ fn main() {
 fn run_app() -> Result<(), models::Error> {
     let c = models::Character::new("Idrigoth".to_string());
     println!("character: {}",
-             try!(json::encode(&c).map_err(models::Error::Json)));
+             try!(serde_json::to_string(&c).map_err(models::Error::Json)));
     return Ok(());
 }

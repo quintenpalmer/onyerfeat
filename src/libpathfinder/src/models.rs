@@ -1,6 +1,6 @@
-use rustc_serialize::json;
+use serde_json;
 
-#[derive(RustcDecodable, RustcEncodable)]
+#[derive(Serialize, Deserialize)]
 pub struct Character {
     name: String,
 }
@@ -13,5 +13,5 @@ impl Character {
 
 #[derive(Debug)]
 pub enum Error {
-    Json(json::EncoderError),
+    Json(serde_json::Error),
 }

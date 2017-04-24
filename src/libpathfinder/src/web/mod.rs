@@ -1,4 +1,4 @@
 mod webshared;
 mod handlers;
 
-pub use self::handlers::path_handler;
+pub use self::handlers::Handler;

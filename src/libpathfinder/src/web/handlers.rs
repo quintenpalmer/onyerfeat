@@ -9,12 +9,24 @@ use models;
 use web::webshared;
 use error::Error;
 
-pub fn path_handler(req: &mut iron::Request) -> IronResult<iron::Response> {
-    let full_path = req.url.path().join("/");
-    println!("full path is: {}", full_path);
-    match full_path.clone().as_ref() {
-        "" => index_handler(req),
-        _ => path_not_found(full_path),
+pub struct Handler {
+}
+
+impl Handler {
+    pub fn new() -> Handler {
+        return Handler {};
+    }
+}
+
+
+impl iron::middleware::Handler for Handler {
+    fn handle(&self, req: &mut iron::Request) -> IronResult<iron::Response> {
+        let full_path = req.url.path().join("/");
+        println!("full path is: {}", full_path);
+        match full_path.clone().as_ref() {
+            "" => index_handler(req),
+            _ => path_not_found(full_path),
+        }
     }
 }
 

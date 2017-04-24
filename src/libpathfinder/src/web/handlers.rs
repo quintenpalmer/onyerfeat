@@ -6,15 +6,17 @@ use urlencoded::UrlEncodedQuery;
 
 use models;
 
+use datastore;
 use web::webshared;
 use error::Error;
 
 pub struct Handler {
+    path: String,
 }
 
 impl Handler {
-    pub fn new() -> Handler {
-        return Handler {};
+    pub fn new(path: String) -> Handler {
+        return Handler { path: path };
     }
 }
 
@@ -23,9 +25,11 @@ impl iron::middleware::Handler for Handler {
     fn handle(&self, req: &mut iron::Request) -> IronResult<iron::Response> {
         let full_path = req.url.path().join("/");
         println!("full path is: {}", full_path);
+        let conn = itry!(datastore::Datastore::new(&self.path),
+                         webshared::simple_server_error());
         match full_path.clone().as_ref() {
             "" => index_handler(req),
-            "character" => character_handler(req),
+            "character" => character_handler(conn, req),
             _ => path_not_found(full_path),
         }
     }
@@ -62,12 +66,14 @@ fn parse_query_param_name(req: &mut iron::Request) -> IronResult<String> {
     return Ok(name.to_owned());
 }
 
-fn character_handler(req: &mut iron::Request) -> IronResult<iron::Response> {
+fn character_handler(ds: datastore::Datastore,
+                     req: &mut iron::Request)
+                     -> IronResult<iron::Response> {
     println!("handling request for character");
 
     let id = try!(parse_query_param_id(req));
 
-    let c = models::Character::new(id, "replaceme".to_owned());
+    let c = itry!(ds.get_character(id), webshared::simple_server_error());
 
     let resp = try!(webshared::Response { data: c }.encode());
 

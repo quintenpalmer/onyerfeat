@@ -26,6 +26,11 @@ pub struct ErrMessage<T: serde::Serialize> {
     pub error: T,
 }
 
+pub fn simple_server_error() -> (status::Status, String) {
+    return status_message(status::InternalServerError,
+                          "internal_server_error".to_owned());
+}
+
 pub fn server_error(msg: String) -> (status::Status, String) {
     return status_message(status::InternalServerError, msg);
 }

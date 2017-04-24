@@ -2,11 +2,13 @@ use std::fmt;
 use std::num;
 use std::error::Error as StdError;
 
+use rusqlite;
 use serde_json;
 
 #[derive(Debug)]
 pub enum Error {
     Json(serde_json::Error),
+    Rusqlite(rusqlite::Error),
     ParseInt(num::ParseIntError),
     PathNotFound(String),
     MissingQueryParam(String),
@@ -23,6 +25,7 @@ impl StdError for Error {
     fn description(&self) -> &str {
         match *self {
             Error::Json(ref err) => err.description(),
+            Error::Rusqlite(ref err) => err.description(),
             Error::ParseInt(ref err) => err.description(),
             Error::PathNotFound(_) => "requested path does not exist",
             Error::MissingQueryParam(_) => "could not find expected query param",
@@ -33,6 +36,7 @@ impl StdError for Error {
     fn cause(&self) -> Option<&StdError> {
         match *self {
             Error::Json(ref err) => Some(err),
+            Error::Rusqlite(ref err) => Some(err),
             Error::ParseInt(ref err) => Some(err),
             _ => None,
         }

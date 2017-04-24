@@ -34,6 +34,10 @@ pub fn bad_request(msg: String) -> (status::Status, String) {
     return status_message(status::BadRequest, msg);
 }
 
+pub fn not_found(msg: String) -> (status::Status, String) {
+    return status_message(status::NotFound, msg);
+}
+
 fn status_message(s: status::Status, msg: String) -> (status::Status, String) {
     let json_msg = serde_json::to_string(&ErrMessage { error: msg }).unwrap();
     return (s, json_msg);

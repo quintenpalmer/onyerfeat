@@ -9,3 +9,9 @@ be RESTful.
 
 * https://www.rust-lang.org/en-US/
 * http://elm-lang.org
+
+How to run this project
+-----------------------
+
+* [Backend](src/pathserver/README.md)
+* [Frontend](src/pathwebclient/README.md)

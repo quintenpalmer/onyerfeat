@@ -9,7 +9,7 @@ import Http
 
 main =
     Html.program
-        { init = init "Traveler"
+        { init = init "Stranger"
         , view = view
         , update = update
         , subscriptions = subscriptions
@@ -17,47 +17,48 @@ main =
 
 
 type alias Model =
-    { name : String
+    { id : Int
+    , name : String
     }
 
 
 init : String -> ( Model, Cmd Msg )
 init name =
-    ( Model name
-    , getCharacterSheet name
+    ( Model 0 name
+    , getCharacterSheet 1
     )
 
 
 type Msg
     = DoLoadSheet
-    | SheetLoaded (Result Http.Error String)
+    | SheetLoaded (Result Http.Error Model)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         DoLoadSheet ->
-            ( model, getCharacterSheet model.name )
+            ( model, getCharacterSheet model.id )
 
-        SheetLoaded (Ok name) ->
-            ( Model name, Cmd.none )
+        SheetLoaded (Ok newModel) ->
+            ( newModel, Cmd.none )
 
         SheetLoaded (Err _) ->
-            ( model, Cmd.none )
+            ( Model 0 "ErrorCauser", Cmd.none )
 
 
-getCharacterSheet : String -> Cmd Msg
-getCharacterSheet name =
+getCharacterSheet : Int -> Cmd Msg
+getCharacterSheet id =
     let
         url =
-            "http://localhost:3000/?name=" ++ name
+            "http://localhost:3000/character?id=" ++ (toString id)
     in
         Http.send SheetLoaded (Http.get url decodeCharacterResp)
 
 
-decodeCharacterResp : Decode.Decoder String
+decodeCharacterResp : Decode.Decoder Model
 decodeCharacterResp =
-    Decode.at [ "data", "name" ] Decode.string
+    Decode.map2 Model (Decode.at [ "data", "id" ] Decode.int) (Decode.at [ "data", "name" ] Decode.string)
 
 
 subscriptions : Model -> Sub Msg

@@ -1,6 +1,5 @@
 use iron;
 use iron::IronResult;
-use iron::Plugin;
 
 use datastore;
 use libpathfinder_common::webshared;

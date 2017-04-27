@@ -3,7 +3,7 @@ use iron::IronResult;
 use iron::Plugin;
 
 use datastore;
-use web::webshared;
+use libpathfinder_common::webshared;
 use libpathfinder_common::error::Error;
 
 use libpathfinder_common::QueryParam;

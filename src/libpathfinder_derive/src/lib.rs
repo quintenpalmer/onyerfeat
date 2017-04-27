@@ -47,6 +47,7 @@ fn derive_query_param(ast: &syn::DeriveInput) -> quote::Tokens {
 
                 use urlencoded::UrlEncodedQuery;
                 use libpathfinder_common::error::Error;
+                use libpathfinder_common::webshared;
 
                 let query_params = itry!(req.get_ref::<UrlEncodedQuery>(),
                                          webshared::bad_request("must supply 'id' query parameter".to_owned()));

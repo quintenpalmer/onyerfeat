@@ -1,14 +1,11 @@
 [package]
-name = "libpathfinder"
+name = "libpathfinder_common"
 version = "0.1.0"
 authors = ["Quinten Palmer <quintenpalmer@gmail.com>"]
 
 [dependencies]
 iron = "0.5.1"
-urlencoded = "0.5.0"
 serde = "1.0.0"
 serde_json = "1.0.0"
 serde_derive = "1.0.0"
 rusqlite = "0.11.0"
-libpathfinder_common = {path = "../libpathfinder_common"}
-libpathfinder_derive = {path = "../libpathfinder_derive"}

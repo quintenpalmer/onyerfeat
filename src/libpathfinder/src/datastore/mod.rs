@@ -2,7 +2,7 @@ use std::path;
 
 use rusqlite;
 
-use error::Error;
+use libpathfinder_common::error::Error;
 use models;
 
 pub struct Datastore {

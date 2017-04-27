@@ -7,7 +7,10 @@ extern crate iron;
 extern crate urlencoded;
 extern crate rusqlite;
 
-pub mod error;
+extern crate libpathfinder_common;
+#[macro_use]
+extern crate libpathfinder_derive;
+
 pub mod models;
 pub mod web;
 pub mod datastore;

@@ -2,5 +2,6 @@
 members = [
   "src/libpathfinder/",
   "src/libpathfinder_common/",
+  "src/libpathfinder_derive/",
   "src/pathserver/",
 ]

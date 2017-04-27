@@ -8,6 +8,8 @@ extern crate urlencoded;
 extern crate rusqlite;
 
 extern crate libpathfinder_common;
+#[macro_use]
+extern crate libpathfinder_derive;
 
 pub mod models;
 pub mod web;

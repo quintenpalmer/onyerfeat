@@ -6,7 +6,7 @@ use urlencoded::UrlEncodedQuery;
 
 use datastore;
 use web::webshared;
-use error::Error;
+use libpathfinder_common::error::Error;
 
 pub struct Handler {
     path: String,

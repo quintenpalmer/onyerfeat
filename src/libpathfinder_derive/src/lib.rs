@@ -45,6 +45,7 @@ fn derive_query_param(ast: &syn::DeriveInput) -> quote::Tokens {
         impl #impl_generics ::libpathfinder_common::QueryParam for #name #ty_generics #where_clause {
             fn parse_from(req: &mut iron::Request) -> iron::IronResult<Self> {
 
+                use iron::Plugin;
                 use urlencoded::UrlEncodedQuery;
                 use libpathfinder_common::error::Error;
                 use libpathfinder_common::webshared;

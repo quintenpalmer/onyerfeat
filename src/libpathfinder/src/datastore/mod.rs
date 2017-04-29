@@ -2,6 +2,8 @@ use std::path;
 
 use rusqlite;
 
+use libpathfinder_common::FromDB;
+
 use libpathfinder_common::error::Error;
 use models;
 
@@ -16,11 +18,6 @@ impl Datastore {
     }
 
     pub fn get_character(&self, id: u32) -> Result<models::Character, Error> {
-        let mut stmt = self.conn.prepare("SELECT id, name FROM characters WHERE id = ?1").unwrap();
-        let character =
-            try!(stmt.query_row(&[&id], |row| models::Character::new(row.get(0), row.get(1)))
-                .map_err(Error::Rusqlite));
-
-        return Ok(character);
+        models::Character::select_one(&self.conn, id)
     }
 }

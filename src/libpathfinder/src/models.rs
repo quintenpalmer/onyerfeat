@@ -1,4 +1,8 @@
-#[derive(Serialize, Deserialize)]
+use rusqlite;
+use libpathfinder_common::error;
+
+#[derive(Serialize, Deserialize, FromDB)]
+#[from_db(table_name = "characters")]
 pub struct Character {
     id: u32,
     name: String,

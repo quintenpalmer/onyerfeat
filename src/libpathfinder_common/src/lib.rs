@@ -12,3 +12,8 @@ pub mod webshared;
 pub trait QueryParam {
     fn parse_from(&mut iron::Request) -> iron::IronResult<Self> where Self: Sized;
 }
+
+pub trait FromDB {
+    fn select_one(conn: &rusqlite::Connection, id: u32) -> Result<Self, error::Error>
+        where Self: Sized;
+}

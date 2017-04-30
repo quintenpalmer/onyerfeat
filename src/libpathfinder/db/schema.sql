@@ -1,4 +1,2 @@
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
-CREATE TABLE characters ( id INTEGER PRIMARY KEY, name TEXT NOT NULL );
-COMMIT;
+CREATE TABLE characters ( id INTEGER PRIMARY KEY, name TEXT NOT NULL , ability_score_set_id integer NOT NULL, FOREIGN KEY(ability_score_set_id) references ability_score_sets(id));
+CREATE TABLE ability_score_sets (id integer primary key, str integer not null, dex integer not null, con integer not null, int integer not null, wis integer not null, cha integer not null);

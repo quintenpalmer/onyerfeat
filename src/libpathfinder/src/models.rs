@@ -1,18 +1,16 @@
-use rusqlite;
-use libpathfinder_common::error;
-
-#[derive(Serialize, Deserialize, FromDB)]
-#[from_db(table_name = "characters")]
+#[derive(Serialize, Deserialize)]
 pub struct Character {
-    id: u32,
-    name: String,
+    pub id: u32,
+    pub name: String,
+    pub ability_scores: AbilityScoreSet,
 }
 
-impl Character {
-    pub fn new(id: u32, name: String) -> Character {
-        return Character {
-            id: id,
-            name: name,
-        };
-    }
+#[derive(Serialize, Deserialize)]
+pub struct AbilityScoreSet {
+    pub str: u32,
+    pub dex: u32,
+    pub con: u32,
+    pub int: u32,
+    pub wis: u32,
+    pub cha: u32,
 }

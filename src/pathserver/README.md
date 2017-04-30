@@ -10,7 +10,7 @@ Create and seed the database by running
 
 ```
 $ cd /path/to/app/src/libpathfinder/db/
-$ ./seed.sh
+$ ./restore.sh
 ```
 
 This should create a `local_pf.db` file that the app is configured to read from.

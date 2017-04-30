@@ -7,6 +7,13 @@ use libpathfinder_common::error;
 
 use models;
 
+#[derive(FromDB)]
+#[from_db(table_name = "characters")]
+struct Character {
+    id: u32,
+    name: String,
+}
+
 pub struct Datastore {
     conn: rusqlite::Connection,
 }
@@ -18,6 +25,10 @@ impl Datastore {
     }
 
     pub fn get_character(&self, id: u32) -> Result<models::Character, error::Error> {
-        models::Character::select_one(&self.conn, id)
+        let c = try!(Character::select_one(&self.conn, id));
+        return Ok(models::Character {
+            id: c.id,
+            name: c.name,
+        });
     }
 }

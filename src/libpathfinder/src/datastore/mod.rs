@@ -17,6 +17,7 @@ struct Character {
 
 #[derive(FromDB)]
 #[from_db(table_name = "ability_score_sets")]
+#[allow(dead_code)]
 struct AbilityScoreSet {
     id: u32,
     str: u32,

@@ -12,7 +12,41 @@ use models;
 struct Character {
     id: u32,
     name: String,
+    alignment_order: models::AlignmentOrder,
+    alignment_morality: models::AlignmentMorality,
     ability_score_set_id: u32,
+}
+
+impl rusqlite::types::FromSql for models::AlignmentOrder {
+    fn column_result(value: rusqlite::types::ValueRef) -> rusqlite::types::FromSqlResult<Self> {
+        match value {
+            rusqlite::types::ValueRef::Text(ref s) => {
+                match s {
+                    &"chaotic" => Ok(models::AlignmentOrder::Chaotic),
+                    &"neutral" => Ok(models::AlignmentOrder::Neutral),
+                    &"lawful" => Ok(models::AlignmentOrder::Lawful),
+                    _ => Err(rusqlite::types::FromSqlError::InvalidType),
+                }
+            }
+            _ => Err(rusqlite::types::FromSqlError::InvalidType),
+        }
+    }
+}
+
+impl rusqlite::types::FromSql for models::AlignmentMorality {
+    fn column_result(value: rusqlite::types::ValueRef) -> rusqlite::types::FromSqlResult<Self> {
+        match value {
+            rusqlite::types::ValueRef::Text(ref s) => {
+                match s {
+                    &"evil" => Ok(models::AlignmentMorality::Evil),
+                    &"neutral" => Ok(models::AlignmentMorality::Neutral),
+                    &"good" => Ok(models::AlignmentMorality::Good),
+                    _ => Err(rusqlite::types::FromSqlError::InvalidType),
+                }
+            }
+            _ => Err(rusqlite::types::FromSqlError::InvalidType),
+        }
+    }
 }
 
 #[derive(FromDB)]
@@ -51,6 +85,10 @@ impl Datastore {
                 int: abs.int,
                 wis: abs.wis,
                 cha: abs.cha,
+            },
+            alignment: models::Alignment {
+                morality: c.alignment_morality,
+                order: c.alignment_order,
             },
         });
     }

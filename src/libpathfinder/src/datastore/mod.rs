@@ -10,11 +10,11 @@ use models;
 #[derive(FromDB)]
 #[from_db(table_name = "characters")]
 struct Character {
-    id: u32,
+    id: i32,
     name: String,
     alignment_order: models::AlignmentOrder,
     alignment_morality: models::AlignmentMorality,
-    ability_score_set_id: u32,
+    ability_score_set_id: i32,
 }
 
 impl rusqlite::types::FromSql for models::AlignmentOrder {
@@ -53,13 +53,13 @@ impl rusqlite::types::FromSql for models::AlignmentMorality {
 #[from_db(table_name = "ability_score_sets")]
 #[allow(dead_code)]
 struct AbilityScoreSet {
-    id: u32,
-    str: u32,
-    dex: u32,
-    con: u32,
-    int: u32,
-    wis: u32,
-    cha: u32,
+    id: i32,
+    str: i32,
+    dex: i32,
+    con: i32,
+    int: i32,
+    wis: i32,
+    cha: i32,
 }
 
 pub struct Datastore {
@@ -72,7 +72,7 @@ impl Datastore {
         return Ok(Datastore { conn: conn });
     }
 
-    pub fn get_character(&self, id: u32) -> Result<models::Character, error::Error> {
+    pub fn get_character(&self, id: i32) -> Result<models::Character, error::Error> {
         let c = try!(Character::select_one(&self.conn, id));
         let abs = try!(AbilityScoreSet::select_one(&self.conn, c.ability_score_set_id));
         return Ok(models::Character {

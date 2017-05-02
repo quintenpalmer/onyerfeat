@@ -14,6 +14,6 @@ pub trait QueryParam {
 }
 
 pub trait FromDB {
-    fn select_one(conn: &rusqlite::Connection, id: u32) -> Result<Self, error::Error>
+    fn select_one(conn: &rusqlite::Connection, id: i32) -> Result<Self, error::Error>
         where Self: Sized;
 }

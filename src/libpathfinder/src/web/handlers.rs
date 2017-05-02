@@ -33,7 +33,7 @@ impl iron::middleware::Handler for Handler {
 
 #[derive(QueryParam)]
 struct IdParam {
-    pub id: u32,
+    pub id: i32,
 }
 
 fn character_handler(ds: datastore::Datastore,

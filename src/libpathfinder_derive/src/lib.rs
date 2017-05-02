@@ -151,7 +151,7 @@ fn derive_sqlite_table(ast: &syn::DeriveInput) -> quote::Tokens {
 
     quote! {
         impl #impl_generics ::libpathfinder_common::FromDB for #name #ty_generics #where_clause {
-            fn select_one(conn: &rusqlite::Connection, id: u32) -> Result<Self, error::Error> {
+            fn select_one(conn: &rusqlite::Connection, id: i32) -> Result<Self, error::Error> {
                 let mut stmt = conn.prepare(#query).unwrap();
                 let s =
                     try!(stmt.query_row(&[&id], |row| {

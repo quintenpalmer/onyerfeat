@@ -1,6 +1,6 @@
 #[derive(Serialize, Deserialize)]
 pub struct Character {
-    pub id: u32,
+    pub id: i32,
     pub name: String,
     pub ability_scores: AbilityScoreSet,
     pub alignment: Alignment,
@@ -30,10 +30,10 @@ pub enum AlignmentMorality {
 
 #[derive(Serialize, Deserialize)]
 pub struct AbilityScoreSet {
-    pub str: u32,
-    pub dex: u32,
-    pub con: u32,
-    pub int: u32,
-    pub wis: u32,
-    pub cha: u32,
+    pub str: i32,
+    pub dex: i32,
+    pub con: i32,
+    pub int: i32,
+    pub wis: i32,
+    pub cha: i32,
 }

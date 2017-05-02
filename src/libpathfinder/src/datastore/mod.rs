@@ -1,6 +1,9 @@
 use std::path;
+use std::fmt;
+use std::str;
+use std::error as stderror;
 
-use rusqlite;
+use postgres;
 
 use libpathfinder_common::FromDB;
 use libpathfinder_common::error;
@@ -17,34 +20,52 @@ struct Character {
     ability_score_set_id: i32,
 }
 
-impl rusqlite::types::FromSql for models::AlignmentOrder {
-    fn column_result(value: rusqlite::types::ValueRef) -> rusqlite::types::FromSqlResult<Self> {
-        match value {
-            rusqlite::types::ValueRef::Text(ref s) => {
-                match s {
-                    &"chaotic" => Ok(models::AlignmentOrder::Chaotic),
-                    &"neutral" => Ok(models::AlignmentOrder::Neutral),
-                    &"lawful" => Ok(models::AlignmentOrder::Lawful),
-                    _ => Err(rusqlite::types::FromSqlError::InvalidType),
+impl postgres::types::FromSql for models::AlignmentOrder {
+    fn from_sql(ty: &postgres::types::Type,
+                raw: &[u8])
+                -> Result<Self, Box<stderror::Error + Send + Sync>> {
+        match ty {
+            &postgres::types::Type::Text => {
+                match try!(str::from_utf8(raw)) {
+                    "chaotic" => Ok(models::AlignmentOrder::Chaotic),
+                    "neutral" => Ok(models::AlignmentOrder::Neutral),
+                    "lawful" => Ok(models::AlignmentOrder::Lawful),
+                    _ => Err(Box::new(ParseError {})),
                 }
             }
-            _ => Err(rusqlite::types::FromSqlError::InvalidType),
+            _ => Err(Box::new(ParseError {})),
+        }
+    }
+
+    fn accepts(ty: &postgres::types::Type) -> bool {
+        match ty {
+            &postgres::types::Type::Text => true,
+            _ => false,
         }
     }
 }
 
-impl rusqlite::types::FromSql for models::AlignmentMorality {
-    fn column_result(value: rusqlite::types::ValueRef) -> rusqlite::types::FromSqlResult<Self> {
-        match value {
-            rusqlite::types::ValueRef::Text(ref s) => {
-                match s {
-                    &"evil" => Ok(models::AlignmentMorality::Evil),
-                    &"neutral" => Ok(models::AlignmentMorality::Neutral),
-                    &"good" => Ok(models::AlignmentMorality::Good),
-                    _ => Err(rusqlite::types::FromSqlError::InvalidType),
+impl postgres::types::FromSql for models::AlignmentMorality {
+    fn from_sql(ty: &postgres::types::Type,
+                raw: &[u8])
+                -> Result<Self, Box<stderror::Error + Send + Sync>> {
+        match ty {
+            &postgres::types::Type::Text => {
+                match try!(str::from_utf8(raw)) {
+                    "evil" => Ok(models::AlignmentMorality::Evil),
+                    "neutral" => Ok(models::AlignmentMorality::Neutral),
+                    "good" => Ok(models::AlignmentMorality::Good),
+                    _ => Err(Box::new(ParseError {})),
                 }
             }
-            _ => Err(rusqlite::types::FromSqlError::InvalidType),
+            _ => Err(Box::new(ParseError {})),
+        }
+    }
+
+    fn accepts(ty: &postgres::types::Type) -> bool {
+        match ty {
+            &postgres::types::Type::Text => true,
+            _ => false,
         }
     }
 }
@@ -63,12 +84,14 @@ struct AbilityScoreSet {
 }
 
 pub struct Datastore {
-    conn: rusqlite::Connection,
+    conn: postgres::Connection,
 }
 
 impl Datastore {
     pub fn new<P: AsRef<path::Path>>(p: P) -> Result<Datastore, error::Error> {
-        let conn = try!(rusqlite::Connection::open(p).map_err(error::Error::Rusqlite));
+        let conn = try!(postgres::Connection::connect("postgresql://quinten@localhost",
+                                                      postgres::TlsMode::None)
+            .map_err(error::Error::PostgresConnect));
         return Ok(Datastore { conn: conn });
     }
 
@@ -91,5 +114,20 @@ impl Datastore {
                 order: c.alignment_order,
             },
         });
+    }
+}
+
+#[derive(Debug)]
+struct ParseError {}
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "could not parse from db")
+    }
+}
+
+impl stderror::Error for ParseError {
+    fn description(&self) -> &str {
+        "could not parse from db"
     }
 }

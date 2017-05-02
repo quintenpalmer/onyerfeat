@@ -5,7 +5,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate iron;
 extern crate urlencoded;
-extern crate rusqlite;
+extern crate postgres;
 
 extern crate libpathfinder_common;
 #[macro_use]

@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Html exposing (div)
 import Html.Attributes as Attr
+import Char
 import Css
 import Json.Decode as Decode
 import Http
@@ -20,6 +21,7 @@ type alias Model =
     { id : Int
     , name : String
     , abilityScores : AbilityScoreSet
+    , alignment : Alignment
     }
 
 
@@ -37,10 +39,17 @@ emptyAbilityScoreSet : AbilityScoreSet
 emptyAbilityScoreSet =
     AbilityScoreSet 0 0 0 0 0 0
 
+type alias Alignment =
+    { morality : String
+    , order : String
+    }
+
+emptyAlignment : Alignment
+emptyAlignment = Alignment "" ""
 
 init : String -> ( Model, Cmd Msg )
 init name =
-    ( Model 0 name emptyAbilityScoreSet
+    ( Model 0 name emptyAbilityScoreSet emptyAlignment
     , getCharacterSheet 1
     )
 
@@ -60,7 +69,7 @@ update msg model =
             ( newModel, Cmd.none )
 
         SheetLoaded (Err _) ->
-            ( Model 0 "ErrorCauser" emptyAbilityScoreSet, Cmd.none )
+            ( Model 0 "ErrorCauser" emptyAbilityScoreSet emptyAlignment, Cmd.none )
 
 
 getCharacterSheet : Int -> Cmd Msg
@@ -74,10 +83,11 @@ getCharacterSheet id =
 
 decodeCharacterResp : Decode.Decoder Model
 decodeCharacterResp =
-    Decode.map3 Model
+    Decode.map4 Model
         (Decode.at [ "data", "id" ] Decode.int)
         (Decode.at [ "data", "name" ] Decode.string)
         (Decode.at [ "data", "ability_scores" ] decodeAbilityScores)
+        (Decode.at [ "data", "alignment" ] decodeAlignment)
 
 
 decodeAbilityScores : Decode.Decoder AbilityScoreSet
@@ -89,6 +99,12 @@ decodeAbilityScores =
         (Decode.field "int" Decode.int)
         (Decode.field "wis" Decode.int)
         (Decode.field "cha" Decode.int)
+
+decodeAlignment: Decode.Decoder Alignment
+decodeAlignment =
+    Decode.map2 Alignment
+        (Decode.field "morality" Decode.string)
+        (Decode.field "order" Decode.string)
 
 
 subscriptions : Model -> Sub Msg
@@ -172,7 +188,8 @@ innerPage model =
         [ Html.div [ h1 ] [ Html.text "Welcome!" ]
         , Html.div [ p ] [ Html.text <| "Hello, " ++ model.name ++ "! Good to see ya!" ]
         , Html.div []
-            [ Html.table [ table ]
+            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize model.alignment.morality ++ " " ++ capitalize model.alignment.order ]
+            , Html.table [ table ]
                 [ Html.tr []
                     [ Html.th [] [ Html.text "Ability Name" ]
                     , Html.th [] [ Html.text "Score" ]
@@ -188,6 +205,13 @@ innerPage model =
                 ]
             ]
         ]
+
+capitalize : String -> String
+capitalize string =
+  case String.uncons string of
+   Nothing -> ""
+   Just (head, tail) ->
+      String.cons (Char.toUpper head) tail
 
 
 scoreTableRow : String -> Int -> String -> Html.Html Msg

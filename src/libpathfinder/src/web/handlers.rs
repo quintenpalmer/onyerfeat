@@ -25,7 +25,15 @@ impl iron::middleware::Handler for Handler {
         let conn = itry!(datastore::Datastore::new(&self.path),
                          webshared::simple_server_error());
         match full_path.clone().as_ref() {
-            "character" => character_handler(conn, req),
+            "character" => {
+                match character_handler(conn, req) {
+                    Ok(s) => Ok(s),
+                    Err(e) => {
+                        println!("{}", e);
+                        Err(e)
+                    }
+                }
+            }
             _ => path_not_found(full_path),
         }
     }

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 if [ $(psql -d postgres -q -t -c "select count(*) from pg_database where datname = 'pathfinder'") == 1 ]; then
     echo "you already have a pathfinder database, delete it first to restore"
     exit

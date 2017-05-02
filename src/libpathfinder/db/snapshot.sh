@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sqlite3 local_pf.db '.schema' > schema.sql
-sqlite3 local_pf.db '.dump' > bootstrap.sql
+pg_dump -s pathfinder > schema.sql
+pg_dump -a pathfinder > data.sql

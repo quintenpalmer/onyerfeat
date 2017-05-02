@@ -19,7 +19,12 @@ pub enum Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        self.description().fmt(f)
+        match *self {
+            Error::Postgres(ref e) => e.fmt(f),
+            Error::PostgresConnect(ref e) => e.fmt(f),
+            Error::ParseInt(ref e) => e.fmt(f),
+            _ => self.description().fmt(f),
+        }
     }
 }
 

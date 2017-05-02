@@ -35,7 +35,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: ability_score_sets; Type: TABLE; Schema: public; Owner: quinten
+-- Name: ability_score_sets; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
 CREATE TABLE ability_score_sets (
@@ -49,10 +49,10 @@ CREATE TABLE ability_score_sets (
 );
 
 
-ALTER TABLE ability_score_sets OWNER TO quinten;
+ALTER TABLE ability_score_sets OWNER TO pathfinder_user;
 
 --
--- Name: ability_score_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: quinten
+-- Name: ability_score_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
 --
 
 CREATE SEQUENCE ability_score_sets_id_seq
@@ -63,17 +63,17 @@ CREATE SEQUENCE ability_score_sets_id_seq
     CACHE 1;
 
 
-ALTER TABLE ability_score_sets_id_seq OWNER TO quinten;
+ALTER TABLE ability_score_sets_id_seq OWNER TO pathfinder_user;
 
 --
--- Name: ability_score_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: quinten
+-- Name: ability_score_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
 --
 
 ALTER SEQUENCE ability_score_sets_id_seq OWNED BY ability_score_sets.id;
 
 
 --
--- Name: characters; Type: TABLE; Schema: public; Owner: quinten
+-- Name: characters; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
 CREATE TABLE characters (
@@ -85,10 +85,10 @@ CREATE TABLE characters (
 );
 
 
-ALTER TABLE characters OWNER TO quinten;
+ALTER TABLE characters OWNER TO pathfinder_user;
 
 --
--- Name: characters_id_seq; Type: SEQUENCE; Schema: public; Owner: quinten
+-- Name: characters_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
 --
 
 CREATE SEQUENCE characters_id_seq
@@ -99,31 +99,31 @@ CREATE SEQUENCE characters_id_seq
     CACHE 1;
 
 
-ALTER TABLE characters_id_seq OWNER TO quinten;
+ALTER TABLE characters_id_seq OWNER TO pathfinder_user;
 
 --
--- Name: characters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: quinten
+-- Name: characters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
 --
 
 ALTER SEQUENCE characters_id_seq OWNED BY characters.id;
 
 
 --
--- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: quinten
+-- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY ability_score_sets ALTER COLUMN id SET DEFAULT nextval('ability_score_sets_id_seq'::regclass);
 
 
 --
--- Name: characters id; Type: DEFAULT; Schema: public; Owner: quinten
+-- Name: characters id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY characters ALTER COLUMN id SET DEFAULT nextval('characters_id_seq'::regclass);
 
 
 --
--- Name: ability_score_sets ability_score_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: quinten
+-- Name: ability_score_sets ability_score_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY ability_score_sets
@@ -131,7 +131,7 @@ ALTER TABLE ONLY ability_score_sets
 
 
 --
--- Name: characters characters_pkey; Type: CONSTRAINT; Schema: public; Owner: quinten
+-- Name: characters characters_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY characters
@@ -139,7 +139,7 @@ ALTER TABLE ONLY characters
 
 
 --
--- Name: characters characters_ability_score_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: quinten
+-- Name: characters characters_ability_score_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY characters

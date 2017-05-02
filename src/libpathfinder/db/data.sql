@@ -17,7 +17,7 @@ SET row_security = off;
 SET search_path = public, pg_catalog;
 
 --
--- Data for Name: ability_score_sets; Type: TABLE DATA; Schema: public; Owner: quinten
+-- Data for Name: ability_score_sets; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
 COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
@@ -28,14 +28,14 @@ COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 
 
 --
--- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: quinten
+-- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
 SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 
 
 --
--- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: quinten
+-- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
 COPY characters (id, name, ability_score_set_id, alignment_order, alignment_morality) FROM stdin;
@@ -46,7 +46,7 @@ COPY characters (id, name, ability_score_set_id, alignment_order, alignment_mora
 
 
 --
--- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: quinten
+-- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
 SELECT pg_catalog.setval('characters_id_seq', 3, true);

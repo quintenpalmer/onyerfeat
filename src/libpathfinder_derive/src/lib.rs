@@ -100,7 +100,7 @@ fn derive_sqlite_table(ast: &syn::DeriveInput) -> quote::Tokens {
                 panic!("#[derive(FromDB)] must have at least one field");
             }
 
-            let mut i = 0;
+            let mut i: usize = 0;
             let mut field_assignments = Vec::new();
             let mut field_names = Vec::new();
             for field_syn in data.fields() {
@@ -147,18 +147,19 @@ fn derive_sqlite_table(ast: &syn::DeriveInput) -> quote::Tokens {
 
     let field_query = field_names.join(", ");
 
-    let query = format!("SELECT {} FROM {} WHERE id = ?1", field_query, table_name);
+    let query = format!("SELECT {} FROM {} WHERE id = $1", field_query, table_name);
 
     quote! {
         impl #impl_generics ::libpathfinder_common::FromDB for #name #ty_generics #where_clause {
-            fn select_one(conn: &rusqlite::Connection, id: u32) -> Result<Self, error::Error> {
-                let mut stmt = conn.prepare(#query).unwrap();
-                let s =
-                    try!(stmt.query_row(&[&id], |row| {
-                        #name { #(#field_assignments),* }
-                    }).map_err(error::Error::Rusqlite));
+            fn select_one(conn: &postgres::GenericConnection, id: i32) -> Result<Self, error::Error> {
+                let stmt = conn.prepare(#query).unwrap();
 
-                return Ok(s);
+                let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
+                if rows.len() != 1 {
+                    return Err(error::Error::ManyResultsOnSelectOne(#table_name.to_string()))
+                }
+                let row = rows.get(0);
+                return Ok(#name { #(#field_assignments),* });
             }
         }
     }

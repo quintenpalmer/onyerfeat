@@ -22,7 +22,8 @@ impl IronHttpError {
 
 fn run_app() -> Result<(), IronHttpError> {
     println!("serving pathfinder characters");
-    let handler = libpf::web::Handler::new("../libpathfinder/db/local_pf.db".to_owned());
+    let handler = libpf::web::Handler::new("postgresql://pathfinder_user@localhost/pathfinder"
+        .to_owned());
     try!(iron::Iron::new(handler)
         .http("localhost:3000")
         .map_err(IronHttpError::new));

@@ -1,4 +1,3 @@
-use std::path;
 use std::fmt;
 use std::str;
 use std::error as stderror;
@@ -88,9 +87,8 @@ pub struct Datastore {
 }
 
 impl Datastore {
-    pub fn new<P: AsRef<path::Path>>(p: P) -> Result<Datastore, error::Error> {
-        let conn = try!(postgres::Connection::connect("postgresql://quinten@localhost",
-                                                      postgres::TlsMode::None)
+    pub fn new<T: postgres::params::IntoConnectParams>(c: T) -> Result<Datastore, error::Error> {
+        let conn = try!(postgres::Connection::connect(c, postgres::TlsMode::None)
             .map_err(error::Error::PostgresConnect));
         return Ok(Datastore { conn: conn });
     }

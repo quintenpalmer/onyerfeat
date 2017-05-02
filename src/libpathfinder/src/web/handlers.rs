@@ -8,12 +8,12 @@ use libpathfinder_common::error::Error;
 use libpathfinder_common::QueryParam;
 
 pub struct Handler {
-    path: String,
+    connection_params: String,
 }
 
 impl Handler {
-    pub fn new(path: String) -> Handler {
-        return Handler { path: path };
+    pub fn new(connection_params: String) -> Handler {
+        return Handler { connection_params: connection_params };
     }
 }
 
@@ -22,7 +22,7 @@ impl iron::middleware::Handler for Handler {
     fn handle(&self, req: &mut iron::Request) -> IronResult<iron::Response> {
         let full_path = req.url.path().join("/");
         println!("full path is: {}", full_path);
-        let conn = itry!(datastore::Datastore::new(&self.path),
+        let conn = itry!(datastore::Datastore::new(self.connection_params.clone()),
                          webshared::simple_server_error());
         match full_path.clone().as_ref() {
             "character" => {

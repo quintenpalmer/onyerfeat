@@ -41,20 +41,10 @@ type alias AbilityScoreSet =
     }
 
 
-emptyAbilityScoreSet : AbilityScoreSet
-emptyAbilityScoreSet =
-    AbilityScoreSet 0 0 0 0 0 0
-
-
 type alias Alignment =
     { morality : String
     , order : String
     }
-
-
-emptyAlignment : Alignment
-emptyAlignment =
-    Alignment "" ""
 
 
 init : ( Model, Cmd Msg )

@@ -203,7 +203,7 @@ innerPage character =
         [ Html.div [ h1 ] [ Html.text "Welcome!" ]
         , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
         , Html.div []
-            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.morality ++ " " ++ capitalize character.alignment.order ]
+            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
             , Html.table [ table ]
                 [ Html.tr []
                     [ Html.th [] [ Html.text "Ability Name" ]

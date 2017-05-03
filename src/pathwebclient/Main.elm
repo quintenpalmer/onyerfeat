@@ -39,13 +39,17 @@ emptyAbilityScoreSet : AbilityScoreSet
 emptyAbilityScoreSet =
     AbilityScoreSet 0 0 0 0 0 0
 
+
 type alias Alignment =
     { morality : String
     , order : String
     }
 
+
 emptyAlignment : Alignment
-emptyAlignment = Alignment "" ""
+emptyAlignment =
+    Alignment "" ""
+
 
 init : String -> ( Character, Cmd Msg )
 init name =
@@ -100,7 +104,8 @@ decodeAbilityScores =
         (Decode.field "wis" Decode.int)
         (Decode.field "cha" Decode.int)
 
-decodeAlignment: Decode.Decoder Alignment
+
+decodeAlignment : Decode.Decoder Alignment
 decodeAlignment =
     Decode.map2 Alignment
         (Decode.field "morality" Decode.string)
@@ -206,12 +211,15 @@ innerPage character =
             ]
         ]
 
+
 capitalize : String -> String
 capitalize string =
-  case String.uncons string of
-   Nothing -> ""
-   Just (head, tail) ->
-      String.cons (Char.toUpper head) tail
+    case String.uncons string of
+        Nothing ->
+            ""
+
+        Just ( head, tail ) ->
+            String.cons (Char.toUpper head) tail
 
 
 scoreTableRow : String -> Int -> String -> Html.Html Msg
@@ -224,10 +232,10 @@ scoreTableRow name val emoji =
             [ htmlTdStr name
             , htmlTdStr (toString val)
             , htmlTdStr (toString <| mod)
-            , htmlTdStr
-                <| if mod >= 0 then
+            , htmlTdStr <|
+                if mod >= 0 then
                     String.repeat (mod) emoji
-                   else
+                else
                     "➖" ++ String.repeat (-mod) emoji
             ]
 

@@ -10,11 +10,17 @@ import Http
 
 main =
     Html.program
-        { init = init "Stranger"
+        { init = init
         , view = view
         , update = update
         , subscriptions = subscriptions
         }
+
+
+type Model
+    = MCharacter Character
+    | MError String
+    | MNotLoaded
 
 
 type alias Character =
@@ -51,9 +57,9 @@ emptyAlignment =
     Alignment "" ""
 
 
-init : String -> ( Character, Cmd Msg )
-init name =
-    ( Character 0 name emptyAbilityScoreSet emptyAlignment
+init : ( Model, Cmd Msg )
+init =
+    ( MNotLoaded
     , getCharacterSheet 1
     )
 
@@ -63,17 +69,17 @@ type Msg
     | SheetLoaded (Result Http.Error Character)
 
 
-update : Msg -> Character -> ( Character, Cmd Msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg character =
     case msg of
         DoLoadSheet ->
-            ( character, getCharacterSheet character.id )
+            ( character, getCharacterSheet 1 )
 
         SheetLoaded (Ok newCharacter) ->
-            ( newCharacter, Cmd.none )
+            ( MCharacter newCharacter, Cmd.none )
 
         SheetLoaded (Err _) ->
-            ( Character 0 "ErrorCauser" emptyAbilityScoreSet emptyAlignment, Cmd.none )
+            ( MError "Error loading sheet", Cmd.none )
 
 
 getCharacterSheet : Int -> Cmd Msg
@@ -112,8 +118,8 @@ decodeAlignment =
         (Decode.field "order" Decode.string)
 
 
-subscriptions : Character -> Sub Msg
-subscriptions character =
+subscriptions : Model -> Sub Msg
+subscriptions model =
     Sub.none
 
 
@@ -175,7 +181,7 @@ tableData =
         ]
 
 
-view character =
+view model =
     div
         [ fullPage
         ]
@@ -184,7 +190,16 @@ view character =
             ]
             [ Html.text "Pathfinder Character Sheet" ]
         , div [ content ]
-            [ innerPage character ]
+            [ case model of
+                MCharacter c ->
+                    innerPage c
+
+                MError e ->
+                    div [ h1 ] [ Html.text e ]
+
+                MNotLoaded ->
+                    div [ h1 ] [ Html.text "Loading" ]
+            ]
         ]
 
 

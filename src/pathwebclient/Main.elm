@@ -17,7 +17,7 @@ main =
         }
 
 
-type alias Model =
+type alias Character =
     { id : Int
     , name : String
     , abilityScores : AbilityScoreSet
@@ -47,29 +47,29 @@ type alias Alignment =
 emptyAlignment : Alignment
 emptyAlignment = Alignment "" ""
 
-init : String -> ( Model, Cmd Msg )
+init : String -> ( Character, Cmd Msg )
 init name =
-    ( Model 0 name emptyAbilityScoreSet emptyAlignment
+    ( Character 0 name emptyAbilityScoreSet emptyAlignment
     , getCharacterSheet 1
     )
 
 
 type Msg
     = DoLoadSheet
-    | SheetLoaded (Result Http.Error Model)
+    | SheetLoaded (Result Http.Error Character)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update : Msg -> Character -> ( Character, Cmd Msg )
+update msg character =
     case msg of
         DoLoadSheet ->
-            ( model, getCharacterSheet model.id )
+            ( character, getCharacterSheet character.id )
 
-        SheetLoaded (Ok newModel) ->
-            ( newModel, Cmd.none )
+        SheetLoaded (Ok newCharacter) ->
+            ( newCharacter, Cmd.none )
 
         SheetLoaded (Err _) ->
-            ( Model 0 "ErrorCauser" emptyAbilityScoreSet emptyAlignment, Cmd.none )
+            ( Character 0 "ErrorCauser" emptyAbilityScoreSet emptyAlignment, Cmd.none )
 
 
 getCharacterSheet : Int -> Cmd Msg
@@ -81,9 +81,9 @@ getCharacterSheet id =
         Http.send SheetLoaded (Http.get url decodeCharacterResp)
 
 
-decodeCharacterResp : Decode.Decoder Model
+decodeCharacterResp : Decode.Decoder Character
 decodeCharacterResp =
-    Decode.map4 Model
+    Decode.map4 Character
         (Decode.at [ "data", "id" ] Decode.int)
         (Decode.at [ "data", "name" ] Decode.string)
         (Decode.at [ "data", "ability_scores" ] decodeAbilityScores)
@@ -107,8 +107,8 @@ decodeAlignment =
         (Decode.field "order" Decode.string)
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions : Character -> Sub Msg
+subscriptions character =
     Sub.none
 
 
@@ -170,7 +170,7 @@ tableData =
         ]
 
 
-view model =
+view character =
     div
         [ fullPage
         ]
@@ -179,16 +179,16 @@ view model =
             ]
             [ Html.text "Pathfinder Character Sheet" ]
         , div [ content ]
-            [ innerPage model ]
+            [ innerPage character ]
         ]
 
 
-innerPage model =
+innerPage character =
     div []
         [ Html.div [ h1 ] [ Html.text "Welcome!" ]
-        , Html.div [ p ] [ Html.text <| "Hello, " ++ model.name ++ "! Good to see ya!" ]
+        , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
         , Html.div []
-            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize model.alignment.morality ++ " " ++ capitalize model.alignment.order ]
+            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.morality ++ " " ++ capitalize character.alignment.order ]
             , Html.table [ table ]
                 [ Html.tr []
                     [ Html.th [] [ Html.text "Ability Name" ]
@@ -196,12 +196,12 @@ innerPage model =
                     , Html.th [] [ Html.text "Modifier" ]
                     , Html.th [] [ Html.text "EModji" ]
                     ]
-                , scoreTableRow "STR" model.abilityScores.str "🐂"
-                , scoreTableRow "DEX" model.abilityScores.dex "🐆"
-                , scoreTableRow "CON" model.abilityScores.con "🐎"
-                , scoreTableRow "INT" model.abilityScores.int "\x1F991"
-                , scoreTableRow "WIS" model.abilityScores.wis "\x1F989"
-                , scoreTableRow "CHA" model.abilityScores.cha "🎭"
+                , scoreTableRow "STR" character.abilityScores.str "🐂"
+                , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                , scoreTableRow "CON" character.abilityScores.con "🐎"
+                , scoreTableRow "INT" character.abilityScores.int "\x1F991"
+                , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                , scoreTableRow "CHA" character.abilityScores.cha "🎭"
                 ]
             ]
         ]

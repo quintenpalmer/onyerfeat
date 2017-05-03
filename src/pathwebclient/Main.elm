@@ -10,14 +10,20 @@ import Http
 
 main =
     Html.program
-        { init = init "Stranger"
+        { init = init
         , view = view
         , update = update
         , subscriptions = subscriptions
         }
 
 
-type alias Model =
+type Model
+    = MCharacter Character
+    | MError String
+    | MNotLoaded
+
+
+type alias Character =
     { id : Int
     , name : String
     , abilityScores : AbilityScoreSet
@@ -35,41 +41,35 @@ type alias AbilityScoreSet =
     }
 
 
-emptyAbilityScoreSet : AbilityScoreSet
-emptyAbilityScoreSet =
-    AbilityScoreSet 0 0 0 0 0 0
-
 type alias Alignment =
     { morality : String
     , order : String
     }
 
-emptyAlignment : Alignment
-emptyAlignment = Alignment "" ""
 
-init : String -> ( Model, Cmd Msg )
-init name =
-    ( Model 0 name emptyAbilityScoreSet emptyAlignment
+init : ( Model, Cmd Msg )
+init =
+    ( MNotLoaded
     , getCharacterSheet 1
     )
 
 
 type Msg
     = DoLoadSheet
-    | SheetLoaded (Result Http.Error Model)
+    | SheetLoaded (Result Http.Error Character)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
+update msg character =
     case msg of
         DoLoadSheet ->
-            ( model, getCharacterSheet model.id )
+            ( character, getCharacterSheet 1 )
 
-        SheetLoaded (Ok newModel) ->
-            ( newModel, Cmd.none )
+        SheetLoaded (Ok newCharacter) ->
+            ( MCharacter newCharacter, Cmd.none )
 
-        SheetLoaded (Err _) ->
-            ( Model 0 "ErrorCauser" emptyAbilityScoreSet emptyAlignment, Cmd.none )
+        SheetLoaded (Err e) ->
+            ( MError <| "Error loading sheet: " ++ toString e, Cmd.none )
 
 
 getCharacterSheet : Int -> Cmd Msg
@@ -81,13 +81,18 @@ getCharacterSheet id =
         Http.send SheetLoaded (Http.get url decodeCharacterResp)
 
 
-decodeCharacterResp : Decode.Decoder Model
+decodeCharacterResp : Decode.Decoder Character
 decodeCharacterResp =
-    Decode.map4 Model
-        (Decode.at [ "data", "id" ] Decode.int)
-        (Decode.at [ "data", "name" ] Decode.string)
-        (Decode.at [ "data", "ability_scores" ] decodeAbilityScores)
-        (Decode.at [ "data", "alignment" ] decodeAlignment)
+    Decode.field "data" decodeCharacter
+
+
+decodeCharacter : Decode.Decoder Character
+decodeCharacter =
+    Decode.map4 Character
+        (Decode.field "id" Decode.int)
+        (Decode.field "name" Decode.string)
+        (Decode.field "ability_scores" decodeAbilityScores)
+        (Decode.field "alignment" decodeAlignment)
 
 
 decodeAbilityScores : Decode.Decoder AbilityScoreSet
@@ -100,7 +105,8 @@ decodeAbilityScores =
         (Decode.field "wis" Decode.int)
         (Decode.field "cha" Decode.int)
 
-decodeAlignment: Decode.Decoder Alignment
+
+decodeAlignment : Decode.Decoder Alignment
 decodeAlignment =
     Decode.map2 Alignment
         (Decode.field "morality" Decode.string)
@@ -179,16 +185,25 @@ view model =
             ]
             [ Html.text "Pathfinder Character Sheet" ]
         , div [ content ]
-            [ innerPage model ]
+            [ case model of
+                MCharacter c ->
+                    innerPage c
+
+                MError e ->
+                    div [ h1 ] [ Html.text e ]
+
+                MNotLoaded ->
+                    div [ h1 ] [ Html.text "Loading" ]
+            ]
         ]
 
 
-innerPage model =
+innerPage character =
     div []
         [ Html.div [ h1 ] [ Html.text "Welcome!" ]
-        , Html.div [ p ] [ Html.text <| "Hello, " ++ model.name ++ "! Good to see ya!" ]
+        , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
         , Html.div []
-            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize model.alignment.morality ++ " " ++ capitalize model.alignment.order ]
+            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
             , Html.table [ table ]
                 [ Html.tr []
                     [ Html.th [] [ Html.text "Ability Name" ]
@@ -196,22 +211,25 @@ innerPage model =
                     , Html.th [] [ Html.text "Modifier" ]
                     , Html.th [] [ Html.text "EModji" ]
                     ]
-                , scoreTableRow "STR" model.abilityScores.str "🐂"
-                , scoreTableRow "DEX" model.abilityScores.dex "🐆"
-                , scoreTableRow "CON" model.abilityScores.con "🐎"
-                , scoreTableRow "INT" model.abilityScores.int "\x1F991"
-                , scoreTableRow "WIS" model.abilityScores.wis "\x1F989"
-                , scoreTableRow "CHA" model.abilityScores.cha "🎭"
+                , scoreTableRow "STR" character.abilityScores.str "🐂"
+                , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                , scoreTableRow "CON" character.abilityScores.con "🐎"
+                , scoreTableRow "INT" character.abilityScores.int "\x1F991"
+                , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                , scoreTableRow "CHA" character.abilityScores.cha "🎭"
                 ]
             ]
         ]
 
+
 capitalize : String -> String
 capitalize string =
-  case String.uncons string of
-   Nothing -> ""
-   Just (head, tail) ->
-      String.cons (Char.toUpper head) tail
+    case String.uncons string of
+        Nothing ->
+            ""
+
+        Just ( head, tail ) ->
+            String.cons (Char.toUpper head) tail
 
 
 scoreTableRow : String -> Int -> String -> Html.Html Msg
@@ -224,10 +242,10 @@ scoreTableRow name val emoji =
             [ htmlTdStr name
             , htmlTdStr (toString val)
             , htmlTdStr (toString <| mod)
-            , htmlTdStr
-                <| if mod >= 0 then
+            , htmlTdStr <|
+                if mod >= 0 then
                     String.repeat (mod) emoji
-                   else
+                else
                     "➖" ++ String.repeat (-mod) emoji
             ]
 

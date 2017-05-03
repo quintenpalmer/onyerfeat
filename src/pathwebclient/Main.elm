@@ -83,11 +83,16 @@ getCharacterSheet id =
 
 decodeCharacterResp : Decode.Decoder Character
 decodeCharacterResp =
+    Decode.field "data" decodeCharacter
+
+
+decodeCharacter : Decode.Decoder Character
+decodeCharacter =
     Decode.map4 Character
-        (Decode.at [ "data", "id" ] Decode.int)
-        (Decode.at [ "data", "name" ] Decode.string)
-        (Decode.at [ "data", "ability_scores" ] decodeAbilityScores)
-        (Decode.at [ "data", "alignment" ] decodeAlignment)
+        (Decode.field "id" Decode.int)
+        (Decode.field "name" Decode.string)
+        (Decode.field "ability_scores" decodeAbilityScores)
+        (Decode.field "alignment" decodeAlignment)
 
 
 decodeAbilityScores : Decode.Decoder AbilityScoreSet

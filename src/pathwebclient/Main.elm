@@ -68,8 +68,8 @@ update msg character =
         SheetLoaded (Ok newCharacter) ->
             ( MCharacter newCharacter, Cmd.none )
 
-        SheetLoaded (Err _) ->
-            ( MError "Error loading sheet", Cmd.none )
+        SheetLoaded (Err e) ->
+            ( MError <| "Error loading sheet: " ++ toString e, Cmd.none )
 
 
 getCharacterSheet : Int -> Cmd Msg

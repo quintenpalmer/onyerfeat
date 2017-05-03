@@ -4,6 +4,7 @@ pub struct Character {
     pub name: String,
     pub ability_scores: AbilityScoreSet,
     pub alignment: Alignment,
+    pub player_name: String,
 }
 
 #[derive(Serialize, Deserialize)]

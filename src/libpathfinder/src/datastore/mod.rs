@@ -17,6 +17,7 @@ struct Character {
     alignment_order: models::AlignmentOrder,
     alignment_morality: models::AlignmentMorality,
     ability_score_set_id: i32,
+    player_name: String,
 }
 
 impl postgres::types::FromSql for models::AlignmentOrder {
@@ -111,6 +112,7 @@ impl Datastore {
                 morality: c.alignment_morality,
                 order: c.alignment_order,
             },
+            player_name: c.player_name,
         });
     }
 }

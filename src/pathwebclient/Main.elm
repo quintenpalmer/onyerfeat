@@ -26,6 +26,7 @@ type Model
 type alias Character =
     { id : Int
     , name : String
+    , playerName : String
     , abilityScores : AbilityScoreSet
     , alignment : Alignment
     }
@@ -88,9 +89,10 @@ decodeCharacterResp =
 
 decodeCharacter : Decode.Decoder Character
 decodeCharacter =
-    Decode.map4 Character
+    Decode.map5 Character
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
+        (Decode.field "player_name" Decode.string)
         (Decode.field "ability_scores" decodeAbilityScores)
         (Decode.field "alignment" decodeAlignment)
 
@@ -204,6 +206,7 @@ innerPage character =
         , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
         , Html.div []
             [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
+            , Html.div [ p ] [ Html.text <| "Player name: " ++ character.playerName ]
             , Html.table [ table ]
                 [ Html.tr []
                     [ Html.th [] [ Html.text "Ability Name" ]

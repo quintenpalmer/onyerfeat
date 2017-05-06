@@ -22,8 +22,6 @@ SET search_path = public, pg_catalog;
 
 COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 1	12	15	18	14	10	8
-2	10	18	10	14	10	10
-3	8	15	10	14	10	18
 \.
 
 
@@ -38,10 +36,8 @@ SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 -- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY characters (id, name, ability_score_set_id, alignment_order, alignment_morality) FROM stdin;
-1	IDRIGOTH	1	neutral	good
-2	Vor	2	chaotic	good
-3	Ardo	3	neutral	good
+COPY characters (id, name, ability_score_set_id, alignment_order, alignment_morality, player_name) FROM stdin;
+1	IDRIGOTH	1	neutral	good	Quinten
 \.
 
 

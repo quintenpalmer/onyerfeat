@@ -6,8 +6,11 @@ if [ $(psql -d postgres -q -t -c "select count(*) from pg_database where datname
 fi
 
 psql -d postgres -c "CREATE DATABASE pathfinder"
-psql -d postgres -c "CREATE ROLE pathfinder_user WITH CREATEDB LOGIN"
-psql -d postgres -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO pathfinder_user"
+if [ $(psql -d postgres -q -t -c "select count(*) from pg_roles where rolname = 'pathfinder_user'") == 0 ]; then
+    echo "you already have a pathfinder database, delete it first to restore"
+    psql -d postgres -c "CREATE ROLE pathfinder_user WITH CREATEDB LOGIN"
+    psql -d postgres -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA PUBLIC TO pathfinder_user"
+fi
 
 echo "restoring the schema"
 psql -U pathfinder_user -d pathfinder -f schema.sql

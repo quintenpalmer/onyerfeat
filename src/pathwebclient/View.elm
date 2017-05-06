@@ -14,9 +14,7 @@ cssStyle =
 
 fullPage =
     cssStyle
-        [ Css.width <| Css.pct 100
-        , Css.height <| Css.pct 100
-        , Css.fontFamilies [ "Inconsolata" ]
+        [ Css.fontFamilies [ "Inconsolata" ]
         ]
 
 
@@ -26,15 +24,6 @@ header =
         , Css.padding <| Css.px 20
         , Css.color <| Css.rgb 250 250 250
         , Css.backgroundColor <| Css.rgb 70 70 70
-        ]
-
-
-content =
-    cssStyle
-        [ Css.textAlign Css.center
-        , Css.width <| Css.pct 80
-        , Css.height <| Css.pct 100
-        , Css.margin Css.auto
         ]
 
 
@@ -48,7 +37,7 @@ view model =
             [ header
             ]
             [ Html.text "Pathfinder Character Sheet" ]
-        , div [ content ]
+        , div [ Attr.class "container" ]
             [ case model of
                 Models.MCharacter c ->
                     innerPage c
@@ -65,12 +54,23 @@ view model =
 innerPage : Models.Character -> Html.Html Common.Msg
 innerPage character =
     div []
-        [ Html.h1 [] [ Html.text "Welcome!" ]
-        , Html.p [] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
-        , Html.div []
-            [ Html.p [] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
-            , Html.p [] [ Html.text <| "Player name: " ++ character.playerName ]
-            , Html.table [ Attr.class "table table-striped table-bordered" ]
+        [ Html.h1 [ Attr.class "text-center" ] [ Html.text "Welcome!" ]
+        , Html.p [ Attr.class "text-center" ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
+        , Html.div [ Attr.class "row" ]
+            [ Html.div [ Attr.class "col-md-4" ]
+                [ Html.h1 [] [ Html.text "CHARACTER SHEET" ] ]
+            , Html.div [ Attr.class "col-md-2" ] []
+            , Html.div [ Attr.class "col-md-3" ]
+                [ Html.u [] [ Html.text character.playerName ]
+                , Html.p [] [ Html.small [] [ Html.text "Player name" ] ]
+                ]
+            , Html.div [ Attr.class "col-md-3" ]
+                [ Html.u [] [ Html.text <| capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
+                , Html.p [] [ Html.small [] [ Html.text "Alignment" ] ]
+                ]
+            ]
+        , Html.div [ Attr.class "row" ]
+            [ Html.table [ Attr.class "table table-striped table-bordered" ]
                 [ Html.thead []
                     [ Html.tr []
                         [ Html.th [] [ Html.text "Ability Name" ]

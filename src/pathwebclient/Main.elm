@@ -6,6 +6,7 @@ import Char
 import Css
 import Json.Decode as Decode
 import Http
+import Models
 
 
 main =
@@ -17,60 +18,29 @@ main =
         }
 
 
-type Model
-    = MCharacter Character
-    | MError String
-    | MNotLoaded
-
-
-type alias Character =
-    { id : Int
-    , name : String
-    , playerName : String
-    , abilityScores : AbilityScoreSet
-    , alignment : Alignment
-    }
-
-
-type alias AbilityScoreSet =
-    { str : Int
-    , dex : Int
-    , con : Int
-    , int : Int
-    , wis : Int
-    , cha : Int
-    }
-
-
-type alias Alignment =
-    { morality : String
-    , order : String
-    }
-
-
-init : ( Model, Cmd Msg )
+init : ( Models.Model, Cmd Msg )
 init =
-    ( MNotLoaded
+    ( Models.MNotLoaded
     , getCharacterSheet 1
     )
 
 
 type Msg
     = DoLoadSheet
-    | SheetLoaded (Result Http.Error Character)
+    | SheetLoaded (Result Http.Error Models.Character)
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Models.Model -> ( Models.Model, Cmd Msg )
 update msg character =
     case msg of
         DoLoadSheet ->
             ( character, getCharacterSheet 1 )
 
         SheetLoaded (Ok newCharacter) ->
-            ( MCharacter newCharacter, Cmd.none )
+            ( Models.MCharacter newCharacter, Cmd.none )
 
         SheetLoaded (Err e) ->
-            ( MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
 
 
 getCharacterSheet : Int -> Cmd Msg
@@ -82,14 +52,14 @@ getCharacterSheet id =
         Http.send SheetLoaded (Http.get url decodeCharacterResp)
 
 
-decodeCharacterResp : Decode.Decoder Character
+decodeCharacterResp : Decode.Decoder Models.Character
 decodeCharacterResp =
     Decode.field "data" decodeCharacter
 
 
-decodeCharacter : Decode.Decoder Character
+decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
-    Decode.map5 Character
+    Decode.map5 Models.Character
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "player_name" Decode.string)
@@ -97,9 +67,9 @@ decodeCharacter =
         (Decode.field "alignment" decodeAlignment)
 
 
-decodeAbilityScores : Decode.Decoder AbilityScoreSet
+decodeAbilityScores : Decode.Decoder Models.AbilityScoreSet
 decodeAbilityScores =
-    Decode.map6 AbilityScoreSet
+    Decode.map6 Models.AbilityScoreSet
         (Decode.field "str" Decode.int)
         (Decode.field "dex" Decode.int)
         (Decode.field "con" Decode.int)
@@ -108,14 +78,14 @@ decodeAbilityScores =
         (Decode.field "cha" Decode.int)
 
 
-decodeAlignment : Decode.Decoder Alignment
+decodeAlignment : Decode.Decoder Models.Alignment
 decodeAlignment =
-    Decode.map2 Alignment
+    Decode.map2 Models.Alignment
         (Decode.field "morality" Decode.string)
         (Decode.field "order" Decode.string)
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : Models.Model -> Sub Msg
 subscriptions model =
     Sub.none
 
@@ -188,13 +158,13 @@ view model =
             [ Html.text "Pathfinder Character Sheet" ]
         , div [ content ]
             [ case model of
-                MCharacter c ->
+                Models.MCharacter c ->
                     innerPage c
 
-                MError e ->
+                Models.MError e ->
                     div [ h1 ] [ Html.text e ]
 
-                MNotLoaded ->
+                Models.MNotLoaded ->
                     div [ h1 ] [ Html.text "Loading" ]
             ]
         ]

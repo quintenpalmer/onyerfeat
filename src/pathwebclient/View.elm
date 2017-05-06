@@ -38,12 +38,6 @@ content =
         ]
 
 
-p =
-    cssStyle
-        [ Css.padding <| Css.px 10
-        ]
-
-
 view : Models.Model -> Html.Html Common.Msg
 view model =
     div
@@ -72,10 +66,10 @@ innerPage : Models.Character -> Html.Html Common.Msg
 innerPage character =
     div []
         [ Html.h1 [] [ Html.text "Welcome!" ]
-        , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
+        , Html.p [] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
         , Html.div []
-            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
-            , Html.div [ p ] [ Html.text <| "Player name: " ++ character.playerName ]
+            [ Html.p [] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
+            , Html.p [] [ Html.text <| "Player name: " ++ character.playerName ]
             , Html.table [ Attr.class "table table-striped table-bordered" ]
                 [ Html.thead []
                     [ Html.tr []

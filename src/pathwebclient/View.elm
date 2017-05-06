@@ -110,21 +110,17 @@ scoreTableRow name val emoji =
             calcAbilityModifier val
     in
         Html.tr []
-            [ htmlTdStr name
-            , htmlTdStr (toString val)
-            , htmlTdStr (toString <| mod)
-            , htmlTdStr <|
-                if mod >= 0 then
-                    String.repeat (mod) emoji
-                else
-                    "➖" ++ String.repeat (-mod) emoji
+            [ Html.td [] [ Html.text name ]
+            , Html.td [] [ Html.text (toString val) ]
+            , Html.td [] [ Html.text (toString <| mod) ]
+            , Html.td []
+                [ Html.text <|
+                    if mod >= 0 then
+                        String.repeat (mod) emoji
+                    else
+                        "➖" ++ String.repeat (-mod) emoji
+                ]
             ]
-
-
-htmlTdStr : String -> Html.Html Common.Msg
-htmlTdStr s =
-    Html.td []
-        [ Html.text s ]
 
 
 calcAbilityModifier : Int -> Int

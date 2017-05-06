@@ -205,7 +205,6 @@ capitalize string =
             String.cons (Char.toUpper head) tail
 
 
-scoreTableRow : String -> Int -> String -> Html.Html Msg
 scoreTableRow name val emoji =
     let
         mod =

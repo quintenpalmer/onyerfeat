@@ -4,6 +4,7 @@ import Css
 import Html exposing (div)
 import Html.Attributes as Attr
 import Char
+import Common
 import Models
 
 
@@ -65,6 +66,7 @@ tableData =
         ]
 
 
+view : Models.Model -> Html.Html Common.Msg
 view model =
     div
         [ fullPage
@@ -87,6 +89,7 @@ view model =
         ]
 
 
+innerPage : Models.Character -> Html.Html Common.Msg
 innerPage character =
     div []
         [ Html.div [ h1 ] [ Html.text "Welcome!" ]
@@ -122,6 +125,7 @@ capitalize string =
             String.cons (Char.toUpper head) tail
 
 
+scoreTableRow : String -> Int -> String -> Html.Html Common.Msg
 scoreTableRow name val emoji =
     let
         mod =
@@ -139,6 +143,7 @@ scoreTableRow name val emoji =
             ]
 
 
+htmlTdStr : String -> Html.Html Common.Msg
 htmlTdStr s =
     Html.td [ tableData ]
         [ Html.text s ]

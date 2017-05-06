@@ -14,55 +14,15 @@ cssStyle =
 
 fullPage =
     cssStyle
-        [ Css.width <| Css.pct 100
-        , Css.height <| Css.pct 100
-        , Css.fontFamilies [ "Inconsolata" ]
+        [ Css.fontFamilies [ "Inconsolata" ]
         ]
 
 
 header =
     cssStyle
-        [ Css.width <| Css.pct 100
-        , Css.height <| Css.px 20
-        , Css.padding <| Css.px 20
+        [ Css.padding <| Css.px 20
         , Css.color <| Css.rgb 250 250 250
         , Css.backgroundColor <| Css.rgb 70 70 70
-        ]
-
-
-content =
-    cssStyle
-        [ Css.textAlign Css.center
-        , Css.width <| Css.pct 80
-        , Css.height <| Css.pct 100
-        , Css.margin Css.auto
-        ]
-
-
-p =
-    cssStyle
-        [ Css.padding <| Css.px 10
-        ]
-
-
-h1 =
-    cssStyle
-        [ Css.padding <| Css.px 10
-        , Css.fontSize Css.xLarge
-        ]
-
-
-table =
-    cssStyle
-        [ Css.width (Css.px 350)
-        , Css.border (Css.px 2)
-        ]
-
-
-tableData =
-    cssStyle
-        [ Css.border3 (Css.px 1) Css.solid (Css.rgb 200 200 200)
-        , Css.padding (Css.px 3)
         ]
 
 
@@ -71,20 +31,21 @@ view model =
     div
         [ fullPage
         ]
-        [ div
+        [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "assets/bootstrap/css/bootstrap.min.css" ] []
+        , div
             [ header
             ]
             [ Html.text "Pathfinder Character Sheet" ]
-        , div [ content ]
+        , div [ Attr.class "container" ]
             [ case model of
                 Models.MCharacter c ->
                     innerPage c
 
                 Models.MError e ->
-                    div [ h1 ] [ Html.text e ]
+                    Html.h1 [] [ Html.text e ]
 
                 Models.MNotLoaded ->
-                    div [ h1 ] [ Html.text "Loading" ]
+                    Html.h1 [] [ Html.text "Loading" ]
             ]
         ]
 
@@ -92,24 +53,41 @@ view model =
 innerPage : Models.Character -> Html.Html Common.Msg
 innerPage character =
     div []
-        [ Html.div [ h1 ] [ Html.text "Welcome!" ]
-        , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
-        , Html.div []
-            [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
-            , Html.div [ p ] [ Html.text <| "Player name: " ++ character.playerName ]
-            , Html.table [ table ]
-                [ Html.tr []
-                    [ Html.th [] [ Html.text "Ability Name" ]
-                    , Html.th [] [ Html.text "Score" ]
-                    , Html.th [] [ Html.text "Modifier" ]
-                    , Html.th [] [ Html.text "EModji" ]
+        [ Html.h1 [ Attr.class "text-center" ] [ Html.text "Welcome!" ]
+        , Html.p [ Attr.class "text-center" ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
+        , Html.div [ Attr.class "row" ]
+            [ Html.div [ Attr.class "col-md-4" ]
+                [ Html.h1 [] [ Html.text "CHARACTER SHEET" ] ]
+            , Html.div [ Attr.class "col-md-2" ] []
+            , Html.div [ Attr.class "col-md-3" ]
+                [ Html.u [] [ Html.text character.playerName ]
+                , Html.p [] [ Html.small [] [ Html.text "Player name" ] ]
+                ]
+            , Html.div [ Attr.class "col-md-3" ]
+                [ Html.u [] [ Html.text <| capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
+                , Html.p [] [ Html.small [] [ Html.text "Alignment" ] ]
+                ]
+            ]
+        , Html.div [ Attr.class "row" ]
+            [ Html.div [ Attr.class "col-md-5" ]
+                [ Html.table [ Attr.class "table table-striped table-bordered" ]
+                    [ Html.thead []
+                        [ Html.tr []
+                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                            ]
+                        ]
+                    , Html.tbody [ Attr.class "text-center" ]
+                        [ scoreTableRow "STR" character.abilityScores.str "🐂"
+                        , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                        , scoreTableRow "CON" character.abilityScores.con "🐎"
+                        , scoreTableRow "INT" character.abilityScores.int "\x1F991"
+                        , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                        , scoreTableRow "CHA" character.abilityScores.cha "🎭"
+                        ]
                     ]
-                , scoreTableRow "STR" character.abilityScores.str "🐂"
-                , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                , scoreTableRow "CON" character.abilityScores.con "🐎"
-                , scoreTableRow "INT" character.abilityScores.int "\x1F991"
-                , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                , scoreTableRow "CHA" character.abilityScores.cha "🎭"
                 ]
             ]
         ]
@@ -132,21 +110,17 @@ scoreTableRow name val emoji =
             calcAbilityModifier val
     in
         Html.tr []
-            [ htmlTdStr name
-            , htmlTdStr (toString val)
-            , htmlTdStr (toString <| mod)
-            , htmlTdStr <|
-                if mod >= 0 then
-                    String.repeat (mod) emoji
-                else
-                    "➖" ++ String.repeat (-mod) emoji
+            [ Html.td [] [ Html.b [] [ Html.text name ] ]
+            , Html.td [] [ Html.text (toString val) ]
+            , Html.td [] [ Html.b [] [ Html.text (toString mod) ] ]
+            , Html.td []
+                [ Html.text <|
+                    if mod >= 0 then
+                        String.repeat (mod) emoji
+                    else
+                        "➖" ++ String.repeat (-mod) emoji
+                ]
             ]
-
-
-htmlTdStr : String -> Html.Html Common.Msg
-htmlTdStr s =
-    Html.td [ tableData ]
-        [ Html.text s ]
 
 
 calcAbilityModifier : Int -> Int

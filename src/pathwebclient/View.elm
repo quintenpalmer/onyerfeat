@@ -69,22 +69,24 @@ innerPage character =
                 ]
             ]
         , Html.div [ Attr.class "row" ]
-            [ Html.table [ Attr.class "table table-striped table-bordered" ]
-                [ Html.thead []
-                    [ Html.tr []
-                        [ Html.th [] [ Html.text "Ability Name" ]
-                        , Html.th [] [ Html.text "Score" ]
-                        , Html.th [] [ Html.text "Modifier" ]
-                        , Html.th [] [ Html.text "EModji" ]
+            [ Html.div [ Attr.class "col-md-5" ]
+                [ Html.table [ Attr.class "table table-striped table-bordered" ]
+                    [ Html.thead []
+                        [ Html.tr []
+                            [ Html.th [] [ Html.text "Ability Name" ]
+                            , Html.th [] [ Html.text "Score" ]
+                            , Html.th [] [ Html.text "Modifier" ]
+                            , Html.th [] [ Html.text "EModji" ]
+                            ]
                         ]
-                    ]
-                , Html.tbody []
-                    [ scoreTableRow "STR" character.abilityScores.str "🐂"
-                    , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                    , scoreTableRow "CON" character.abilityScores.con "🐎"
-                    , scoreTableRow "INT" character.abilityScores.int "\x1F991"
-                    , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                    , scoreTableRow "CHA" character.abilityScores.cha "🎭"
+                    , Html.tbody []
+                        [ scoreTableRow "STR" character.abilityScores.str "🐂"
+                        , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                        , scoreTableRow "CON" character.abilityScores.con "🐎"
+                        , scoreTableRow "INT" character.abilityScores.int "\x1F991"
+                        , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                        , scoreTableRow "CHA" character.abilityScores.cha "🎭"
+                        ]
                     ]
                 ]
             ]

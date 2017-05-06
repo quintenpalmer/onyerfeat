@@ -51,20 +51,6 @@ h1 =
         ]
 
 
-table =
-    cssStyle
-        [ Css.width (Css.px 350)
-        , Css.border (Css.px 2)
-        ]
-
-
-tableData =
-    cssStyle
-        [ Css.border3 (Css.px 1) Css.solid (Css.rgb 200 200 200)
-        , Css.padding (Css.px 3)
-        ]
-
-
 view : Models.Model -> Html.Html Common.Msg
 view model =
     div
@@ -97,19 +83,23 @@ innerPage character =
         , Html.div []
             [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
             , Html.div [ p ] [ Html.text <| "Player name: " ++ character.playerName ]
-            , Html.table [ table ]
-                [ Html.tr []
-                    [ Html.th [] [ Html.text "Ability Name" ]
-                    , Html.th [] [ Html.text "Score" ]
-                    , Html.th [] [ Html.text "Modifier" ]
-                    , Html.th [] [ Html.text "EModji" ]
+            , Html.table [ Attr.class "table table-striped table-bordered" ]
+                [ Html.thead []
+                    [ Html.tr []
+                        [ Html.th [] [ Html.text "Ability Name" ]
+                        , Html.th [] [ Html.text "Score" ]
+                        , Html.th [] [ Html.text "Modifier" ]
+                        , Html.th [] [ Html.text "EModji" ]
+                        ]
                     ]
-                , scoreTableRow "STR" character.abilityScores.str "🐂"
-                , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                , scoreTableRow "CON" character.abilityScores.con "🐎"
-                , scoreTableRow "INT" character.abilityScores.int "\x1F991"
-                , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                , scoreTableRow "CHA" character.abilityScores.cha "🎭"
+                , Html.tbody []
+                    [ scoreTableRow "STR" character.abilityScores.str "🐂"
+                    , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                    , scoreTableRow "CON" character.abilityScores.con "🐎"
+                    , scoreTableRow "INT" character.abilityScores.int "\x1F991"
+                    , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                    , scoreTableRow "CHA" character.abilityScores.cha "🎭"
+                    ]
                 ]
             ]
         ]
@@ -145,7 +135,7 @@ scoreTableRow name val emoji =
 
 htmlTdStr : String -> Html.Html Common.Msg
 htmlTdStr s =
-    Html.td [ tableData ]
+    Html.td []
         [ Html.text s ]
 
 

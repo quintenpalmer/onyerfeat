@@ -20,8 +20,7 @@ fullPage =
 
 header =
     cssStyle
-        [ Css.width <| Css.pct 100
-        , Css.padding <| Css.px 20
+        [ Css.padding <| Css.px 20
         , Css.color <| Css.rgb 250 250 250
         , Css.backgroundColor <| Css.rgb 70 70 70
         ]

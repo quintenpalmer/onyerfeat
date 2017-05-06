@@ -44,13 +44,6 @@ p =
         ]
 
 
-h1 =
-    cssStyle
-        [ Css.padding <| Css.px 10
-        , Css.fontSize Css.xLarge
-        ]
-
-
 view : Models.Model -> Html.Html Common.Msg
 view model =
     div
@@ -67,10 +60,10 @@ view model =
                     innerPage c
 
                 Models.MError e ->
-                    div [ h1 ] [ Html.text e ]
+                    Html.h1 [] [ Html.text e ]
 
                 Models.MNotLoaded ->
-                    div [ h1 ] [ Html.text "Loading" ]
+                    Html.h1 [] [ Html.text "Loading" ]
             ]
         ]
 
@@ -78,7 +71,7 @@ view model =
 innerPage : Models.Character -> Html.Html Common.Msg
 innerPage character =
     div []
-        [ Html.div [ h1 ] [ Html.text "Welcome!" ]
+        [ Html.h1 [] [ Html.text "Welcome!" ]
         , Html.div [ p ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
         , Html.div []
             [ Html.div [ p ] [ Html.text <| "Alignment: " ++ capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]

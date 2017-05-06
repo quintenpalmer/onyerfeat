@@ -23,7 +23,6 @@ fullPage =
 header =
     cssStyle
         [ Css.width <| Css.pct 100
-        , Css.height <| Css.px 20
         , Css.padding <| Css.px 20
         , Css.color <| Css.rgb 250 250 250
         , Css.backgroundColor <| Css.rgb 70 70 70
@@ -71,7 +70,8 @@ view model =
     div
         [ fullPage
         ]
-        [ div
+        [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "assets/bootstrap/css/bootstrap.min.css" ] []
+        , div
             [ header
             ]
             [ Html.text "Pathfinder Character Sheet" ]

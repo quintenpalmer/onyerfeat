@@ -73,13 +73,13 @@ innerPage character =
                 [ Html.table [ Attr.class "table table-striped table-bordered" ]
                     [ Html.thead []
                         [ Html.tr []
-                            [ Html.th [] [ Html.text "Ability Name" ]
-                            , Html.th [] [ Html.text "Score" ]
-                            , Html.th [] [ Html.text "Modifier" ]
-                            , Html.th [] [ Html.text "EModji" ]
+                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
                             ]
                         ]
-                    , Html.tbody []
+                    , Html.tbody [ Attr.class "text-center" ]
                         [ scoreTableRow "STR" character.abilityScores.str "🐂"
                         , scoreTableRow "DEX" character.abilityScores.dex "🐆"
                         , scoreTableRow "CON" character.abilityScores.con "🐎"
@@ -110,9 +110,9 @@ scoreTableRow name val emoji =
             calcAbilityModifier val
     in
         Html.tr []
-            [ Html.td [] [ Html.text name ]
+            [ Html.td [] [ Html.b [] [ Html.text name ] ]
             , Html.td [] [ Html.text (toString val) ]
-            , Html.td [] [ Html.text (toString <| mod) ]
+            , Html.td [] [ Html.b [] [ Html.text (toString mod) ] ]
             , Html.td []
                 [ Html.text <|
                     if mod >= 0 then

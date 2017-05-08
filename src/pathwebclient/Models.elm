@@ -1,4 +1,4 @@
-module Models exposing (Model(..), Character, AbilityScoreSet, Alignment)
+module Models exposing (Model(..), Character, AbilityScoreSet, Alignment, MetaInformation)
 
 
 type Model
@@ -13,6 +13,7 @@ type alias Character =
     , playerName : String
     , abilityScores : AbilityScoreSet
     , alignment : Alignment
+    , metaInformation : MetaInformation
     }
 
 
@@ -29,4 +30,9 @@ type alias AbilityScoreSet =
 type alias Alignment =
     { morality : String
     , order : String
+    }
+
+
+type alias MetaInformation =
+    { class : String
     }

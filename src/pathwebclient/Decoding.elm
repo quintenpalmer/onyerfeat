@@ -11,12 +11,13 @@ decodeCharacterResp =
 
 decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
-    Decode.map5 Models.Character
+    Decode.map6 Models.Character
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "player_name" Decode.string)
         (Decode.field "ability_scores" decodeAbilityScores)
         (Decode.field "alignment" decodeAlignment)
+        (Decode.field "meta_information" decodeMetaInformation)
 
 
 decodeAbilityScores : Decode.Decoder Models.AbilityScoreSet
@@ -35,3 +36,9 @@ decodeAlignment =
     Decode.map2 Models.Alignment
         (Decode.field "morality" Decode.string)
         (Decode.field "order" Decode.string)
+
+
+decodeMetaInformation : Decode.Decoder Models.MetaInformation
+decodeMetaInformation =
+    Decode.map Models.MetaInformation
+        (Decode.field "class" Decode.string)

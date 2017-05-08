@@ -37,6 +37,7 @@ impl Datastore {
                 order: c.alignment_order,
             },
             player_name: c.player_name,
+            meta_information: models::MetaInformation { class: c.class },
         });
     }
 }

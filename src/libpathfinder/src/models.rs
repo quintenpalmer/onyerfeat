@@ -5,6 +5,7 @@ pub struct Character {
     pub ability_scores: AbilityScoreSet,
     pub alignment: Alignment,
     pub player_name: String,
+    pub meta_information: MetaInformation,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -37,4 +38,9 @@ pub struct AbilityScoreSet {
     pub int: i32,
     pub wis: i32,
     pub cha: i32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct MetaInformation {
+    pub class: String,
 }

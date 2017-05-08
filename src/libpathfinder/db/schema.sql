@@ -82,7 +82,8 @@ CREATE TABLE characters (
     ability_score_set_id integer NOT NULL,
     alignment_order text NOT NULL,
     alignment_morality text NOT NULL,
-    player_name text NOT NULL
+    player_name text NOT NULL,
+    class text NOT NULL
 );
 
 

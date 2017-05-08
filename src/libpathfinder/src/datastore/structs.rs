@@ -16,6 +16,7 @@ pub struct Character {
     pub alignment_morality: models::AlignmentMorality,
     pub ability_score_set_id: i32,
     pub player_name: String,
+    pub class: String,
 }
 
 #[derive(FromDB)]

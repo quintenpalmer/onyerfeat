@@ -17,6 +17,7 @@ pub struct Character {
     pub ability_score_set_id: i32,
     pub player_name: String,
     pub class: String,
+    pub deity: Option<String>,
 }
 
 #[derive(FromDB)]

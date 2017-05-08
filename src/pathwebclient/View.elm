@@ -77,6 +77,19 @@ innerPage character =
                 [ Html.u [] [ Html.text <| capitalize character.metaInformation.class ]
                 , Html.p [] [ Html.small [] [ Html.text "Class" ] ]
                 ]
+            , Html.div [ Attr.class "col-md-2" ]
+                [ Html.u []
+                    [ Html.text <|
+                        capitalize <|
+                            case character.metaInformation.deity of
+                                Just s ->
+                                    s
+
+                                Nothing ->
+                                    "_"
+                    ]
+                , Html.p [] [ Html.small [] [ Html.text "Deity" ] ]
+                ]
             ]
         , Html.div [ Attr.class "row" ]
             [ Html.div [ Attr.class "col-md-5" ]

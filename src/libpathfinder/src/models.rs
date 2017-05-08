@@ -43,4 +43,5 @@ pub struct AbilityScoreSet {
 #[derive(Serialize, Deserialize)]
 pub struct MetaInformation {
     pub class: String,
+    pub deity: Option<String>,
 }

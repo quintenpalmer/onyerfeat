@@ -78,6 +78,10 @@ innerPage character =
                 , Html.p [] [ Html.small [] [ Html.text "Class" ] ]
                 ]
             , Html.div [ Attr.class "col-md-2" ]
+                [ Html.u [] [ Html.text <| capitalize character.metaInformation.race ]
+                , Html.p [] [ Html.small [] [ Html.text "Race" ] ]
+                ]
+            , Html.div [ Attr.class "col-md-2" ]
                 [ Html.u []
                     [ Html.text <|
                         capitalize <|

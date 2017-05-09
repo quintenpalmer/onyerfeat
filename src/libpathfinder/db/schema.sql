@@ -84,7 +84,8 @@ CREATE TABLE characters (
     alignment_morality text NOT NULL,
     player_name text NOT NULL,
     class text NOT NULL,
-    deity text
+    deity text,
+    race text NOT NULL
 );
 
 

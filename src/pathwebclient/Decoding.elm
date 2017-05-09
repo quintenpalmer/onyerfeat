@@ -40,6 +40,7 @@ decodeAlignment =
 
 decodeMetaInformation : Decode.Decoder Models.MetaInformation
 decodeMetaInformation =
-    Decode.map2 Models.MetaInformation
+    Decode.map3 Models.MetaInformation
         (Decode.field "class" Decode.string)
+        (Decode.field "race" Decode.string)
         (Decode.field "deity" <| Decode.nullable Decode.string)

@@ -35,5 +35,6 @@ type alias Alignment =
 
 type alias MetaInformation =
     { class : String
+    , race : String
     , deity : Maybe String
     }

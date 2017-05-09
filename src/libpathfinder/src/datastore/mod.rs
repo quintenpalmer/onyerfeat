@@ -39,6 +39,7 @@ impl Datastore {
             player_name: c.player_name,
             meta_information: models::MetaInformation {
                 class: c.class,
+                race: c.race,
                 deity: c.deity,
             },
         });

@@ -40,6 +40,7 @@ impl Datastore {
             meta_information: models::MetaInformation {
                 class: c.class,
                 race: c.race,
+                age: c.age,
                 deity: c.deity,
             },
         });

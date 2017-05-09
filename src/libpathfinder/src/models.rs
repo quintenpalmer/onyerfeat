@@ -45,4 +45,5 @@ pub struct MetaInformation {
     pub class: String,
     pub race: String,
     pub deity: Option<String>,
+    pub age: i32,
 }

@@ -36,8 +36,8 @@ SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 -- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY characters (id, name, ability_score_set_id, alignment_order, alignment_morality, player_name, class, deity, race) FROM stdin;
-1	IDRIGOTH	1	neutral	good	Quinten	fighter	\N	dwarf
+COPY characters (id, name, ability_score_set_id, alignment_order, alignment_morality, player_name, class, deity, race, age) FROM stdin;
+1	IDRIGOTH	1	neutral	good	Quinten	fighter	\N	dwarf	128
 \.
 
 

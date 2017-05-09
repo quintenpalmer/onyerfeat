@@ -85,7 +85,8 @@ CREATE TABLE characters (
     player_name text NOT NULL,
     class text NOT NULL,
     deity text,
-    race text NOT NULL
+    race text NOT NULL,
+    age integer NOT NULL
 );
 
 

@@ -40,8 +40,43 @@ decodeAlignment =
 
 decodeMetaInformation : Decode.Decoder Models.MetaInformation
 decodeMetaInformation =
-    Decode.map4 Models.MetaInformation
+    Decode.map5 Models.MetaInformation
         (Decode.field "class" Decode.string)
         (Decode.field "race" Decode.string)
         (Decode.field "deity" <| Decode.nullable Decode.string)
         (Decode.field "age" Decode.int)
+        (Decode.field "size" Decode.string |> Decode.andThen decodeSize)
+
+
+decodeSize : String -> Decode.Decoder Models.Size
+decodeSize s =
+    case s of
+        "colossal" ->
+            Decode.succeed Models.Colossal
+
+        "gargantuan" ->
+            Decode.succeed Models.Gargantuan
+
+        "huge" ->
+            Decode.succeed Models.Huge
+
+        "large" ->
+            Decode.succeed Models.Large
+
+        "medium" ->
+            Decode.succeed Models.Medium
+
+        "small" ->
+            Decode.succeed Models.Small
+
+        "tiny" ->
+            Decode.succeed Models.Tiny
+
+        "diminutive" ->
+            Decode.succeed Models.Diminutive
+
+        "fine" ->
+            Decode.succeed Models.Fine
+
+        _ ->
+            Decode.fail "could not parse size"

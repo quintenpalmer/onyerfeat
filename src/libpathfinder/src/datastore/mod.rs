@@ -42,6 +42,7 @@ impl Datastore {
                 race: c.race,
                 age: c.age,
                 deity: c.deity,
+                size: c.size,
             },
         });
     }

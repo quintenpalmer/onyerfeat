@@ -20,6 +20,7 @@ pub struct Character {
     pub race: String,
     pub deity: Option<String>,
     pub age: i32,
+    pub size: models::Size,
 }
 
 #[derive(FromDB)]
@@ -84,6 +85,38 @@ impl postgres::types::FromSql for models::AlignmentMorality {
         }
     }
 }
+
+impl postgres::types::FromSql for models::Size {
+    fn from_sql(ty: &postgres::types::Type,
+                raw: &[u8])
+                -> Result<Self, Box<stderror::Error + Send + Sync>> {
+        match ty {
+            &postgres::types::Type::Text => {
+                match try!(str::from_utf8(raw)) {
+                    "colossal" => Ok(models::Size::Colossal),
+                    "gargantuan" => Ok(models::Size::Gargantuan),
+                    "huge" => Ok(models::Size::Huge),
+                    "large" => Ok(models::Size::Large),
+                    "medium" => Ok(models::Size::Medium),
+                    "small" => Ok(models::Size::Small),
+                    "tiny" => Ok(models::Size::Tiny),
+                    "diminutive" => Ok(models::Size::Diminutive),
+                    "fine" => Ok(models::Size::Fine),
+                    _ => Err(Box::new(ParseError {})),
+                }
+            }
+            _ => Err(Box::new(ParseError {})),
+        }
+    }
+
+    fn accepts(ty: &postgres::types::Type) -> bool {
+        match ty {
+            &postgres::types::Type::Text => true,
+            _ => false,
+        }
+    }
+}
+
 
 #[derive(Debug)]
 struct ParseError {}

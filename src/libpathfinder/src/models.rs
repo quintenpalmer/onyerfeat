@@ -31,6 +31,21 @@ pub enum AlignmentMorality {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Size {
+    Colossal,
+    Gargantuan,
+    Huge,
+    Large,
+    Medium,
+    Small,
+    Tiny,
+    Diminutive,
+    Fine,
+}
+
+
+#[derive(Serialize, Deserialize)]
 pub struct AbilityScoreSet {
     pub str: i32,
     pub dex: i32,
@@ -46,4 +61,5 @@ pub struct MetaInformation {
     pub race: String,
     pub deity: Option<String>,
     pub age: i32,
+    pub size: Size,
 }

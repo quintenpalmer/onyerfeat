@@ -86,7 +86,8 @@ CREATE TABLE characters (
     class text NOT NULL,
     deity text,
     race text NOT NULL,
-    age integer NOT NULL
+    age integer NOT NULL,
+    size text NOT NULL
 );
 
 

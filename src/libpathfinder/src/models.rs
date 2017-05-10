@@ -6,6 +6,14 @@ pub struct Character {
     pub alignment: Alignment,
     pub player_name: String,
     pub meta_information: MetaInformation,
+    pub combat_numbers: CombatNumbers,
+}
+
+// Combers or Barbers or Numbats
+#[derive(Serialize, Deserialize)]
+pub struct CombatNumbers {
+    pub max_hit_points: i32,
+    pub current_hit_points: i32,
 }
 
 #[derive(Serialize, Deserialize)]

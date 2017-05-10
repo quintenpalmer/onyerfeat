@@ -28,6 +28,8 @@ pub struct Creature {
     pub deity: Option<String>,
     pub age: i32,
     pub size: models::Size,
+    pub max_hit_points: i32,
+    pub current_hit_points: i32,
 }
 
 #[derive(FromDB)]

@@ -36,8 +36,8 @@ SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8
 \.
 
 

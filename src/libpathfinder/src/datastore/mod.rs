@@ -46,6 +46,10 @@ impl Datastore {
                 deity: creature.deity,
                 size: creature.size,
             },
+            combat_numbers: models::CombatNumbers {
+                max_hit_points: creature.max_hit_points,
+                current_hit_points: creature.current_hit_points,
+            },
         });
     }
 }

@@ -120,7 +120,9 @@ CREATE TABLE creatures (
     race text NOT NULL,
     deity text,
     age integer NOT NULL,
-    size text NOT NULL
+    size text NOT NULL,
+    max_hit_points integer NOT NULL,
+    current_hit_points integer NOT NULL
 );
 
 

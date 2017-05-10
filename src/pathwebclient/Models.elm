@@ -1,4 +1,4 @@
-module Models exposing (Model(..), Character, AbilityScoreSet, Alignment)
+module Models exposing (Model(..), Character, AbilityScoreSet, Alignment, MetaInformation, Size(..))
 
 
 type Model
@@ -13,6 +13,7 @@ type alias Character =
     , playerName : String
     , abilityScores : AbilityScoreSet
     , alignment : Alignment
+    , metaInformation : MetaInformation
     }
 
 
@@ -29,4 +30,25 @@ type alias AbilityScoreSet =
 type alias Alignment =
     { morality : String
     , order : String
+    }
+
+
+type Size
+    = Colossal
+    | Gargantuan
+    | Huge
+    | Large
+    | Medium
+    | Small
+    | Tiny
+    | Diminutive
+    | Fine
+
+
+type alias MetaInformation =
+    { class : String
+    , race : String
+    , deity : Maybe String
+    , age : Int
+    , size : Size
     }

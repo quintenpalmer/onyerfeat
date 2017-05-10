@@ -5,6 +5,7 @@ pub struct Character {
     pub ability_scores: AbilityScoreSet,
     pub alignment: Alignment,
     pub player_name: String,
+    pub meta_information: MetaInformation,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -30,6 +31,21 @@ pub enum AlignmentMorality {
 }
 
 #[derive(Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Size {
+    Colossal,
+    Gargantuan,
+    Huge,
+    Large,
+    Medium,
+    Small,
+    Tiny,
+    Diminutive,
+    Fine,
+}
+
+
+#[derive(Serialize, Deserialize)]
 pub struct AbilityScoreSet {
     pub str: i32,
     pub dex: i32,
@@ -37,4 +53,13 @@ pub struct AbilityScoreSet {
     pub int: i32,
     pub wis: i32,
     pub cha: i32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct MetaInformation {
+    pub class: String,
+    pub race: String,
+    pub deity: Option<String>,
+    pub age: i32,
+    pub size: Size,
 }

@@ -1,4 +1,4 @@
-module Models exposing (Model(..), Character, AbilityScoreSet, Alignment, MetaInformation, Size(..), CombatNumbers)
+module Models exposing (Model(..), Character, AbilityScoreSet, Ability, Alignment, MetaInformation, Size(..), CombatNumbers)
 
 
 type Model
@@ -25,12 +25,18 @@ type alias CombatNumbers =
 
 
 type alias AbilityScoreSet =
-    { str : Int
-    , dex : Int
-    , con : Int
-    , int : Int
-    , wis : Int
-    , cha : Int
+    { str : Ability
+    , dex : Ability
+    , con : Ability
+    , int : Ability
+    , wis : Ability
+    , cha : Ability
+    }
+
+
+type alias Ability =
+    { score : Int
+    , modifier : Int
     }
 
 

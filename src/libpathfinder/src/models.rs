@@ -3,6 +3,7 @@ pub struct Character {
     pub id: i32,
     pub name: String,
     pub ability_scores: AbilityScoreSet,
+    pub ability_score_info: AbilityScoreInfo,
     pub alignment: Alignment,
     pub player_name: String,
     pub meta_information: MetaInformation,
@@ -61,6 +62,22 @@ pub struct AbilityScoreSet {
     pub int: i32,
     pub wis: i32,
     pub cha: i32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct AbilityScoreInfo {
+    pub str: ScoreAndMofidier,
+    pub dex: ScoreAndMofidier,
+    pub con: ScoreAndMofidier,
+    pub int: ScoreAndMofidier,
+    pub wis: ScoreAndMofidier,
+    pub cha: ScoreAndMofidier,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ScoreAndMofidier {
+    pub score: i32,
+    pub modifier: i32,
 }
 
 #[derive(Serialize, Deserialize)]

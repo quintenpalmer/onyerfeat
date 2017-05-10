@@ -34,6 +34,32 @@ impl Datastore {
                 wis: abs.wis,
                 cha: abs.cha,
             },
+            ability_score_info: models::AbilityScoreInfo {
+                str: models::ScoreAndMofidier {
+                    score: abs.str,
+                    modifier: calc_ability_modifier(abs.str),
+                },
+                dex: models::ScoreAndMofidier {
+                    score: abs.dex,
+                    modifier: calc_ability_modifier(abs.dex),
+                },
+                con: models::ScoreAndMofidier {
+                    score: abs.con,
+                    modifier: calc_ability_modifier(abs.con),
+                },
+                int: models::ScoreAndMofidier {
+                    score: abs.int,
+                    modifier: calc_ability_modifier(abs.int),
+                },
+                wis: models::ScoreAndMofidier {
+                    score: abs.wis,
+                    modifier: calc_ability_modifier(abs.wis),
+                },
+                cha: models::ScoreAndMofidier {
+                    score: abs.cha,
+                    modifier: calc_ability_modifier(abs.cha),
+                },
+            },
             alignment: models::Alignment {
                 morality: creature.alignment_morality,
                 order: creature.alignment_order,
@@ -52,4 +78,15 @@ impl Datastore {
             },
         });
     }
+}
+
+fn calc_ability_modifier(i: i32) -> i32 {
+    let rounded = if i % 2 == 0 {
+        i
+    } else if i > 0 {
+        i - 1
+    } else {
+        i + 1
+    };
+    return (rounded - 10) / 2;
 }

@@ -15,7 +15,7 @@ decodeCharacter =
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "player_name" Decode.string)
-        (Decode.field "ability_scores" decodeAbilityScores)
+        (Decode.field "ability_score_info" decodeAbilityScores)
         (Decode.field "alignment" decodeAlignment)
         (Decode.field "meta_information" decodeMetaInformation)
         (Decode.field "combat_numbers" decodeCombatNumbers)
@@ -31,12 +31,19 @@ decodeCombatNumbers =
 decodeAbilityScores : Decode.Decoder Models.AbilityScoreSet
 decodeAbilityScores =
     Decode.map6 Models.AbilityScoreSet
-        (Decode.field "str" Decode.int)
-        (Decode.field "dex" Decode.int)
-        (Decode.field "con" Decode.int)
-        (Decode.field "int" Decode.int)
-        (Decode.field "wis" Decode.int)
-        (Decode.field "cha" Decode.int)
+        (Decode.field "str" decodeAbility)
+        (Decode.field "dex" decodeAbility)
+        (Decode.field "con" decodeAbility)
+        (Decode.field "int" decodeAbility)
+        (Decode.field "wis" decodeAbility)
+        (Decode.field "cha" decodeAbility)
+
+
+decodeAbility : Decode.Decoder Models.Ability
+decodeAbility =
+    Decode.map2 Models.Ability
+        (Decode.field "score" Decode.int)
+        (Decode.field "modifier" Decode.int)
 
 
 decodeAlignment : Decode.Decoder Models.Alignment

@@ -129,9 +129,9 @@ innerPage character =
                 ]
             , Html.div [ Attr.class "col-md-1" ]
                 [ Html.b [] [ Html.text "Hit Points" ]
-                , Html.input [ Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
+                , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
                 , Html.text "Current"
-                , Html.input [ Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
+                , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
                 , Html.text "Max"
                 ]
             ]

@@ -11,16 +11,25 @@ use libpathfinder_common::error;
 #[from_db(table_name = "characters")]
 pub struct Character {
     pub id: i32,
+    pub player_name: String,
+    pub class: String,
+    pub creature_id: i32,
+}
+
+#[derive(FromDB)]
+#[from_db(table_name = "creatures")]
+pub struct Creature {
+    pub id: i32,
     pub name: String,
     pub alignment_order: models::AlignmentOrder,
     pub alignment_morality: models::AlignmentMorality,
     pub ability_score_set_id: i32,
-    pub player_name: String,
-    pub class: String,
     pub race: String,
     pub deity: Option<String>,
     pub age: i32,
     pub size: models::Size,
+    pub max_hit_points: i32,
+    pub current_hit_points: i32,
 }
 
 #[derive(FromDB)]

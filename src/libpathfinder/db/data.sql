@@ -33,11 +33,20 @@ SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 
 
 --
+-- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8
+\.
+
+
+--
 -- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY characters (id, name, ability_score_set_id, alignment_order, alignment_morality, player_name, class, deity, race, age, size) FROM stdin;
-1	IDRIGOTH	1	neutral	good	Quinten	fighter	\N	dwarf	128	medium
+COPY characters (id, player_name, class, creature_id) FROM stdin;
+1	Quinten	fighter	1
 \.
 
 
@@ -46,6 +55,13 @@ COPY characters (id, name, ability_score_set_id, alignment_order, alignment_mora
 --
 
 SELECT pg_catalog.setval('characters_id_seq', 3, true);
+
+
+--
+-- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 
 
 --

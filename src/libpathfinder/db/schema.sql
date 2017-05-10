@@ -78,16 +78,9 @@ ALTER SEQUENCE ability_score_sets_id_seq OWNED BY ability_score_sets.id;
 
 CREATE TABLE characters (
     id integer NOT NULL,
-    name text NOT NULL,
-    ability_score_set_id integer NOT NULL,
-    alignment_order text NOT NULL,
-    alignment_morality text NOT NULL,
     player_name text NOT NULL,
     class text NOT NULL,
-    deity text,
-    race text NOT NULL,
-    age integer NOT NULL,
-    size text NOT NULL
+    creature_id integer NOT NULL
 );
 
 
@@ -115,6 +108,48 @@ ALTER SEQUENCE characters_id_seq OWNED BY characters.id;
 
 
 --
+-- Name: creatures; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE creatures (
+    id integer NOT NULL,
+    name text NOT NULL,
+    ability_score_set_id integer NOT NULL,
+    alignment_order text NOT NULL,
+    alignment_morality text NOT NULL,
+    race text NOT NULL,
+    deity text,
+    age integer NOT NULL,
+    size text NOT NULL,
+    max_hit_points integer NOT NULL,
+    current_hit_points integer NOT NULL
+);
+
+
+ALTER TABLE creatures OWNER TO pathfinder_user;
+
+--
+-- Name: creatures_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE creatures_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE creatures_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: creatures_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
+
+
+--
 -- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -126,6 +161,13 @@ ALTER TABLE ONLY ability_score_sets ALTER COLUMN id SET DEFAULT nextval('ability
 --
 
 ALTER TABLE ONLY characters ALTER COLUMN id SET DEFAULT nextval('characters_id_seq'::regclass);
+
+
+--
+-- Name: creatures id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq'::regclass);
 
 
 --
@@ -145,11 +187,27 @@ ALTER TABLE ONLY characters
 
 
 --
--- Name: characters characters_ability_score_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: creatures creatures_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creatures
+    ADD CONSTRAINT creatures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: characters character_creature_id; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY characters
-    ADD CONSTRAINT characters_ability_score_set_id_fkey FOREIGN KEY (ability_score_set_id) REFERENCES ability_score_sets(id);
+    ADD CONSTRAINT character_creature_id FOREIGN KEY (creature_id) REFERENCES creatures(id);
+
+
+--
+-- Name: creatures creatures_ability_score_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creatures
+    ADD CONSTRAINT creatures_ability_score_set_id_fkey FOREIGN KEY (ability_score_set_id) REFERENCES ability_score_sets(id);
 
 
 --

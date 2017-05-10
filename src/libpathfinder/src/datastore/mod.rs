@@ -20,10 +20,12 @@ impl Datastore {
 
     pub fn get_character(&self, id: i32) -> Result<models::Character, error::Error> {
         let c = try!(structs::Character::select_one(&self.conn, id));
-        let abs = try!(structs::AbilityScoreSet::select_one(&self.conn, c.ability_score_set_id));
+        let creature = try!(structs::Creature::select_one(&self.conn, c.creature_id));
+        let abs = try!(structs::AbilityScoreSet::select_one(&self.conn,
+                                                            creature.ability_score_set_id));
         return Ok(models::Character {
             id: c.id,
-            name: c.name,
+            name: creature.name,
             ability_scores: models::AbilityScoreSet {
                 str: abs.str,
                 dex: abs.dex,
@@ -32,18 +34,59 @@ impl Datastore {
                 wis: abs.wis,
                 cha: abs.cha,
             },
+            ability_score_info: models::AbilityScoreInfo {
+                str: models::ScoreAndMofidier {
+                    score: abs.str,
+                    modifier: calc_ability_modifier(abs.str),
+                },
+                dex: models::ScoreAndMofidier {
+                    score: abs.dex,
+                    modifier: calc_ability_modifier(abs.dex),
+                },
+                con: models::ScoreAndMofidier {
+                    score: abs.con,
+                    modifier: calc_ability_modifier(abs.con),
+                },
+                int: models::ScoreAndMofidier {
+                    score: abs.int,
+                    modifier: calc_ability_modifier(abs.int),
+                },
+                wis: models::ScoreAndMofidier {
+                    score: abs.wis,
+                    modifier: calc_ability_modifier(abs.wis),
+                },
+                cha: models::ScoreAndMofidier {
+                    score: abs.cha,
+                    modifier: calc_ability_modifier(abs.cha),
+                },
+            },
             alignment: models::Alignment {
-                morality: c.alignment_morality,
-                order: c.alignment_order,
+                morality: creature.alignment_morality,
+                order: creature.alignment_order,
             },
             player_name: c.player_name,
             meta_information: models::MetaInformation {
                 class: c.class,
-                race: c.race,
-                age: c.age,
-                deity: c.deity,
-                size: c.size,
+                race: creature.race,
+                age: creature.age,
+                deity: creature.deity,
+                size: creature.size,
+            },
+            combat_numbers: models::CombatNumbers {
+                max_hit_points: creature.max_hit_points,
+                current_hit_points: creature.current_hit_points,
             },
         });
     }
+}
+
+fn calc_ability_modifier(i: i32) -> i32 {
+    let rounded = if i % 2 == 0 {
+        i
+    } else if i > 0 {
+        i - 1
+    } else {
+        i + 1
+    };
+    return (rounded - 10) / 2;
 }

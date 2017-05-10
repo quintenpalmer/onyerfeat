@@ -127,6 +127,13 @@ innerPage character =
                         ]
                     ]
                 ]
+            , Html.div [ Attr.class "col-md-1" ]
+                [ Html.b [] [ Html.text "Hit Points" ]
+                , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
+                , Html.text "Current"
+                , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
+                , Html.text "Max"
+                ]
             ]
         ]
 
@@ -141,35 +148,17 @@ capitalize string =
             String.cons (Char.toUpper head) tail
 
 
-scoreTableRow : String -> Int -> String -> Html.Html Common.Msg
-scoreTableRow name val emoji =
-    let
-        mod =
-            calcAbilityModifier val
-    in
-        Html.tr []
-            [ Html.td [] [ Html.b [] [ Html.text name ] ]
-            , Html.td [] [ Html.text (toString val) ]
-            , Html.td [] [ Html.b [] [ Html.text (toString mod) ] ]
-            , Html.td []
-                [ Html.text <|
-                    if mod >= 0 then
-                        String.repeat (mod) emoji
-                    else
-                        "➖" ++ String.repeat (-mod) emoji
-                ]
+scoreTableRow : String -> Models.Ability -> String -> Html.Html Common.Msg
+scoreTableRow name ability emoji =
+    Html.tr []
+        [ Html.td [] [ Html.b [] [ Html.text name ] ]
+        , Html.td [] [ Html.text (toString ability.score) ]
+        , Html.td [] [ Html.b [] [ Html.text (toString ability.modifier) ] ]
+        , Html.td []
+            [ Html.text <|
+                if ability.modifier >= 0 then
+                    String.repeat (ability.modifier) emoji
+                else
+                    "➖" ++ String.repeat (-ability.modifier) emoji
             ]
-
-
-calcAbilityModifier : Int -> Int
-calcAbilityModifier i =
-    let
-        rounded =
-            if i % 2 == 0 then
-                i
-            else if i > 0 then
-                i - 1
-            else
-                i + 1
-    in
-        (rounded - 10) // 2
+        ]

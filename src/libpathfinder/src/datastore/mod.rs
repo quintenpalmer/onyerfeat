@@ -23,6 +23,7 @@ impl Datastore {
         let creature = try!(structs::Creature::select_one(&self.conn, c.creature_id));
         let abs = try!(structs::AbilityScoreSet::select_one(&self.conn,
                                                             creature.ability_score_set_id));
+        let class = try!(structs::Class::select_one(&self.conn, c.class_id));
         return Ok(models::Character {
             id: c.id,
             name: creature.name,
@@ -66,7 +67,7 @@ impl Datastore {
             },
             player_name: c.player_name,
             meta_information: models::MetaInformation {
-                class: c.class,
+                class: class.name,
                 race: creature.race,
                 age: creature.age,
                 deity: creature.deity,

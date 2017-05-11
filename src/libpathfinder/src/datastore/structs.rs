@@ -12,8 +12,15 @@ use libpathfinder_common::error;
 pub struct Character {
     pub id: i32,
     pub player_name: String,
-    pub class: String,
+    pub class_id: i32,
     pub creature_id: i32,
+}
+
+#[derive(FromDB)]
+#[from_db(table_name = "classes")]
+pub struct Class {
+    pub id: i32,
+    pub name: String,
 }
 
 #[derive(FromDB)]

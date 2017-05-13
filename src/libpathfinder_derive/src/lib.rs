@@ -10,6 +10,7 @@ extern crate quote;
 
 mod query_params;
 mod full_postgresql_query;
+mod from_row;
 
 #[proc_macro_derive(QueryParam)]
 pub fn query_param_macro(input: TokenStream) -> TokenStream {
@@ -34,6 +35,20 @@ pub fn sqlite_table_macro(input: TokenStream) -> TokenStream {
 
     // Build the output, possibly using quasi-quotation
     let expanded = full_postgresql_query::derive_sqlite_table(&ast);
+
+    // Parse back to a token stream and return it
+    expanded.parse().unwrap()
+}
+
+#[proc_macro_derive(FromRow)]
+pub fn from_row_macro(input: TokenStream) -> TokenStream {
+    let source = input.to_string();
+
+    // Parse the string representation into a syntax tree
+    let ast = syn::parse_derive_input(&source).unwrap();
+
+    // Build the output, possibly using quasi-quotation
+    let expanded = from_row::derive_from_row(&ast);
 
     // Parse back to a token stream and return it
     expanded.parse().unwrap()

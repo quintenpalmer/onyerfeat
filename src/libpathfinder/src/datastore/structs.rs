@@ -1,4 +1,3 @@
-use std::fmt;
 use std::str;
 use std::error as stderror;
 
@@ -62,10 +61,10 @@ impl postgres::types::FromSql for models::AlignmentOrder {
                     "chaotic" => Ok(models::AlignmentOrder::Chaotic),
                     "neutral" => Ok(models::AlignmentOrder::Neutral),
                     "lawful" => Ok(models::AlignmentOrder::Lawful),
-                    _ => Err(Box::new(ParseError {})),
+                    _ => Err(Box::new(error::Error::ParseError {})),
                 }
             }
-            _ => Err(Box::new(ParseError {})),
+            _ => Err(Box::new(error::Error::ParseError {})),
         }
     }
 
@@ -87,10 +86,10 @@ impl postgres::types::FromSql for models::AlignmentMorality {
                     "evil" => Ok(models::AlignmentMorality::Evil),
                     "neutral" => Ok(models::AlignmentMorality::Neutral),
                     "good" => Ok(models::AlignmentMorality::Good),
-                    _ => Err(Box::new(ParseError {})),
+                    _ => Err(Box::new(error::Error::ParseError {})),
                 }
             }
-            _ => Err(Box::new(ParseError {})),
+            _ => Err(Box::new(error::Error::ParseError {})),
         }
     }
 
@@ -118,10 +117,10 @@ impl postgres::types::FromSql for models::Size {
                     "tiny" => Ok(models::Size::Tiny),
                     "diminutive" => Ok(models::Size::Diminutive),
                     "fine" => Ok(models::Size::Fine),
-                    _ => Err(Box::new(ParseError {})),
+                    _ => Err(Box::new(error::Error::ParseError {})),
                 }
             }
-            _ => Err(Box::new(ParseError {})),
+            _ => Err(Box::new(error::Error::ParseError {})),
         }
     }
 
@@ -130,21 +129,5 @@ impl postgres::types::FromSql for models::Size {
             &postgres::types::Type::Text => true,
             _ => false,
         }
-    }
-}
-
-
-#[derive(Debug)]
-struct ParseError {}
-
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "could not parse from db")
-    }
-}
-
-impl stderror::Error for ParseError {
-    fn description(&self) -> &str {
-        "could not parse from db"
     }
 }

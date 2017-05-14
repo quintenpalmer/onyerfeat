@@ -17,3 +17,11 @@ pub trait FromDB {
     fn select_one(conn: &postgres::GenericConnection, id: i32) -> Result<Self, error::Error>
         where Self: Sized;
 }
+
+pub trait TableNamer {
+    fn get_table_name() -> String;
+}
+
+pub trait FromRow {
+    fn parse_row(row: postgres::rows::Row) -> Result<Self, error::Error> where Self: Sized;
+}

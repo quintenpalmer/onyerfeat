@@ -2,13 +2,31 @@ mod structs;
 
 use postgres;
 
-use libpathfinder_common::FromDB;
+use libpathfinder_common::FromRow;
+use libpathfinder_common::TableNamer;
 use libpathfinder_common::error;
 
 use models;
 
 pub struct Datastore {
     conn: postgres::Connection,
+}
+
+pub fn select_one_by_id<T>(conn: &postgres::Connection,
+                           table_name: &str,
+                           id: i32)
+                           -> Result<T, error::Error>
+    where T: FromRow + TableNamer
+{
+    let query = format!("SELECT * FROM {} WHERE id = $1", T::get_table_name());
+    let stmt = try!(conn.prepare(query.as_str()).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
+    if rows.len() != 1 {
+        return Err(error::Error::ManyResultsOnSelectOne(table_name.to_string()));
+    }
+    let row = rows.get(0);
+    return T::parse_row(row);
 }
 
 impl Datastore {
@@ -19,10 +37,13 @@ impl Datastore {
     }
 
     pub fn get_character(&self, id: i32) -> Result<models::Character, error::Error> {
-        let c = try!(structs::Character::select_one(&self.conn, id));
-        let creature = try!(structs::Creature::select_one(&self.conn, c.creature_id));
-        let abs = try!(structs::AbilityScoreSet::select_one(&self.conn,
-                                                            creature.ability_score_set_id));
+        let c: structs::Character = try!(select_one_by_id(&self.conn, "characters", id));
+        let creature: structs::Creature =
+            try!(select_one_by_id(&self.conn, "creatures", c.creature_id));
+        let abs: structs::AbilityScoreSet = try!(select_one_by_id(&self.conn,
+                                                                  "ability_score_sets",
+                                                                  creature.ability_score_set_id));
+        let class: structs::Class = try!(select_one_by_id(&self.conn, "classes", c.class_id));
         return Ok(models::Character {
             id: c.id,
             name: creature.name,
@@ -66,7 +87,7 @@ impl Datastore {
             },
             player_name: c.player_name,
             meta_information: models::MetaInformation {
-                class: c.class,
+                class: class.name,
                 race: creature.race,
                 age: creature.age,
                 deity: creature.deity,

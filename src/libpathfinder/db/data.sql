@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -33,6 +33,15 @@ SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 
 
 --
+-- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY classes (id, name) FROM stdin;
+1	fighter
+\.
+
+
+--
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -45,8 +54,8 @@ COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_moral
 -- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY characters (id, player_name, class, creature_id) FROM stdin;
-1	Quinten	fighter	1
+COPY characters (id, player_name, creature_id, class_id) FROM stdin;
+1	Quinten	1	1
 \.
 
 
@@ -55,6 +64,13 @@ COPY characters (id, player_name, class, creature_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('characters_id_seq', 3, true);
+
+
+--
+-- Name: classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('classes_id_seq', 1, true);
 
 
 --

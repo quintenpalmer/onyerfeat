@@ -1,4 +1,3 @@
-use std::fmt;
 use std::str;
 use std::error as stderror;
 
@@ -7,17 +6,27 @@ use postgres;
 
 use libpathfinder_common::error;
 
-#[derive(FromDB)]
-#[from_db(table_name = "characters")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "characters")]
+#[derive(FromRow)]
 pub struct Character {
     pub id: i32,
     pub player_name: String,
-    pub class: String,
+    pub class_id: i32,
     pub creature_id: i32,
 }
 
-#[derive(FromDB)]
-#[from_db(table_name = "creatures")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "classes")]
+#[derive(FromRow)]
+pub struct Class {
+    pub id: i32,
+    pub name: String,
+}
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "creatures")]
+#[derive(FromRow)]
 pub struct Creature {
     pub id: i32,
     pub name: String,
@@ -32,8 +41,9 @@ pub struct Creature {
     pub current_hit_points: i32,
 }
 
-#[derive(FromDB)]
-#[from_db(table_name = "ability_score_sets")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "ability_score_sets")]
+#[derive(FromRow)]
 #[allow(dead_code)]
 pub struct AbilityScoreSet {
     id: i32,
@@ -55,10 +65,10 @@ impl postgres::types::FromSql for models::AlignmentOrder {
                     "chaotic" => Ok(models::AlignmentOrder::Chaotic),
                     "neutral" => Ok(models::AlignmentOrder::Neutral),
                     "lawful" => Ok(models::AlignmentOrder::Lawful),
-                    _ => Err(Box::new(ParseError {})),
+                    _ => Err(Box::new(error::Error::ParseError {})),
                 }
             }
-            _ => Err(Box::new(ParseError {})),
+            _ => Err(Box::new(error::Error::ParseError {})),
         }
     }
 
@@ -80,10 +90,10 @@ impl postgres::types::FromSql for models::AlignmentMorality {
                     "evil" => Ok(models::AlignmentMorality::Evil),
                     "neutral" => Ok(models::AlignmentMorality::Neutral),
                     "good" => Ok(models::AlignmentMorality::Good),
-                    _ => Err(Box::new(ParseError {})),
+                    _ => Err(Box::new(error::Error::ParseError {})),
                 }
             }
-            _ => Err(Box::new(ParseError {})),
+            _ => Err(Box::new(error::Error::ParseError {})),
         }
     }
 
@@ -111,10 +121,10 @@ impl postgres::types::FromSql for models::Size {
                     "tiny" => Ok(models::Size::Tiny),
                     "diminutive" => Ok(models::Size::Diminutive),
                     "fine" => Ok(models::Size::Fine),
-                    _ => Err(Box::new(ParseError {})),
+                    _ => Err(Box::new(error::Error::ParseError {})),
                 }
             }
-            _ => Err(Box::new(ParseError {})),
+            _ => Err(Box::new(error::Error::ParseError {})),
         }
     }
 
@@ -123,21 +133,5 @@ impl postgres::types::FromSql for models::Size {
             &postgres::types::Type::Text => true,
             _ => false,
         }
-    }
-}
-
-
-#[derive(Debug)]
-struct ParseError {}
-
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "could not parse from db")
-    }
-}
-
-impl stderror::Error for ParseError {
-    fn description(&self) -> &str {
-        "could not parse from db"
     }
 }

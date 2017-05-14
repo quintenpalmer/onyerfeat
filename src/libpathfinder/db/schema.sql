@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -79,8 +79,8 @@ ALTER SEQUENCE ability_score_sets_id_seq OWNED BY ability_score_sets.id;
 CREATE TABLE characters (
     id integer NOT NULL,
     player_name text NOT NULL,
-    class text NOT NULL,
-    creature_id integer NOT NULL
+    creature_id integer NOT NULL,
+    class_id integer NOT NULL
 );
 
 
@@ -105,6 +105,39 @@ ALTER TABLE characters_id_seq OWNER TO pathfinder_user;
 --
 
 ALTER SEQUENCE characters_id_seq OWNED BY characters.id;
+
+
+--
+-- Name: classes; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE classes (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+
+ALTER TABLE classes OWNER TO pathfinder_user;
+
+--
+-- Name: classes_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE classes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE classes_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: classes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE classes_id_seq OWNED BY classes.id;
 
 
 --
@@ -164,6 +197,13 @@ ALTER TABLE ONLY characters ALTER COLUMN id SET DEFAULT nextval('characters_id_s
 
 
 --
+-- Name: classes id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY classes ALTER COLUMN id SET DEFAULT nextval('classes_id_seq'::regclass);
+
+
+--
 -- Name: creatures id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -187,11 +227,27 @@ ALTER TABLE ONLY characters
 
 
 --
+-- Name: classes classes_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY classes
+    ADD CONSTRAINT classes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: creatures creatures_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY creatures
     ADD CONSTRAINT creatures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: characters character_class_id; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY characters
+    ADD CONSTRAINT character_class_id FOREIGN KEY (class_id) REFERENCES classes(id);
 
 
 --

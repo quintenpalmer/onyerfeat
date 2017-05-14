@@ -120,10 +120,10 @@ innerPage character =
                     , Html.tbody [ Attr.class "text-center" ]
                         [ scoreTableRow "STR" character.abilityScores.str "🐂"
                         , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                        , scoreTableRow "CON" character.abilityScores.con "🐎"
-                        , scoreTableRow "INT" character.abilityScores.int "\x1F991"
+                        , scoreTableRow "CON" character.abilityScores.con "🐘"
+                        , scoreTableRow "INT" character.abilityScores.int "🐙"
                         , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                        , scoreTableRow "CHA" character.abilityScores.cha "🎭"
+                        , scoreTableRow "CHA" character.abilityScores.cha "🐶"
                         ]
                     ]
                 ]

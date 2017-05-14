@@ -30,7 +30,7 @@ getCharacterSheet : Int -> Cmd Common.Msg
 getCharacterSheet id =
     let
         url =
-            "http://localhost:3000/character?id=" ++ (toString id)
+            "http://localhost:3000/api/characters?id=" ++ (toString id)
     in
         Http.send Common.SheetLoaded (Http.get url Decoding.decodeCharacterResp)
 

@@ -12,13 +12,17 @@ pub struct Datastore {
     conn: postgres::Connection,
 }
 
-pub fn select_one_by_id<T>(conn: &postgres::Connection,
-                           table_name: &str,
-                           id: i32)
-                           -> Result<T, error::Error>
-    where T: FromRow + TableNamer
+pub fn select_one_by_field<T, F>(conn: &postgres::Connection,
+                                 table_name: &str,
+                                 id_name: &str,
+                                 id: F)
+                                 -> Result<T, error::Error>
+    where T: FromRow + TableNamer,
+          F: postgres::types::ToSql
 {
-    let query = format!("SELECT * FROM {} WHERE id = $1", T::get_table_name());
+    let query = format!("SELECT * FROM {} WHERE {} = $1",
+                        T::get_table_name(),
+                        id_name);
     let stmt = try!(conn.prepare(query.as_str()).map_err(error::Error::Postgres));
 
     let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
@@ -27,6 +31,15 @@ pub fn select_one_by_id<T>(conn: &postgres::Connection,
     }
     let row = rows.get(0);
     return T::parse_row(row);
+}
+
+pub fn select_one_by_id<T>(conn: &postgres::Connection,
+                           table_name: &str,
+                           id: i32)
+                           -> Result<T, error::Error>
+    where T: FromRow + TableNamer
+{
+    select_one_by_field(conn, table_name, "id", id)
 }
 
 impl Datastore {

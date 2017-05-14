@@ -13,7 +13,6 @@ pub struct Datastore {
 }
 
 pub fn select_one_by_field<T, F>(conn: &postgres::Connection,
-                                 table_name: &str,
                                  id_name: &str,
                                  id: F)
                                  -> Result<T, error::Error>
@@ -27,19 +26,16 @@ pub fn select_one_by_field<T, F>(conn: &postgres::Connection,
 
     let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
     if rows.len() != 1 {
-        return Err(error::Error::ManyResultsOnSelectOne(table_name.to_string()));
+        return Err(error::Error::ManyResultsOnSelectOne(T::get_table_name().to_string()));
     }
     let row = rows.get(0);
     return T::parse_row(row);
 }
 
-pub fn select_one_by_id<T>(conn: &postgres::Connection,
-                           table_name: &str,
-                           id: i32)
-                           -> Result<T, error::Error>
+pub fn select_one_by_id<T>(conn: &postgres::Connection, id: i32) -> Result<T, error::Error>
     where T: FromRow + TableNamer
 {
-    select_one_by_field(conn, table_name, "id", id)
+    select_one_by_field(conn, "id", id)
 }
 
 impl Datastore {
@@ -50,13 +46,11 @@ impl Datastore {
     }
 
     pub fn get_character(&self, id: i32) -> Result<models::Character, error::Error> {
-        let c: structs::Character = try!(select_one_by_id(&self.conn, "characters", id));
-        let creature: structs::Creature =
-            try!(select_one_by_id(&self.conn, "creatures", c.creature_id));
+        let c: structs::Character = try!(select_one_by_id(&self.conn, id));
+        let creature: structs::Creature = try!(select_one_by_id(&self.conn, c.creature_id));
         let abs: structs::AbilityScoreSet = try!(select_one_by_id(&self.conn,
-                                                                  "ability_score_sets",
                                                                   creature.ability_score_set_id));
-        let class: structs::Class = try!(select_one_by_id(&self.conn, "classes", c.class_id));
+        let class: structs::Class = try!(select_one_by_id(&self.conn, c.class_id));
         return Ok(models::Character {
             id: c.id,
             name: creature.name,

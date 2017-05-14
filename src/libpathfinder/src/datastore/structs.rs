@@ -6,8 +6,8 @@ use postgres;
 
 use libpathfinder_common::error;
 
-#[derive(FromDB)]
-#[from_db(table_name = "characters")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "characters")]
 #[derive(FromRow)]
 pub struct Character {
     pub id: i32,
@@ -16,16 +16,16 @@ pub struct Character {
     pub creature_id: i32,
 }
 
-#[derive(FromDB)]
-#[from_db(table_name = "classes")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "classes")]
 #[derive(FromRow)]
 pub struct Class {
     pub id: i32,
     pub name: String,
 }
 
-#[derive(FromDB)]
-#[from_db(table_name = "creatures")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "creatures")]
 #[derive(FromRow)]
 pub struct Creature {
     pub id: i32,
@@ -41,8 +41,8 @@ pub struct Creature {
     pub current_hit_points: i32,
 }
 
-#[derive(FromDB)]
-#[from_db(table_name = "ability_score_sets")]
+#[derive(TableNamer)]
+#[table_namer(table_name = "ability_score_sets")]
 #[derive(FromRow)]
 #[allow(dead_code)]
 pub struct AbilityScoreSet {

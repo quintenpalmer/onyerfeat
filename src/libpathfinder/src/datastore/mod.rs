@@ -3,6 +3,7 @@ mod structs;
 use postgres;
 
 use libpathfinder_common::FromRow;
+use libpathfinder_common::TableNamer;
 use libpathfinder_common::error;
 
 use models;
@@ -15,9 +16,9 @@ pub fn select_one_by_id<T>(conn: &postgres::Connection,
                            table_name: &str,
                            id: i32)
                            -> Result<T, error::Error>
-    where T: FromRow
+    where T: FromRow + TableNamer
 {
-    let query = format!("SELECT * FROM {} WHERE id = $1", table_name);
+    let query = format!("SELECT * FROM {} WHERE id = $1", T::get_table_name());
     let stmt = try!(conn.prepare(query.as_str()).map_err(error::Error::Postgres));
 
     let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));

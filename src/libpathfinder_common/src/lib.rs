@@ -18,6 +18,10 @@ pub trait FromDB {
         where Self: Sized;
 }
 
+pub trait TableNamer {
+    fn get_table_name() -> String;
+}
+
 pub trait FromRow {
     fn parse_row(row: postgres::rows::Row) -> Result<Self, error::Error> where Self: Sized;
 }

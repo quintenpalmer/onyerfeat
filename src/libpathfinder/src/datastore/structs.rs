@@ -55,6 +55,33 @@ pub struct AbilityScoreSet {
     pub cha: i32,
 }
 
+#[derive(TableNamer)]
+#[table_namer(table_name = "skills")]
+#[derive(FromRow)]
+pub struct Skill {
+    pub id: i32,
+    pub name: String,
+    pub trained_only: bool,
+}
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "skill_constructors")]
+#[derive(FromRow)]
+pub struct SkillConstructor {
+    pub id: i32,
+    pub name: String,
+    pub trained_only: bool,
+}
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "sub_skills")]
+#[derive(FromRow)]
+pub struct SubSkill {
+    pub id: i32,
+    pub name: String,
+    pub skill_constructor_id: i32,
+}
+
 impl postgres::types::FromSql for models::AlignmentOrder {
     fn from_sql(ty: &postgres::types::Type,
                 raw: &[u8])

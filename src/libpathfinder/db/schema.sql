@@ -183,6 +183,108 @@ ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
 
 
 --
+-- Name: skill_constructors; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE skill_constructors (
+    id integer NOT NULL,
+    name text NOT NULL,
+    trained_only boolean NOT NULL
+);
+
+
+ALTER TABLE skill_constructors OWNER TO pathfinder_user;
+
+--
+-- Name: skill_constructors_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE skill_constructors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE skill_constructors_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: skill_constructors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE skill_constructors_id_seq OWNED BY skill_constructors.id;
+
+
+--
+-- Name: skills; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE skills (
+    id integer NOT NULL,
+    name text NOT NULL,
+    trained_only boolean NOT NULL
+);
+
+
+ALTER TABLE skills OWNER TO pathfinder_user;
+
+--
+-- Name: skills_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE skills_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE skills_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: skills_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE skills_id_seq OWNED BY skills.id;
+
+
+--
+-- Name: sub_skills; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE sub_skills (
+    id integer NOT NULL,
+    name text NOT NULL,
+    skill_constructor_id integer NOT NULL
+);
+
+
+ALTER TABLE sub_skills OWNER TO pathfinder_user;
+
+--
+-- Name: sub_skills_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE sub_skills_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE sub_skills_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: sub_skills_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE sub_skills_id_seq OWNED BY sub_skills.id;
+
+
+--
 -- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -208,6 +310,27 @@ ALTER TABLE ONLY classes ALTER COLUMN id SET DEFAULT nextval('classes_id_seq'::r
 --
 
 ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq'::regclass);
+
+
+--
+-- Name: skill_constructors id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY skill_constructors ALTER COLUMN id SET DEFAULT nextval('skill_constructors_id_seq'::regclass);
+
+
+--
+-- Name: skills id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY skills ALTER COLUMN id SET DEFAULT nextval('skills_id_seq'::regclass);
+
+
+--
+-- Name: sub_skills id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY sub_skills ALTER COLUMN id SET DEFAULT nextval('sub_skills_id_seq'::regclass);
 
 
 --
@@ -243,6 +366,30 @@ ALTER TABLE ONLY creatures
 
 
 --
+-- Name: skill_constructors skill_constructors_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY skill_constructors
+    ADD CONSTRAINT skill_constructors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: skills skills_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY skills
+    ADD CONSTRAINT skills_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sub_skills sub_skills_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY sub_skills
+    ADD CONSTRAINT sub_skills_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: characters character_class_id; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -264,6 +411,14 @@ ALTER TABLE ONLY characters
 
 ALTER TABLE ONLY creatures
     ADD CONSTRAINT creatures_ability_score_set_id_fkey FOREIGN KEY (ability_score_set_id) REFERENCES ability_score_sets(id);
+
+
+--
+-- Name: sub_skills sub_skills_skill_constructor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY sub_skills
+    ADD CONSTRAINT sub_skills_skill_constructor_id_fkey FOREIGN KEY (skill_constructor_id) REFERENCES skill_constructors(id);
 
 
 --

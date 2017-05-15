@@ -151,6 +151,8 @@ COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
 8	nobility	2
 9	planes	2
 10	religion	2
+11	traps	1
+12	architect	4
 \.
 
 
@@ -158,7 +160,7 @@ COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
 -- Name: sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('sub_skills_id_seq', 10, true);
+SELECT pg_catalog.setval('sub_skills_id_seq', 12, true);
 
 
 --

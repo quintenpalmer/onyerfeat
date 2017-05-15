@@ -124,6 +124,7 @@ pub enum AbilityName {
 #[derive(Serialize, Deserialize)]
 pub struct CharacterSkill {
     pub name: String,
+    pub sub_name: Option<String>,
     pub total: i32,
     pub ability: AbilityName,
     pub ability_mod: i32,

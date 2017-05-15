@@ -99,6 +99,7 @@ fn get_character_skills(skills: Vec<Skill>,
         let total = count + ability_mod;
         ret_skills.push(models::CharacterSkill {
             name: skill.name.clone(),
+            sub_name: None,
             total: total,
             ability: skill.ability.clone(),
             ability_mod: ability_mod,

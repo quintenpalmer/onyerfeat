@@ -60,6 +60,56 @@ COPY characters (id, player_name, creature_id, class_id) FROM stdin;
 
 
 --
+-- Data for Name: skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY skills (id, name, trained_only, ability) FROM stdin;
+1	acrobatics	f	dex
+2	appraise	f	int
+3	bluff	f	cha
+4	climb	f	str
+5	diplomacy	f	cha
+6	disable device	t	dex
+7	disguise	f	cha
+8	escape artist	f	dex
+9	fly	f	dex
+10	handle animal	t	cha
+11	heal	f	wis
+12	intimidate	f	cha
+13	linguistics	t	int
+14	perception	f	wis
+15	ride	f	dex
+16	sense motive	f	wis
+17	sleight of hand	t	dex
+18	spellcraft	t	int
+19	stealth	f	dex
+20	survival	f	wis
+21	swim	f	str
+22	use magic device	t	cha
+\.
+
+
+--
+-- Data for Name: character_skill_choices; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
+1	1	4	1
+2	1	12	1
+3	1	15	1
+4	1	20	1
+5	1	21	1
+\.
+
+
+--
+-- Name: character_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('character_skill_choices_id_seq', 5, true);
+
+
+--
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -97,36 +147,6 @@ COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
 --
 
 SELECT pg_catalog.setval('skill_constructors_id_seq', 4, true);
-
-
---
--- Data for Name: skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY skills (id, name, trained_only, ability) FROM stdin;
-1	acrobatics	f	dex
-2	appraise	f	int
-3	bluff	f	cha
-4	climb	f	str
-5	diplomacy	f	cha
-6	disable device	t	dex
-7	disguise	f	cha
-8	escape artist	f	dex
-9	fly	f	dex
-10	handle animal	t	cha
-11	heal	f	wis
-12	intimidate	f	cha
-13	linguistics	t	int
-14	perception	f	wis
-15	ride	f	dex
-16	sense motive	f	wis
-17	sleight of hand	t	dex
-18	spellcraft	t	int
-19	stealth	f	dex
-20	survival	f	wis
-21	swim	f	str
-22	use magic device	t	cha
-\.
 
 
 --

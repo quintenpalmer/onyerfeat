@@ -1,4 +1,5 @@
 mod structs;
+mod queries;
 
 use std::collections::HashMap;
 
@@ -14,6 +15,23 @@ pub struct Datastore {
     conn: postgres::Connection,
 }
 
+pub fn exec_and_select_by_field<T, F>(conn: &postgres::Connection,
+                                      query: &'static str,
+                                      id: F)
+                                      -> Result<Vec<T>, error::Error>
+    where T: FromRow,
+          F: postgres::types::ToSql
+{
+    let stmt = try!(conn.prepare(query).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
+    let mut ret = Vec::new();
+    for row in rows.iter() {
+        ret.push(try!(T::parse_row(row)));
+    }
+    return Ok(ret);
+}
+
 pub fn select_all<T>(conn: &postgres::Connection) -> Result<Vec<T>, error::Error>
     where T: FromRow + TableNamer
 {
@@ -21,6 +39,26 @@ pub fn select_all<T>(conn: &postgres::Connection) -> Result<Vec<T>, error::Error
     let stmt = try!(conn.prepare(query.as_str()).map_err(error::Error::Postgres));
 
     let rows = try!(stmt.query(&[]).map_err(error::Error::Postgres));
+    let mut ret = Vec::new();
+    for row in rows.iter() {
+        ret.push(try!(T::parse_row(row)));
+    }
+    return Ok(ret);
+}
+
+pub fn select_by_field<T, F>(conn: &postgres::Connection,
+                             id_name: &str,
+                             id: F)
+                             -> Result<Vec<T>, error::Error>
+    where T: FromRow + TableNamer,
+          F: postgres::types::ToSql
+{
+    let query = format!("SELECT * FROM {} WHERE {} = $1",
+                        T::get_table_name(),
+                        id_name);
+    let stmt = try!(conn.prepare(query.as_str()).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
     let mut ret = Vec::new();
     for row in rows.iter() {
         ret.push(try!(T::parse_row(row)));
@@ -68,7 +106,16 @@ impl Datastore {
                                                                   creature.ability_score_set_id));
         let class: structs::Class = try!(select_one_by_id(&self.conn, character.class_id));
 
-        return Ok(character.into_canonical(creature, abs, class));
+        let skills: Vec<structs::Skill> = try!(select_all(&self.conn));
+        let trained_skills: Vec<structs::CharacterSkillChoice> =
+            try!(select_by_field(&self.conn, "character_id", character.id));
+
+        let sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice> =
+            try!(exec_and_select_by_field(&self.conn,
+                                          queries::CHARACTER_SUB_SKILLS_QUERY,
+                                          character.id));
+
+        return Ok(character.into_canonical(creature, abs, class, skills, trained_skills, sub_skills));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

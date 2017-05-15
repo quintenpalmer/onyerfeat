@@ -1,4 +1,15 @@
-module Models exposing (Model(..), Character, AbilityScoreSet, Ability, Alignment, MetaInformation, Size(..), CombatNumbers)
+module Models
+    exposing
+        ( Model(..)
+        , Character
+        , AbilityScoreSet
+        , Ability
+        , Alignment
+        , MetaInformation
+        , Size(..)
+        , CombatNumbers
+        , Skill
+        )
 
 
 type Model
@@ -15,6 +26,7 @@ type alias Character =
     , alignment : Alignment
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
+    , skills : List Skill
     }
 
 
@@ -64,4 +76,14 @@ type alias MetaInformation =
     , deity : Maybe String
     , age : Int
     , size : Size
+    }
+
+
+type alias Skill =
+    { name : String
+    , sub_name : Maybe String
+    , total : Int
+    , ability : String
+    , abilityMod : Int
+    , count : Int
     }

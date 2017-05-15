@@ -11,7 +11,7 @@ decodeCharacterResp =
 
 decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
-    Decode.map7 Models.Character
+    Decode.map8 Models.Character
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "player_name" Decode.string)
@@ -19,6 +19,23 @@ decodeCharacter =
         (Decode.field "alignment" decodeAlignment)
         (Decode.field "meta_information" decodeMetaInformation)
         (Decode.field "combat_numbers" decodeCombatNumbers)
+        (Decode.field "skills" decodeSkills)
+
+
+decodeSkills : Decode.Decoder (List Models.Skill)
+decodeSkills =
+    Decode.list decodeSkill
+
+
+decodeSkill : Decode.Decoder Models.Skill
+decodeSkill =
+    Decode.map6 Models.Skill
+        (Decode.field "name" Decode.string)
+        (Decode.field "sub_name" <| Decode.nullable Decode.string)
+        (Decode.field "total" Decode.int)
+        (Decode.field "ability" Decode.string)
+        (Decode.field "ability_mod" Decode.int)
+        (Decode.field "count" Decode.int)
 
 
 decodeCombatNumbers : Decode.Decoder Models.CombatNumbers

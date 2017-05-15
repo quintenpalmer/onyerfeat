@@ -81,6 +81,7 @@ type alias MetaInformation =
 
 type alias Skill =
     { name : String
+    , sub_name : Maybe String
     , total : Int
     , ability : String
     , abilityMod : Int

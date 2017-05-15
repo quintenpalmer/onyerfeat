@@ -150,7 +150,7 @@ innerPage character =
                         (List.map
                             (\skill ->
                                 Html.tr []
-                                    [ Html.td [] [ Html.b [] [ Html.text <| capitalize skill.name ] ]
+                                    [ Html.td [] [ Html.b [] [ Html.text <| buildSkillName skill ] ]
                                     , Html.td [] [ Html.text (toString skill.total) ]
                                     , Html.td [] [ Html.text (toString skill.abilityMod) ]
                                     , Html.td [] [ Html.text skill.ability ]
@@ -173,6 +173,16 @@ capitalize string =
 
         Just ( head, tail ) ->
             String.cons (Char.toUpper head) tail
+
+
+buildSkillName : Models.Skill -> String
+buildSkillName skill =
+    case skill.sub_name of
+        Nothing ->
+            capitalize skill.name
+
+        Just sub_name ->
+            capitalize skill.name ++ " (" ++ capitalize sub_name ++ ")"
 
 
 scoreTableRow : String -> Models.Ability -> String -> Html.Html Common.Msg

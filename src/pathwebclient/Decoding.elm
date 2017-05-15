@@ -29,8 +29,9 @@ decodeSkills =
 
 decodeSkill : Decode.Decoder Models.Skill
 decodeSkill =
-    Decode.map5 Models.Skill
+    Decode.map6 Models.Skill
         (Decode.field "name" Decode.string)
+        (Decode.field "sub_name" <| Decode.nullable Decode.string)
         (Decode.field "total" Decode.int)
         (Decode.field "ability" Decode.string)
         (Decode.field "ability_mod" Decode.int)

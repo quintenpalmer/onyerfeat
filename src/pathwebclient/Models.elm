@@ -9,7 +9,6 @@ module Models
         , Size(..)
         , CombatNumbers
         , Skill
-        , BasicSkill
         )
 
 
@@ -81,11 +80,6 @@ type alias MetaInformation =
 
 
 type alias Skill =
-    { skill : BasicSkill
-    }
-
-
-type alias BasicSkill =
     { name : String
     , total : Int
     , ability : String

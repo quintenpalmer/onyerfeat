@@ -87,7 +87,7 @@ impl Character {
 fn get_character_skills(skills: Vec<Skill>,
                         skill_choices: Vec<CharacterSkillChoice>,
                         abs: &AbilityScoreSet)
-                        -> Vec<models::TrainedSkill> {
+                        -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     for skill in skills.iter() {
@@ -97,13 +97,13 @@ fn get_character_skills(skills: Vec<Skill>,
         };
         let ability_mod = abs.get_ability_mod(skill.ability.clone());
         let total = count + ability_mod;
-        ret_skills.push(models::TrainedSkill::Skill(models::CharacterSkill {
+        ret_skills.push(models::CharacterSkill {
             name: skill.name.clone(),
             total: total,
             ability: skill.ability.clone(),
             ability_mod: ability_mod,
             count: count,
-        }));
+        });
     }
     return ret_skills;
 }

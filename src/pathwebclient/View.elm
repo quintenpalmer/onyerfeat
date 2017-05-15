@@ -150,11 +150,11 @@ innerPage character =
                         (List.map
                             (\skill ->
                                 Html.tr []
-                                    [ Html.td [] [ Html.b [] [ Html.text <| capitalize skill.skill.name ] ]
-                                    , Html.td [] [ Html.text (toString skill.skill.total) ]
-                                    , Html.td [] [ Html.text (toString skill.skill.abilityMod) ]
-                                    , Html.td [] [ Html.text skill.skill.ability ]
-                                    , Html.td [] [ Html.text (toString skill.skill.count) ]
+                                    [ Html.td [] [ Html.b [] [ Html.text <| capitalize skill.name ] ]
+                                    , Html.td [] [ Html.text (toString skill.total) ]
+                                    , Html.td [] [ Html.text (toString skill.abilityMod) ]
+                                    , Html.td [] [ Html.text skill.ability ]
+                                    , Html.td [] [ Html.text (toString skill.count) ]
                                     ]
                             )
                             character.skills

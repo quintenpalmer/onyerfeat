@@ -23,9 +23,10 @@ impl Character {
                           abs: AbilityScoreSet,
                           class: Class,
                           skills: Vec<Skill>,
-                          skill_choices: Vec<CharacterSkillChoice>)
+                          skill_choices: Vec<CharacterSkillChoice>,
+                          sub_skills: Vec<AugmentedCharacterSubSkillChoice>)
                           -> models::Character {
-        let character_skills = get_character_skills(skills, skill_choices, &abs);
+        let character_skills = get_character_skills(skills, skill_choices, sub_skills, &abs);
         return models::Character {
             id: self.id,
             name: creature.name,
@@ -86,6 +87,7 @@ impl Character {
 
 fn get_character_skills(skills: Vec<Skill>,
                         skill_choices: Vec<CharacterSkillChoice>,
+                        sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
                         abs: &AbilityScoreSet)
                         -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
@@ -102,6 +104,19 @@ fn get_character_skills(skills: Vec<Skill>,
             sub_name: None,
             total: total,
             ability: skill.ability.clone(),
+            ability_mod: ability_mod,
+            count: count,
+        });
+    }
+    for sub_skill in sub_skills.iter() {
+        let count = sub_skill.count;
+        let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
+        let total = count + ability_mod;
+        ret_skills.push(models::CharacterSkill {
+            name: sub_skill.name.clone(),
+            sub_name: Some(sub_skill.sub_name.clone()),
+            total: total,
+            ability: sub_skill.ability.clone(),
             ability_mod: ability_mod,
             count: count,
         });
@@ -207,6 +222,25 @@ pub struct CharacterSkillChoice {
     pub character_id: i32,
     pub skill_id: i32,
     pub count: i32,
+}
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "character_sub_skill_choices")]
+#[derive(FromRow)]
+pub struct CharacterSubSkillChoice {
+    pub id: i32,
+    pub character_id: i32,
+    pub sub_skill_id: i32,
+}
+
+#[derive(FromRow)]
+pub struct AugmentedCharacterSubSkillChoice {
+    pub id: i32,
+    pub count: i32,
+    pub name: String,
+    pub sub_name: String,
+    pub trained_only: bool,
+    pub ability: models::AbilityName,
 }
 
 impl postgres::types::FromSql for models::AbilityName {

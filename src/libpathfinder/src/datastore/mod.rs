@@ -1,4 +1,5 @@
 mod structs;
+mod queries;
 
 use std::collections::HashMap;
 
@@ -12,6 +13,23 @@ use models;
 
 pub struct Datastore {
     conn: postgres::Connection,
+}
+
+pub fn exec_and_select_by_field<T, F>(conn: &postgres::Connection,
+                                      query: &'static str,
+                                      id: F)
+                                      -> Result<Vec<T>, error::Error>
+    where T: FromRow,
+          F: postgres::types::ToSql
+{
+    let stmt = try!(conn.prepare(query).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
+    let mut ret = Vec::new();
+    for row in rows.iter() {
+        ret.push(try!(T::parse_row(row)));
+    }
+    return Ok(ret);
 }
 
 pub fn select_all<T>(conn: &postgres::Connection) -> Result<Vec<T>, error::Error>
@@ -92,7 +110,12 @@ impl Datastore {
         let trained_skills: Vec<structs::CharacterSkillChoice> =
             try!(select_by_field(&self.conn, "character_id", character.id));
 
-        return Ok(character.into_canonical(creature, abs, class, skills, trained_skills));
+        let sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice> =
+            try!(exec_and_select_by_field(&self.conn,
+                                          queries::CHARACTER_SUB_SKILLS_QUERY,
+                                          character.id));
+
+        return Ok(character.into_canonical(creature, abs, class, skills, trained_skills, sub_skills));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

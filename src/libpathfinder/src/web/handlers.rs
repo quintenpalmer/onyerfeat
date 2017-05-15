@@ -24,17 +24,17 @@ impl iron::middleware::Handler for Handler {
         println!("full path is: {}", full_path);
         let conn = itry!(datastore::Datastore::new(self.connection_params.clone()),
                          webshared::simple_server_error());
-        match full_path.clone().as_ref() {
-            "character" => {
-                match character_handler(conn, req) {
-                    Ok(s) => Ok(s),
-                    Err(e) => {
-                        println!("{}", e);
-                        Err(e)
-                    }
-                }
-            }
+        let resp = match full_path.clone().as_ref() {
+            "api/characters" => character_handler(conn, req),
+            "api/skills" => skills_handler(conn, req),
             _ => path_not_found(full_path),
+        };
+        match resp {
+            Ok(s) => Ok(s),
+            Err(e) => {
+                println!("{}", e);
+                Err(e)
+            }
         }
     }
 }
@@ -53,6 +53,16 @@ fn character_handler(ds: datastore::Datastore,
 
     let c = itry!(ds.get_character(id_param.id),
                   webshared::simple_server_error());
+
+    let resp = try!(webshared::Response { data: c }.encode());
+
+    return Ok(resp);
+}
+
+fn skills_handler(ds: datastore::Datastore, req: &mut iron::Request) -> IronResult<iron::Response> {
+    println!("handling request for character");
+
+    let c = itry!(ds.get_skills(), webshared::simple_server_error());
 
     let resp = try!(webshared::Response { data: c }.encode());
 

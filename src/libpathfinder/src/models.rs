@@ -88,3 +88,34 @@ pub struct MetaInformation {
     pub age: i32,
     pub size: Size,
 }
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ConcreteSkill {
+    Skill(Skill),
+    ConstructedSkill(ConstructedSkill),
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Skill {
+    pub name: String,
+    pub ability: AbilityName,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ConstructedSkill {
+    pub name: String,
+    pub sub_skill: String,
+    pub ability: AbilityName,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+#[serde(rename_all = "lowercase")]
+pub enum AbilityName {
+    Str,
+    Dex,
+    Con,
+    Int,
+    Wis,
+    Cha,
+}

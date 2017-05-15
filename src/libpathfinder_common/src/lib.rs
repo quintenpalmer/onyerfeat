@@ -13,11 +13,6 @@ pub trait QueryParam {
     fn parse_from(&mut iron::Request) -> iron::IronResult<Self> where Self: Sized;
 }
 
-pub trait FromDB {
-    fn select_one(conn: &postgres::GenericConnection, id: i32) -> Result<Self, error::Error>
-        where Self: Sized;
-}
-
 pub trait TableNamer {
     fn get_table_name() -> String;
 }

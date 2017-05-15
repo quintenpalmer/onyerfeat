@@ -81,6 +81,89 @@ SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 
 
 --
+-- Data for Name: skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
+1	craft	f	int
+2	knowledge	t	int
+3	perform	f	cha
+4	profession	t	wis
+\.
+
+
+--
+-- Name: skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('skill_constructors_id_seq', 4, true);
+
+
+--
+-- Data for Name: skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY skills (id, name, trained_only, ability) FROM stdin;
+1	acrobatics	f	dex
+2	appraise	f	int
+3	bluff	f	cha
+4	climb	f	str
+5	diplomacy	f	cha
+6	disable device	t	dex
+7	disguise	f	cha
+8	escape artist	f	dex
+9	fly	f	dex
+10	handle animal	t	cha
+11	heal	f	wis
+12	intimidate	f	cha
+13	linguistics	t	int
+14	perception	f	wis
+15	ride	f	dex
+16	sense motive	f	wis
+17	sleight of hand	t	dex
+18	spellcraft	t	int
+19	stealth	f	dex
+20	survival	f	wis
+21	swim	f	str
+22	use magic device	t	cha
+\.
+
+
+--
+-- Name: skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('skills_id_seq', 22, true);
+
+
+--
+-- Data for Name: sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
+1	arcana	2
+2	dungeoneering	2
+3	engineering	2
+4	geography	2
+5	history	2
+6	local	2
+7	nature	2
+8	nobility	2
+9	planes	2
+10	religion	2
+11	traps	1
+12	architect	4
+\.
+
+
+--
+-- Name: sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('sub_skills_id_seq', 12, true);
+
+
+--
 -- PostgreSQL database dump complete
 --
 

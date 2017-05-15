@@ -127,7 +127,10 @@ impl Datastore {
         let skills: Vec<structs::Skill> = try!(select_all(&self.conn));
         let mut ret_skills: Vec<models::ConcreteSkill> = skills.iter()
             .map(|x| -> models::ConcreteSkill {
-                models::ConcreteSkill::Skill(models::Skill { name: x.name.clone() })
+                models::ConcreteSkill::Skill(models::Skill {
+                    name: x.name.clone(),
+                    ability: x.ability.clone(),
+                })
             })
             .collect();
         let sub_skills: Vec<structs::SubSkill> = try!(select_all(&self.conn));
@@ -138,6 +141,7 @@ impl Datastore {
             let constructed = models::ConstructedSkill {
                 name: constr.unwrap().name.to_string(),
                 sub_skill: sub_skill.name.clone(),
+                ability: constr.unwrap().ability.clone(),
             };
             ret_skills.push(models::ConcreteSkill::ConstructedSkill(constructed));
         }

@@ -84,11 +84,11 @@ SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 -- Data for Name: skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY skill_constructors (id, name, trained_only) FROM stdin;
-1	craft	f
-2	knowledge	t
-3	perform	f
-4	profession	t
+COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
+1	craft	f	int
+2	knowledge	t	int
+3	perform	f	cha
+4	profession	t	wis
 \.
 
 
@@ -103,29 +103,29 @@ SELECT pg_catalog.setval('skill_constructors_id_seq', 4, true);
 -- Data for Name: skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY skills (id, name, trained_only) FROM stdin;
-1	acrobatics	f
-2	appraise	f
-3	bluff	f
-4	climb	f
-5	diplomacy	f
-6	disable device	t
-7	disguise	f
-8	escape artist	f
-9	fly	f
-10	handle animal	t
-11	heal	f
-12	intimidate	f
-13	linguistics	t
-14	perception	f
-15	ride	f
-16	sense motive	f
-17	sleight of hand	t
-18	spellcraft	t
-19	stealth	f
-20	survival	f
-21	swim	f
-22	use magic device	t
+COPY skills (id, name, trained_only, ability) FROM stdin;
+1	acrobatics	f	dex
+2	appraise	f	int
+3	bluff	f	cha
+4	climb	f	str
+5	diplomacy	f	cha
+6	disable device	t	dex
+7	disguise	f	cha
+8	escape artist	f	dex
+9	fly	f	dex
+10	handle animal	t	cha
+11	heal	f	wis
+12	intimidate	f	cha
+13	linguistics	t	int
+14	perception	f	wis
+15	ride	f	dex
+16	sense motive	f	wis
+17	sleight of hand	t	dex
+18	spellcraft	t	int
+19	stealth	f	dex
+20	survival	f	wis
+21	swim	f	str
+22	use magic device	t	cha
 \.
 
 

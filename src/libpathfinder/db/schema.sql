@@ -189,7 +189,8 @@ ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
 CREATE TABLE skill_constructors (
     id integer NOT NULL,
     name text NOT NULL,
-    trained_only boolean NOT NULL
+    trained_only boolean NOT NULL,
+    ability text NOT NULL
 );
 
 
@@ -223,7 +224,8 @@ ALTER SEQUENCE skill_constructors_id_seq OWNED BY skill_constructors.id;
 CREATE TABLE skills (
     id integer NOT NULL,
     name text NOT NULL,
-    trained_only boolean NOT NULL
+    trained_only boolean NOT NULL,
+    ability text NOT NULL
 );
 
 

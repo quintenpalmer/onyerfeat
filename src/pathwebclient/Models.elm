@@ -1,4 +1,14 @@
-module Models exposing (Model(..), Character, AbilityScoreSet, Ability, Alignment, MetaInformation, Size(..), CombatNumbers)
+module Models
+    exposing
+        ( Model(..)
+        , Character
+        , AbilityScoreSet
+        , Ability
+        , Alignment
+        , MetaInformation
+        , Size(..)
+        , CombatNumbers
+        )
 
 
 type Model

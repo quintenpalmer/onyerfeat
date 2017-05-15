@@ -8,6 +8,7 @@ pub struct Character {
     pub player_name: String,
     pub meta_information: MetaInformation,
     pub combat_numbers: CombatNumbers,
+    pub skills: Vec<TrainedSkill>,
 }
 
 // Combers or Barbers or Numbats
@@ -118,4 +119,19 @@ pub enum AbilityName {
     Int,
     Wis,
     Cha,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum TrainedSkill {
+    Skill(CharacterSkill),
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CharacterSkill {
+    pub name: String,
+    pub total: i32,
+    pub ability: AbilityName,
+    pub ability_mod: i32,
+    pub count: i32,
 }

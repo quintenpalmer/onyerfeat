@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::str;
 use std::error as stderror;
 
@@ -20,8 +21,11 @@ impl Character {
     pub fn into_canonical(&self,
                           creature: Creature,
                           abs: AbilityScoreSet,
-                          class: Class)
+                          class: Class,
+                          skills: Vec<Skill>,
+                          skill_choices: Vec<CharacterSkillChoice>)
                           -> models::Character {
+        let character_skills = get_character_skills(skills, skill_choices, &abs);
         return models::Character {
             id: self.id,
             name: creature.name,
@@ -75,8 +79,42 @@ impl Character {
                 max_hit_points: creature.max_hit_points,
                 current_hit_points: creature.current_hit_points,
             },
+            skills: character_skills,
         };
     }
+}
+
+fn get_character_skills(skills: Vec<Skill>,
+                        skill_choices: Vec<CharacterSkillChoice>,
+                        abs: &AbilityScoreSet)
+                        -> Vec<models::TrainedSkill> {
+    let mut ret_skills = Vec::new();
+    let choice_map = skill_choice_map(&skill_choices);
+    for skill in skills.iter() {
+        let count = match choice_map.get(&skill.id) {
+            Some(choice) => choice.count,
+            None => 0,
+        };
+        let ability_mod = abs.get_ability_mod(skill.ability.clone());
+        let total = count + ability_mod;
+        ret_skills.push(models::TrainedSkill::Skill(models::CharacterSkill {
+            name: skill.name.clone(),
+            total: total,
+            ability: skill.ability.clone(),
+            ability_mod: ability_mod,
+            count: count,
+        }));
+    }
+    return ret_skills;
+}
+
+fn skill_choice_map<'a>(s: &'a Vec<CharacterSkillChoice>)
+                        -> HashMap<i32, &'a CharacterSkillChoice> {
+    let mut m = HashMap::new();
+    for s in s.iter() {
+        m.insert(s.skill_id, s);
+    }
+    return m;
 }
 
 #[derive(TableNamer)]
@@ -118,6 +156,19 @@ pub struct AbilityScoreSet {
     pub cha: i32,
 }
 
+impl AbilityScoreSet {
+    pub fn get_ability_mod(&self, ability_name: models::AbilityName) -> i32 {
+        calc_ability_modifier(match ability_name {
+            models::AbilityName::Str => self.str,
+            models::AbilityName::Dex => self.dex,
+            models::AbilityName::Con => self.con,
+            models::AbilityName::Int => self.int,
+            models::AbilityName::Wis => self.wis,
+            models::AbilityName::Cha => self.cha,
+        })
+    }
+}
+
 #[derive(TableNamer)]
 #[table_namer(table_name = "skills")]
 #[derive(FromRow)]
@@ -145,6 +196,16 @@ pub struct SubSkill {
     pub id: i32,
     pub name: String,
     pub skill_constructor_id: i32,
+}
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "character_skill_choices")]
+#[derive(FromRow)]
+pub struct CharacterSkillChoice {
+    pub id: i32,
+    pub character_id: i32,
+    pub skill_id: i32,
+    pub count: i32,
 }
 
 impl postgres::types::FromSql for models::AbilityName {

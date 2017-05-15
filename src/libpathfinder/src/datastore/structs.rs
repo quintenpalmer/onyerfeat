@@ -16,6 +16,69 @@ pub struct Character {
     pub creature_id: i32,
 }
 
+impl Character {
+    pub fn into_canonical(&self,
+                          creature: Creature,
+                          abs: AbilityScoreSet,
+                          class: Class)
+                          -> models::Character {
+        return models::Character {
+            id: self.id,
+            name: creature.name,
+            ability_scores: models::AbilityScoreSet {
+                str: abs.str,
+                dex: abs.dex,
+                con: abs.con,
+                int: abs.int,
+                wis: abs.wis,
+                cha: abs.cha,
+            },
+            ability_score_info: models::AbilityScoreInfo {
+                str: models::ScoreAndMofidier {
+                    score: abs.str,
+                    modifier: calc_ability_modifier(abs.str),
+                },
+                dex: models::ScoreAndMofidier {
+                    score: abs.dex,
+                    modifier: calc_ability_modifier(abs.dex),
+                },
+                con: models::ScoreAndMofidier {
+                    score: abs.con,
+                    modifier: calc_ability_modifier(abs.con),
+                },
+                int: models::ScoreAndMofidier {
+                    score: abs.int,
+                    modifier: calc_ability_modifier(abs.int),
+                },
+                wis: models::ScoreAndMofidier {
+                    score: abs.wis,
+                    modifier: calc_ability_modifier(abs.wis),
+                },
+                cha: models::ScoreAndMofidier {
+                    score: abs.cha,
+                    modifier: calc_ability_modifier(abs.cha),
+                },
+            },
+            alignment: models::Alignment {
+                morality: creature.alignment_morality,
+                order: creature.alignment_order,
+            },
+            player_name: self.player_name.clone(),
+            meta_information: models::MetaInformation {
+                class: class.name,
+                race: creature.race,
+                age: creature.age,
+                deity: creature.deity,
+                size: creature.size,
+            },
+            combat_numbers: models::CombatNumbers {
+                max_hit_points: creature.max_hit_points,
+                current_hit_points: creature.current_hit_points,
+            },
+        };
+    }
+}
+
 #[derive(TableNamer)]
 #[table_namer(table_name = "classes")]
 #[derive(FromRow)]
@@ -191,4 +254,15 @@ impl postgres::types::FromSql for models::Size {
             _ => false,
         }
     }
+}
+
+fn calc_ability_modifier(i: i32) -> i32 {
+    let rounded = if i % 2 == 0 {
+        i
+    } else if i > 0 {
+        i - 1
+    } else {
+        i + 1
+    };
+    return (rounded - 10) / 2;
 }

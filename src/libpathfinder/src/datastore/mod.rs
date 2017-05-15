@@ -62,13 +62,14 @@ impl Datastore {
     }
 
     pub fn get_character(&self, id: i32) -> Result<models::Character, error::Error> {
-        let c: structs::Character = try!(select_one_by_id(&self.conn, id));
-        let creature: structs::Creature = try!(select_one_by_id(&self.conn, c.creature_id));
+        let character: structs::Character = try!(select_one_by_id(&self.conn, id));
+        let creature: structs::Creature = try!(select_one_by_id(&self.conn, character.creature_id));
         let abs: structs::AbilityScoreSet = try!(select_one_by_id(&self.conn,
                                                                   creature.ability_score_set_id));
-        let class: structs::Class = try!(select_one_by_id(&self.conn, c.class_id));
+        let class: structs::Class = try!(select_one_by_id(&self.conn, character.class_id));
+
         return Ok(models::Character {
-            id: c.id,
+            id: character.id,
             name: creature.name,
             ability_scores: models::AbilityScoreSet {
                 str: abs.str,
@@ -108,7 +109,7 @@ impl Datastore {
                 morality: creature.alignment_morality,
                 order: creature.alignment_order,
             },
-            player_name: c.player_name,
+            player_name: character.player_name,
             meta_information: models::MetaInformation {
                 class: class.name,
                 race: creature.race,

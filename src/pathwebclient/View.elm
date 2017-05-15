@@ -134,6 +134,33 @@ innerPage character =
                 , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
                 , Html.text "Max"
                 ]
+            , Html.div [ Attr.class "col-md-6" ]
+                [ Html.h2 [ Attr.class "text-center" ] [ Html.text "Skills" ]
+                , Html.table [ Attr.class "table table-striped table-bordered" ]
+                    [ Html.thead []
+                        [ Html.tr []
+                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+                            ]
+                        ]
+                    , Html.tbody [ Attr.class "text-center" ]
+                        (List.map
+                            (\skill ->
+                                Html.tr []
+                                    [ Html.td [] [ Html.b [] [ Html.text <| capitalize skill.skill.name ] ]
+                                    , Html.td [] [ Html.text (toString skill.skill.total) ]
+                                    , Html.td [] [ Html.text (toString skill.skill.abilityMod) ]
+                                    , Html.td [] [ Html.text skill.skill.ability ]
+                                    , Html.td [] [ Html.text (toString skill.skill.count) ]
+                                    ]
+                            )
+                            character.skills
+                        )
+                    ]
+                ]
             ]
         ]
 

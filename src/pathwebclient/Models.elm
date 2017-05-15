@@ -8,6 +8,8 @@ module Models
         , MetaInformation
         , Size(..)
         , CombatNumbers
+        , Skill
+        , BasicSkill
         )
 
 
@@ -25,6 +27,7 @@ type alias Character =
     , alignment : Alignment
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
+    , skills : List Skill
     }
 
 
@@ -74,4 +77,18 @@ type alias MetaInformation =
     , deity : Maybe String
     , age : Int
     , size : Size
+    }
+
+
+type alias Skill =
+    { skill : BasicSkill
+    }
+
+
+type alias BasicSkill =
+    { name : String
+    , total : Int
+    , ability : String
+    , abilityMod : Int
+    , count : Int
     }

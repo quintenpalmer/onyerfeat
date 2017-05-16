@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::str;
 use std::error as stderror;
 
@@ -102,7 +102,7 @@ fn get_character_skills(skills: Vec<Skill>,
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     let class_map = class_skill_map(&class_skills);
-    let class_sub_map = class_sub_skill_map(&class_sub_skills);
+    let class_sub_set = class_sub_skill_set(&class_sub_skills);
     for skill in skills.iter() {
         let count = match choice_map.get(&skill.id) {
             Some(choice) => choice.count,
@@ -125,7 +125,7 @@ fn get_character_skills(skills: Vec<Skill>,
     }
     for sub_skill in sub_skills.iter() {
         let count = sub_skill.count;
-        let is_class_skill = class_sub_map.contains_key(&sub_skill.sub_skill_id);
+        let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id);
         let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
         let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
         let total = count + ability_mod + class_mod;
@@ -143,10 +143,10 @@ fn get_character_skills(skills: Vec<Skill>,
     return ret_skills;
 }
 
-fn class_sub_skill_map<'a>(s: &'a Vec<ClassSubSkill>) -> HashMap<i32, &'a ClassSubSkill> {
-    let mut m = HashMap::new();
+fn class_sub_skill_set<'a>(s: &'a Vec<ClassSubSkill>) -> HashSet<i32> {
+    let mut m = HashSet::new();
     for s in s.iter() {
-        m.insert(s.sub_skill_id, s);
+        m.insert(s.sub_skill_id);
     }
     return m;
 }

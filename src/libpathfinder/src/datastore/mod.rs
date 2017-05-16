@@ -115,7 +115,16 @@ impl Datastore {
                                           queries::CHARACTER_SUB_SKILLS_QUERY,
                                           character.id));
 
-        return Ok(character.into_canonical(creature, abs, class, skills, trained_skills, sub_skills));
+        let class_skills: Vec<structs::ClassSkill> =
+            try!(select_by_field(&self.conn, "class_id", class.id));
+
+        return Ok(character.into_canonical(creature,
+                                           abs,
+                                           class,
+                                           skills,
+                                           trained_skills,
+                                           sub_skills,
+                                           class_skills));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

@@ -143,6 +143,7 @@ innerPage character =
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
                             ]
                         ]
@@ -154,6 +155,13 @@ innerPage character =
                                     , Html.td [] [ Html.text (toString skill.total) ]
                                     , Html.td [] [ Html.text (toString skill.abilityMod) ]
                                     , Html.td [] [ Html.text skill.ability ]
+                                    , Html.td []
+                                        [ Html.text <|
+                                            if skill.isClassSkill then
+                                                "⬛"
+                                            else
+                                                "⬜"
+                                        ]
                                     , Html.td [] [ Html.text (toString skill.count) ]
                                     ]
                             )

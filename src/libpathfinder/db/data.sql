@@ -168,6 +168,23 @@ SELECT pg_catalog.setval('characters_id_seq', 3, true);
 
 
 --
+-- Data for Name: class_skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
+1	1	1
+2	1	4
+\.
+
+
+--
+-- Name: class_skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('class_skill_constructors_id_seq', 2, true);
+
+
+--
 -- Data for Name: class_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 

@@ -26,13 +26,15 @@ impl Character {
                           skill_choices: Vec<CharacterSkillChoice>,
                           sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
                           class_skills: Vec<ClassSkill>,
-                          class_sub_skills: Vec<ClassSubSkill>)
+                          class_sub_skills: Vec<ClassSubSkill>,
+                          class_skill_constructors: Vec<ClassSkillConstructor>)
                           -> models::Character {
         let character_skills = get_character_skills(skills,
                                                     skill_choices,
                                                     sub_skills,
                                                     class_skills,
                                                     class_sub_skills,
+                                                    class_skill_constructors,
                                                     &abs);
         return models::Character {
             id: self.id,
@@ -97,12 +99,14 @@ fn get_character_skills(skills: Vec<Skill>,
                         sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
                         class_skills: Vec<ClassSkill>,
                         class_sub_skills: Vec<ClassSubSkill>,
+                        class_skill_constructors: Vec<ClassSkillConstructor>,
                         abs: &AbilityScoreSet)
                         -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     let class_map = class_skill_map(&class_skills);
     let class_sub_set = class_sub_skill_set(&class_sub_skills);
+    let class_constructor_set = class_skill_constructor_set(&class_skill_constructors);
     for skill in skills.iter() {
         let count = match choice_map.get(&skill.id) {
             Some(choice) => choice.count,
@@ -125,7 +129,8 @@ fn get_character_skills(skills: Vec<Skill>,
     }
     for sub_skill in sub_skills.iter() {
         let count = sub_skill.count;
-        let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id);
+        let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id) ||
+                             class_constructor_set.contains(&sub_skill.skill_constructor_id);
         let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
         let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
         let total = count + ability_mod + class_mod;
@@ -141,6 +146,14 @@ fn get_character_skills(skills: Vec<Skill>,
         });
     }
     return ret_skills;
+}
+
+fn class_skill_constructor_set<'a>(s: &'a Vec<ClassSkillConstructor>) -> HashSet<i32> {
+    let mut m = HashSet::new();
+    for s in s.iter() {
+        m.insert(s.skill_constructor_id);
+    }
+    return m;
 }
 
 fn class_sub_skill_set<'a>(s: &'a Vec<ClassSubSkill>) -> HashSet<i32> {
@@ -271,6 +284,7 @@ pub struct CharacterSubSkillChoice {
 #[derive(FromRow)]
 pub struct AugmentedCharacterSubSkillChoice {
     pub id: i32,
+    pub skill_constructor_id: i32,
     pub sub_skill_id: i32,
     pub count: i32,
     pub name: String,
@@ -296,6 +310,15 @@ pub struct ClassSubSkill {
     pub id: i32,
     pub class_id: i32,
     pub sub_skill_id: i32,
+}
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "class_skill_constructors")]
+#[derive(FromRow)]
+pub struct ClassSkillConstructor {
+    pub id: i32,
+    pub class_id: i32,
+    pub skill_constructor_id: i32,
 }
 
 impl postgres::types::FromSql for models::AbilityName {

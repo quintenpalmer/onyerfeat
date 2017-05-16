@@ -121,6 +121,10 @@ impl Datastore {
         let class_sub_skills: Vec<structs::ClassSubSkill> =
             try!(select_by_field(&self.conn, "class_id", class.id));
 
+        let class_skill_constructors: Vec<structs::ClassSkillConstructor> =
+            try!(select_by_field(&self.conn, "class_id", class.id));
+
+
         return Ok(character.into_canonical(creature,
                                            abs,
                                            class,
@@ -128,7 +132,8 @@ impl Datastore {
                                            trained_skills,
                                            sub_skills,
                                            class_skills,
-                                           class_sub_skills));
+                                           class_sub_skills,
+                                           class_skill_constructors));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

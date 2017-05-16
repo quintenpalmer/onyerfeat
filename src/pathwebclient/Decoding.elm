@@ -42,9 +42,10 @@ decodeSkill =
 
 decodeCombatNumbers : Decode.Decoder Models.CombatNumbers
 decodeCombatNumbers =
-    Decode.map2 Models.CombatNumbers
+    Decode.map3 Models.CombatNumbers
         (Decode.field "max_hit_points" Decode.int)
         (Decode.field "current_hit_points" Decode.int)
+        (Decode.field "nonlethal_damage" Decode.int)
 
 
 decodeAbilityScores : Decode.Decoder Models.AbilityScoreSet

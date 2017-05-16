@@ -74,6 +74,7 @@ pub fn into_canonical_character(character: structs::Character,
         combat_numbers: models::CombatNumbers {
             max_hit_points: creature.max_hit_points,
             current_hit_points: creature.current_hit_points,
+            nonlethal_damage: creature.nonlethal_damage,
         },
         skills: character_skills,
     };

@@ -16,6 +16,7 @@ pub struct Character {
 pub struct CombatNumbers {
     pub max_hit_points: i32,
     pub current_hit_points: i32,
+    pub nonlethal_damage: i32,
 }
 
 #[derive(Serialize, Deserialize)]

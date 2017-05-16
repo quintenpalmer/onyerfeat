@@ -33,6 +33,7 @@ type alias Character =
 type alias CombatNumbers =
     { maxHitPoints : Int
     , currentHitPoints : Int
+    , nonlethalDamage : Int
     }
 
 

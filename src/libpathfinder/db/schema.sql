@@ -327,7 +327,8 @@ CREATE TABLE creatures (
     age integer NOT NULL,
     size text NOT NULL,
     max_hit_points integer NOT NULL,
-    current_hit_points integer NOT NULL
+    current_hit_points integer NOT NULL,
+    nonlethal_damage integer NOT NULL
 );
 
 

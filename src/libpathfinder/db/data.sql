@@ -45,8 +45,8 @@ COPY classes (id, name) FROM stdin;
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8	0
 \.
 
 

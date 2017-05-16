@@ -155,6 +155,22 @@ pub struct ClassSkillConstructor {
     pub skill_constructor_id: i32,
 }
 
+#[derive(TableNamer)]
+#[table_namer(table_name = "armor_pieces")]
+#[derive(FromRow)]
+pub struct ArmorPiece {
+    pub id: i32,
+    pub armor_class: String,
+    pub name: String,
+    pub armor_bonus: i32,
+    pub max_dex_bonus: i32,
+    pub armor_check_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub fast_speed: i32,
+    pub slow_speed: i32,
+    pub medium_weight: i32,
+}
+
 pub fn calc_ability_modifier(i: i32) -> i32 {
     let rounded = if i % 2 == 0 {
         i

@@ -166,3 +166,19 @@ fn skill_choice_map<'a>(s: &'a Vec<structs::CharacterSkillChoice>)
     }
     return m;
 }
+
+impl structs::ArmorPiece {
+    pub fn into_canonical(&self) -> models::ArmorPiece {
+        models::ArmorPiece {
+            armor_class: self.armor_class.clone(),
+            name: self.name.clone(),
+            armor_bonus: self.armor_bonus,
+            max_dex_bonus: self.max_dex_bonus,
+            armor_check_penalty: self.armor_check_penalty,
+            arcane_spell_failure_chance: self.arcane_spell_failure_chance,
+            fast_speed: self.fast_speed,
+            slow_speed: self.slow_speed,
+            medium_weight: self.medium_weight,
+        }
+    }
+}

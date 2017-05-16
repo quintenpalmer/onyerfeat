@@ -86,6 +86,11 @@ impl Datastore {
         }
         return Ok(ret_skills);
     }
+
+    pub fn get_armor_pieces(&self) -> Result<Vec<models::ArmorPiece>, error::Error> {
+        let armor_pieces: Vec<structs::ArmorPiece> = try!(selects::select_all(&self.conn));
+        return Ok(armor_pieces.iter().map(|x| x.into_canonical()).collect());
+    }
 }
 
 fn skill_constructor_map<'a>(s: &'a Vec<structs::SkillConstructor>)

@@ -73,6 +73,47 @@ ALTER SEQUENCE ability_score_sets_id_seq OWNED BY ability_score_sets.id;
 
 
 --
+-- Name: armor_pieces; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE armor_pieces (
+    id integer NOT NULL,
+    armor_class text NOT NULL,
+    name text NOT NULL,
+    armor_bonus integer NOT NULL,
+    max_dex_bonus integer NOT NULL,
+    armor_check_penalty integer NOT NULL,
+    arcane_spell_failure_chance integer NOT NULL,
+    fast_speed integer NOT NULL,
+    slow_speed integer NOT NULL,
+    medium_weight integer NOT NULL
+);
+
+
+ALTER TABLE armor_pieces OWNER TO pathfinder_user;
+
+--
+-- Name: armor_pieces_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE armor_pieces_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE armor_pieces_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: armor_pieces_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE armor_pieces_id_seq OWNED BY armor_pieces.id;
+
+
+--
 -- Name: character_skill_choices; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -467,6 +508,13 @@ ALTER TABLE ONLY ability_score_sets ALTER COLUMN id SET DEFAULT nextval('ability
 
 
 --
+-- Name: armor_pieces id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY armor_pieces ALTER COLUMN id SET DEFAULT nextval('armor_pieces_id_seq'::regclass);
+
+
+--
 -- Name: character_skill_choices id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -549,6 +597,14 @@ ALTER TABLE ONLY sub_skills ALTER COLUMN id SET DEFAULT nextval('sub_skills_id_s
 
 ALTER TABLE ONLY ability_score_sets
     ADD CONSTRAINT ability_score_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: armor_pieces armor_pieces_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY armor_pieces
+    ADD CONSTRAINT armor_pieces_pkey PRIMARY KEY (id);
 
 
 --

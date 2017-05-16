@@ -128,5 +128,7 @@ pub struct CharacterSkill {
     pub total: i32,
     pub ability: AbilityName,
     pub ability_mod: i32,
+    pub is_class_skill: bool,
+    pub class_mod: i32,
     pub count: i32,
 }

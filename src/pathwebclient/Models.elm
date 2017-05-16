@@ -85,5 +85,7 @@ type alias Skill =
     , total : Int
     , ability : String
     , abilityMod : Int
+    , isClassSkill : Bool
+    , classMod : Int
     , count : Int
     }

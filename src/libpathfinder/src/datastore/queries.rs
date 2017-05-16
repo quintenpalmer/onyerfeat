@@ -3,9 +3,11 @@ pub static CHARACTER_SUB_SKILLS_QUERY: &'static str = r#"
 SELECT
     cssc.id,
     cssc.count,
+    scons.id as skill_constructor_id,
     scons.name,
     scons.ability,
     scons.trained_only,
+    sub_skills.id as sub_skill_id,
     sub_skills.name as sub_name
 FROM
     character_sub_skill_choices cssc
@@ -19,5 +21,5 @@ ON
     sub_skills.skill_constructor_id = scons.id
 WHERE
     cssc.character_id = $1
-GROUP BY cssc.id, scons.trained_only, scons.name, scons.ability, sub_name
+GROUP BY cssc.id, scons.trained_only, scons.name, scons.ability, scons.id, sub_skills.id, sub_name
 "#;

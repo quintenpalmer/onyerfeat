@@ -126,15 +126,15 @@ innerPage character =
                         , scoreTableRow "CHA" character.abilityScores.cha "🐶"
                         ]
                     ]
+                , Html.div [ Attr.class "text-center", Attr.class "col-md-2" ]
+                    [ Html.b [] [ Html.text "Hit Points" ]
+                    , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
+                    , Html.text "Current"
+                    , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
+                    , Html.text "Max"
+                    ]
                 ]
-            , Html.div [ Attr.class "col-md-1" ]
-                [ Html.b [] [ Html.text "Hit Points" ]
-                , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
-                , Html.text "Current"
-                , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
-                , Html.text "Max"
-                ]
-            , Html.div [ Attr.class "col-md-6" ]
+            , Html.div [ Attr.class "col-md-7" ]
                 [ Html.h2 [ Attr.class "text-center" ] [ Html.text "Skills" ]
                 , Html.table [ Attr.class "table table-striped table-bordered" ]
                     [ Html.thead []
@@ -143,6 +143,7 @@ innerPage character =
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
                             , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
                             ]
                         ]
@@ -154,6 +155,13 @@ innerPage character =
                                     , Html.td [] [ Html.text (toString skill.total) ]
                                     , Html.td [] [ Html.text (toString skill.abilityMod) ]
                                     , Html.td [] [ Html.text skill.ability ]
+                                    , Html.td []
+                                        [ Html.text <|
+                                            if skill.isClassSkill then
+                                                "⬛"
+                                            else
+                                                "⬜"
+                                        ]
                                     , Html.td [] [ Html.text (toString skill.count) ]
                                     ]
                             )

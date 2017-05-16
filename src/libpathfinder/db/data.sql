@@ -110,6 +110,57 @@ SELECT pg_catalog.setval('character_skill_choices_id_seq', 5, true);
 
 
 --
+-- Data for Name: skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
+1	craft	f	int
+2	knowledge	t	int
+3	perform	f	cha
+4	profession	t	wis
+\.
+
+
+--
+-- Data for Name: sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
+1	arcana	2
+2	dungeoneering	2
+3	engineering	2
+4	geography	2
+5	history	2
+6	local	2
+7	nature	2
+8	nobility	2
+9	planes	2
+10	religion	2
+11	traps	1
+12	architect	4
+\.
+
+
+--
+-- Data for Name: character_sub_skill_choices; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY character_sub_skill_choices (id, character_id, sub_skill_id, count) FROM stdin;
+1	1	2	1
+2	1	3	1
+3	1	11	1
+4	1	12	1
+\.
+
+
+--
+-- Name: character_sub_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('character_sub_skill_choices_id_seq', 4, true);
+
+
+--
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -131,18 +182,6 @@ SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 
 
 --
--- Data for Name: skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
-1	craft	f	int
-2	knowledge	t	int
-3	perform	f	cha
-4	profession	t	wis
-\.
-
-
---
 -- Name: skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -154,26 +193,6 @@ SELECT pg_catalog.setval('skill_constructors_id_seq', 4, true);
 --
 
 SELECT pg_catalog.setval('skills_id_seq', 22, true);
-
-
---
--- Data for Name: sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
-1	arcana	2
-2	dungeoneering	2
-3	engineering	2
-4	geography	2
-5	history	2
-6	local	2
-7	nature	2
-8	nobility	2
-9	planes	2
-10	religion	2
-11	traps	1
-12	architect	4
-\.
 
 
 --

@@ -108,6 +108,41 @@ ALTER SEQUENCE character_skill_choices_id_seq OWNED BY character_skill_choices.i
 
 
 --
+-- Name: character_sub_skill_choices; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE character_sub_skill_choices (
+    id integer NOT NULL,
+    character_id integer NOT NULL,
+    sub_skill_id integer NOT NULL,
+    count integer NOT NULL
+);
+
+
+ALTER TABLE character_sub_skill_choices OWNER TO pathfinder_user;
+
+--
+-- Name: character_sub_skill_choices_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE character_sub_skill_choices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE character_sub_skill_choices_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: character_sub_skill_choices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE character_sub_skill_choices_id_seq OWNED BY character_sub_skill_choices.id;
+
+
+--
 -- Name: characters; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -336,6 +371,13 @@ ALTER TABLE ONLY character_skill_choices ALTER COLUMN id SET DEFAULT nextval('ch
 
 
 --
+-- Name: character_sub_skill_choices id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_sub_skill_choices ALTER COLUMN id SET DEFAULT nextval('character_sub_skill_choices_id_seq'::regclass);
+
+
+--
 -- Name: characters id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -391,6 +433,14 @@ ALTER TABLE ONLY ability_score_sets
 
 ALTER TABLE ONLY character_skill_choices
     ADD CONSTRAINT character_skill_choices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: character_sub_skill_choices character_sub_skill_choices_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_sub_skill_choices
+    ADD CONSTRAINT character_sub_skill_choices_pkey PRIMARY KEY (id);
 
 
 --
@@ -471,6 +521,22 @@ ALTER TABLE ONLY character_skill_choices
 
 ALTER TABLE ONLY character_skill_choices
     ADD CONSTRAINT character_skill_choices_skill_id_fkey FOREIGN KEY (skill_id) REFERENCES skills(id);
+
+
+--
+-- Name: character_sub_skill_choices character_sub_skill_choices_character_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_sub_skill_choices
+    ADD CONSTRAINT character_sub_skill_choices_character_id_fkey FOREIGN KEY (character_id) REFERENCES characters(id);
+
+
+--
+-- Name: character_sub_skill_choices character_sub_skill_choices_sub_skill_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_sub_skill_choices
+    ADD CONSTRAINT character_sub_skill_choices_sub_skill_id_fkey FOREIGN KEY (sub_skill_id) REFERENCES sub_skills(id);
 
 
 --

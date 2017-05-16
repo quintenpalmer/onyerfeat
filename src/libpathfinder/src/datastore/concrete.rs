@@ -9,6 +9,7 @@ use models;
 use datastore::selects;
 use datastore::structs;
 use datastore::queries;
+use datastore::convert;
 
 pub struct Datastore {
     conn: postgres::Connection,
@@ -48,15 +49,16 @@ impl Datastore {
             try!(selects::select_by_field(&self.conn, "class_id", class.id));
 
 
-        return Ok(character.into_canonical(creature,
-                                           abs,
-                                           class,
-                                           skills,
-                                           trained_skills,
-                                           sub_skills,
-                                           class_skills,
-                                           class_sub_skills,
-                                           class_skill_constructors));
+        return Ok(convert::into_canonical_character(character,
+                                                    creature,
+                                                    abs,
+                                                    class,
+                                                    skills,
+                                                    trained_skills,
+                                                    sub_skills,
+                                                    class_skills,
+                                                    class_sub_skills,
+                                                    class_skill_constructors));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

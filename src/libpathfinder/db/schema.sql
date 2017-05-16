@@ -80,7 +80,7 @@ CREATE TABLE character_skill_choices (
     id integer NOT NULL,
     character_id integer NOT NULL,
     skill_id integer NOT NULL,
-    count integer
+    count integer NOT NULL
 );
 
 

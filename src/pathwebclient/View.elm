@@ -126,12 +126,18 @@ innerPage character =
                         , scoreTableRow "CHA" character.abilityScores.cha "🐶"
                         ]
                     ]
-                , Html.div [ Attr.class "text-center", Attr.class "col-md-2" ]
+                , Html.div [ Attr.class "text-center" ]
                     [ Html.b [] [ Html.text "Hit Points" ]
-                    , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
-                    , Html.text "Current"
-                    , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
-                    , Html.text "Max"
+                    , Html.form [ Attr.class "form-inline" ]
+                        [ Html.div [ Attr.class "form-group" ]
+                            [ Html.label [] [ Html.text "Current:" ]
+                            , Html.input [ Attr.type_ "text", Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
+                            ]
+                        , Html.div [ Attr.class "form-group" ]
+                            [ Html.label [] [ Html.text "Max:" ]
+                            , Html.input [ Attr.type_ "text", Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
+                            ]
+                        ]
                     ]
                 ]
             , Html.div [ Attr.class "col-md-7" ]

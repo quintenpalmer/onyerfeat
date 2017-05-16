@@ -25,10 +25,15 @@ impl Character {
                           skills: Vec<Skill>,
                           skill_choices: Vec<CharacterSkillChoice>,
                           sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
-                          class_skills: Vec<ClassSkill>)
+                          class_skills: Vec<ClassSkill>,
+                          class_sub_skills: Vec<ClassSubSkill>)
                           -> models::Character {
-        let character_skills =
-            get_character_skills(skills, skill_choices, sub_skills, class_skills, &abs);
+        let character_skills = get_character_skills(skills,
+                                                    skill_choices,
+                                                    sub_skills,
+                                                    class_skills,
+                                                    class_sub_skills,
+                                                    &abs);
         return models::Character {
             id: self.id,
             name: creature.name,
@@ -91,11 +96,13 @@ fn get_character_skills(skills: Vec<Skill>,
                         skill_choices: Vec<CharacterSkillChoice>,
                         sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
                         class_skills: Vec<ClassSkill>,
+                        class_sub_skills: Vec<ClassSubSkill>,
                         abs: &AbilityScoreSet)
                         -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     let class_map = class_skill_map(&class_skills);
+    let class_sub_map = class_sub_skill_map(&class_sub_skills);
     for skill in skills.iter() {
         let count = match choice_map.get(&skill.id) {
             Some(choice) => choice.count,
@@ -118,20 +125,30 @@ fn get_character_skills(skills: Vec<Skill>,
     }
     for sub_skill in sub_skills.iter() {
         let count = sub_skill.count;
+        let is_class_skill = class_sub_map.contains_key(&sub_skill.sub_skill_id);
+        let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
         let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
-        let total = count + ability_mod;
+        let total = count + ability_mod + class_mod;
         ret_skills.push(models::CharacterSkill {
             name: sub_skill.name.clone(),
             sub_name: Some(sub_skill.sub_name.clone()),
             total: total,
             ability: sub_skill.ability.clone(),
             ability_mod: ability_mod,
-            is_class_skill: false,
-            class_mod: 0,
+            is_class_skill: is_class_skill,
+            class_mod: class_mod,
             count: count,
         });
     }
     return ret_skills;
+}
+
+fn class_sub_skill_map<'a>(s: &'a Vec<ClassSubSkill>) -> HashMap<i32, &'a ClassSubSkill> {
+    let mut m = HashMap::new();
+    for s in s.iter() {
+        m.insert(s.sub_skill_id, s);
+    }
+    return m;
 }
 
 fn class_skill_map<'a>(s: &'a Vec<ClassSkill>) -> HashMap<i32, &'a ClassSkill> {
@@ -254,6 +271,7 @@ pub struct CharacterSubSkillChoice {
 #[derive(FromRow)]
 pub struct AugmentedCharacterSubSkillChoice {
     pub id: i32,
+    pub sub_skill_id: i32,
     pub count: i32,
     pub name: String,
     pub sub_name: String,
@@ -268,6 +286,16 @@ pub struct ClassSkill {
     pub id: i32,
     pub class_id: i32,
     pub skill_id: i32,
+}
+
+
+#[derive(TableNamer)]
+#[table_namer(table_name = "class_sub_skills")]
+#[derive(FromRow)]
+pub struct ClassSubSkill {
+    pub id: i32,
+    pub class_id: i32,
+    pub sub_skill_id: i32,
 }
 
 impl postgres::types::FromSql for models::AbilityName {

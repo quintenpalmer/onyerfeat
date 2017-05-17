@@ -9,6 +9,7 @@ module Models
         , Size(..)
         , CombatNumbers
         , Skill
+        , ArmorPiece
         )
 
 
@@ -89,4 +90,18 @@ type alias Skill =
     , isClassSkill : Bool
     , classMod : Int
     , count : Int
+    }
+
+
+type alias ArmorPiece =
+    { armorClass : String
+    , name : String
+    , armorBonus : Int
+    , maxDexBonus : Int
+    , armorCheckPenalty : Int
+
+    --, arcaneSpellFailureChance : Int
+    , fastSpeed : Int
+    , slowSpeed : Int
+    , mediumWeight : Int
     }

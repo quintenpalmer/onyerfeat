@@ -1,4 +1,4 @@
-module Decoding exposing (decodeCharacterResp)
+module Decoding exposing (decodeCharacterResp, decodeArmorPieces)
 
 import Json.Decode as Decode
 import Models
@@ -115,3 +115,22 @@ decodeSize s =
 
         _ ->
             Decode.fail "could not parse size"
+
+
+decodeArmorPieces : Decode.Decoder (List Models.ArmorPiece)
+decodeArmorPieces =
+    Decode.field "data" (Decode.list decodeArmorPiece)
+
+
+decodeArmorPiece : Decode.Decoder Models.ArmorPiece
+decodeArmorPiece =
+    Decode.map8 Models.ArmorPiece
+        (Decode.field "armor_class" Decode.string)
+        (Decode.field "name" Decode.string)
+        (Decode.field "armor_bonus" Decode.int)
+        (Decode.field "max_dex_bonus" Decode.int)
+        (Decode.field "armor_check_penalty" Decode.int)
+        --(Decode.field "arcane_spell_failure_chance" Decode.int)
+        (Decode.field "fast_speed" Decode.int)
+        (Decode.field "slow_speed" Decode.int)
+        (Decode.field "medium_weight" Decode.int)

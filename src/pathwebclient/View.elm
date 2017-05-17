@@ -151,39 +151,43 @@ innerPage character =
                         ]
                     ]
                 ]
-            , Html.div [ Attr.class "col-md-7" ]
-                [ Html.h2 [ Attr.class "text-center" ] [ Html.text "Skills" ]
-                , Html.table [ Attr.class "table table-striped table-bordered" ]
-                    [ Html.thead []
-                        [ Html.tr []
-                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+            , Html.div [ Attr.class "col-md-7", Attr.class "text-center" ]
+                [ Html.div [ Attr.class "panel panel-default" ]
+                    [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Skills" ] ]
+                    , Html.div [ Attr.class "panel-body" ]
+                        [ Html.table [ Attr.class "table table-striped" ]
+                            [ Html.thead []
+                                [ Html.tr []
+                                    [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+                                    ]
+                                ]
+                            , Html.tbody [ Attr.class "text-center" ]
+                                (List.map
+                                    (\skill ->
+                                        Html.tr []
+                                            [ Html.td [] [ Html.b [] [ Html.text <| buildSkillName skill ] ]
+                                            , Html.td [] [ Html.text (toString skill.total) ]
+                                            , Html.td [] [ Html.text (toString skill.abilityMod) ]
+                                            , Html.td [] [ Html.text skill.ability ]
+                                            , Html.td []
+                                                [ Html.text <|
+                                                    if skill.isClassSkill then
+                                                        "⬛"
+                                                    else
+                                                        "⬜"
+                                                ]
+                                            , Html.td [] [ Html.text (toString skill.count) ]
+                                            ]
+                                    )
+                                    character.skills
+                                )
                             ]
                         ]
-                    , Html.tbody [ Attr.class "text-center" ]
-                        (List.map
-                            (\skill ->
-                                Html.tr []
-                                    [ Html.td [] [ Html.b [] [ Html.text <| buildSkillName skill ] ]
-                                    , Html.td [] [ Html.text (toString skill.total) ]
-                                    , Html.td [] [ Html.text (toString skill.abilityMod) ]
-                                    , Html.td [] [ Html.text skill.ability ]
-                                    , Html.td []
-                                        [ Html.text <|
-                                            if skill.isClassSkill then
-                                                "⬛"
-                                            else
-                                                "⬜"
-                                        ]
-                                    , Html.td [] [ Html.text (toString skill.count) ]
-                                    ]
-                            )
-                            character.skills
-                        )
                     ]
                 ]
             ]

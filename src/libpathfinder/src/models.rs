@@ -15,6 +15,24 @@ pub struct CombatNumbers {
     pub max_hit_points: i32,
     pub current_hit_points: i32,
     pub nonlethal_damage: i32,
+    pub armor_class: ArmorClass,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ArmorClass {
+    pub total: i32,
+    pub base: i32,
+    pub dex: i32,
+    // TODO implement this
+    pub deflection_mod: i32,
+    // TODO implement this
+    pub dodge_mod: i32,
+    pub armor_ac: i32,
+    // TODO implement this
+    pub shield_ac: i32,
+    // TODO implement this
+    pub natural_armor: i32,
+    pub size_mod: i32,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -51,6 +69,22 @@ pub enum Size {
     Tiny,
     Diminutive,
     Fine,
+}
+
+impl Size {
+    pub fn get_modifier(&self) -> i32 {
+        match *self {
+            Size::Colossal => -8,
+            Size::Gargantuan => -4,
+            Size::Huge => -2,
+            Size::Large => -1,
+            Size::Medium => 0,
+            Size::Small => 1,
+            Size::Tiny => 2,
+            Size::Diminutive => 4,
+            Size::Fine => 8,
+        }
+    }
 }
 
 

@@ -24,6 +24,24 @@ pub fn into_canonical_character(character: structs::Character,
                                                 class_skill_constructors,
                                                 &abs,
                                                 &armor_piece);
+    let armor_class = {
+        let dex_mod = structs::calc_ability_modifier(abs.dex);
+        let base = 10;
+        let armor_ac = armor_piece.armor_bonus;
+        let size_mod = creature.size.get_modifier();
+        let armor_class = models::ArmorClass {
+            total: dex_mod + base + armor_ac + size_mod,
+            base: base,
+            dex: dex_mod,
+            armor_ac: armor_ac,
+            size_mod: size_mod,
+            deflection_mod: 0,
+            dodge_mod: 0,
+            shield_ac: 0,
+            natural_armor: 0,
+        };
+        armor_class
+    };
     return models::Character {
         id: character.id,
         ability_scores: models::AbilityScoreSet {
@@ -77,6 +95,7 @@ pub fn into_canonical_character(character: structs::Character,
             max_hit_points: creature.max_hit_points,
             current_hit_points: creature.current_hit_points,
             nonlethal_damage: creature.nonlethal_damage,
+            armor_class: armor_class,
         },
         armor_piece: armor_piece.into_canonical(),
         skills: character_skills,

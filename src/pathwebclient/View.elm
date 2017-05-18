@@ -141,6 +141,20 @@ innerPage character =
                                     ]
                                 ]
                             , Html.h4 []
+                                [ Html.small []
+                                    [ Html.text <|
+                                        String.append
+                                            (String.repeat
+                                                (character.combatNumbers.currentHitPoints)
+                                                "⬛"
+                                            )
+                                            (String.repeat
+                                                (character.combatNumbers.maxHitPoints - character.combatNumbers.currentHitPoints)
+                                                "⬜"
+                                            )
+                                    ]
+                                ]
+                            , Html.h4 []
                                 [ Html.span [] [ Html.text " (Nonlethal: " ]
                                 , Html.span [ Attr.class "label label-default" ]
                                     [ Html.text <| toString character.combatNumbers.nonlethalDamage

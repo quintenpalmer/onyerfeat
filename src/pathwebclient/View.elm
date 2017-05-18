@@ -108,65 +108,125 @@ innerPage character =
             ]
         , Html.div [ Attr.class "row" ]
             [ Html.div [ Attr.class "col-md-5" ]
-                [ Html.table [ Attr.class "table table-striped table-bordered" ]
-                    [ Html.thead []
-                        [ Html.tr []
-                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                [ Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Ability Scores" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.table [ Attr.class "table table-striped" ]
+                                [ Html.thead []
+                                    [ Html.tr []
+                                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                                        ]
+                                    ]
+                                , Html.tbody [ Attr.class "text-center" ]
+                                    [ scoreTableRow "STR" character.abilityScores.str "🐂"
+                                    , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                                    , scoreTableRow "CON" character.abilityScores.con "🐘"
+                                    , scoreTableRow "INT" character.abilityScores.int "🐙"
+                                    , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                                    , scoreTableRow "CHA" character.abilityScores.cha "🐶"
+                                    ]
+                                ]
                             ]
                         ]
-                    , Html.tbody [ Attr.class "text-center" ]
-                        [ scoreTableRow "STR" character.abilityScores.str "🐂"
-                        , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                        , scoreTableRow "CON" character.abilityScores.con "🐘"
-                        , scoreTableRow "INT" character.abilityScores.int "🐙"
-                        , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                        , scoreTableRow "CHA" character.abilityScores.cha "🐶"
-                        ]
                     ]
-                , Html.div [ Attr.class "text-center", Attr.class "col-md-2" ]
-                    [ Html.b [] [ Html.text "Hit Points" ]
-                    , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.currentHitPoints ] []
-                    , Html.text "Current"
-                    , Html.input [ Attr.readonly True, Attr.class "form-control", Attr.value <| toString character.combatNumbers.maxHitPoints ] []
-                    , Html.text "Max"
+                , Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Hit Points" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.h4 []
+                                [ Html.span [] [ Html.text "Current: " ]
+                                , Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.currentHitPoints
+                                    ]
+                                , Html.span [] [ Html.text " / Max: " ]
+                                , Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.maxHitPoints
+                                    ]
+                                ]
+                            , Html.h4 []
+                                [ Html.small []
+                                    [ Html.text <|
+                                        String.append
+                                            (String.repeat
+                                                (character.combatNumbers.currentHitPoints)
+                                                "⬛"
+                                            )
+                                            (String.repeat
+                                                (character.combatNumbers.maxHitPoints - character.combatNumbers.currentHitPoints)
+                                                "⬜"
+                                            )
+                                    ]
+                                ]
+                            , Html.h4 []
+                                [ Html.span [] [ Html.text " (Nonlethal: " ]
+                                , Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.nonlethalDamage
+                                    ]
+                                , Html.span [] [ Html.text ")" ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
-            , Html.div [ Attr.class "col-md-7" ]
-                [ Html.h2 [ Attr.class "text-center" ] [ Html.text "Skills" ]
-                , Html.table [ Attr.class "table table-striped table-bordered" ]
-                    [ Html.thead []
-                        [ Html.tr []
-                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+            , Html.div [ Attr.class "col-md-7", Attr.class "text-center" ]
+                [ Html.div [ Attr.class "panel panel-default" ]
+                    [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Skills" ] ]
+                    , Html.div [ Attr.class "panel-body" ]
+                        [ Html.table [ Attr.class "table table-striped" ]
+                            [ Html.thead []
+                                [ Html.tr []
+                                    [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+                                    ]
+                                ]
+                            , Html.tbody [ Attr.class "text-center" ]
+                                (List.map
+                                    (\skill ->
+                                        Html.tr []
+                                            [ Html.td []
+                                                [ Html.b []
+                                                    [ Html.text <| buildSkillName skill ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.span [ Attr.class "label label-default" ]
+                                                    [ Html.text (toString skill.total) ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.span [ Attr.class "label label-default" ]
+                                                    [ Html.text (toString skill.abilityMod) ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.b [ Attr.class "text-uppercase" ]
+                                                    [ Html.text skill.ability ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.text <|
+                                                    if skill.isClassSkill then
+                                                        "⬛"
+                                                    else
+                                                        "⬜"
+                                                ]
+                                            , Html.td []
+                                                [ if skill.count > 0 then
+                                                    Html.span [ Attr.class "label label-default" ]
+                                                        [ Html.text (toString skill.count) ]
+                                                  else
+                                                    Html.u [] [ Html.text "_" ]
+                                                ]
+                                            ]
+                                    )
+                                    character.skills
+                                )
                             ]
                         ]
-                    , Html.tbody [ Attr.class "text-center" ]
-                        (List.map
-                            (\skill ->
-                                Html.tr []
-                                    [ Html.td [] [ Html.b [] [ Html.text <| buildSkillName skill ] ]
-                                    , Html.td [] [ Html.text (toString skill.total) ]
-                                    , Html.td [] [ Html.text (toString skill.abilityMod) ]
-                                    , Html.td [] [ Html.text skill.ability ]
-                                    , Html.td []
-                                        [ Html.text <|
-                                            if skill.isClassSkill then
-                                                "⬛"
-                                            else
-                                                "⬜"
-                                        ]
-                                    , Html.td [] [ Html.text (toString skill.count) ]
-                                    ]
-                            )
-                            character.skills
-                        )
                     ]
                 ]
             ]
@@ -197,8 +257,14 @@ scoreTableRow : String -> Models.Ability -> String -> Html.Html Common.Msg
 scoreTableRow name ability emoji =
     Html.tr []
         [ Html.td [] [ Html.b [] [ Html.text name ] ]
-        , Html.td [] [ Html.text (toString ability.score) ]
-        , Html.td [] [ Html.b [] [ Html.text (toString ability.modifier) ] ]
+        , Html.td []
+            [ Html.span [ Attr.class "label label-default" ]
+                [ Html.text (toString ability.score) ]
+            ]
+        , Html.td []
+            [ Html.span [ Attr.class "label label-default" ]
+                [ Html.b [] [ Html.text (toString ability.modifier) ] ]
+            ]
         , Html.td []
             [ Html.text <|
                 if ability.modifier >= 0 then

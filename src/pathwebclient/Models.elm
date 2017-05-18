@@ -9,6 +9,7 @@ module Models
         , Size(..)
         , CombatNumbers
         , Skill
+        , ArmorPiece
         )
 
 
@@ -33,6 +34,7 @@ type alias Character =
 type alias CombatNumbers =
     { maxHitPoints : Int
     , currentHitPoints : Int
+    , nonlethalDamage : Int
     }
 
 
@@ -88,4 +90,18 @@ type alias Skill =
     , isClassSkill : Bool
     , classMod : Int
     , count : Int
+    }
+
+
+type alias ArmorPiece =
+    { armorClass : String
+    , name : String
+    , armorBonus : Int
+    , maxDexBonus : Int
+    , armorCheckPenalty : Int
+
+    --, arcaneSpellFailureChance : Int
+    , fastSpeed : Int
+    , slowSpeed : Int
+    , mediumWeight : Int
     }

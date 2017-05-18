@@ -1,11 +1,8 @@
-use std::collections::{HashMap, HashSet};
-use std::str;
-use std::error as stderror;
-
-use models;
 use postgres;
 
 use libpathfinder_common::error;
+
+use models;
 
 #[derive(TableNamer)]
 #[table_namer(table_name = "characters")]
@@ -15,170 +12,6 @@ pub struct Character {
     pub player_name: String,
     pub class_id: i32,
     pub creature_id: i32,
-}
-
-impl Character {
-    pub fn into_canonical(&self,
-                          creature: Creature,
-                          abs: AbilityScoreSet,
-                          class: Class,
-                          skills: Vec<Skill>,
-                          skill_choices: Vec<CharacterSkillChoice>,
-                          sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
-                          class_skills: Vec<ClassSkill>,
-                          class_sub_skills: Vec<ClassSubSkill>,
-                          class_skill_constructors: Vec<ClassSkillConstructor>)
-                          -> models::Character {
-        let character_skills = get_character_skills(skills,
-                                                    skill_choices,
-                                                    sub_skills,
-                                                    class_skills,
-                                                    class_sub_skills,
-                                                    class_skill_constructors,
-                                                    &abs);
-        return models::Character {
-            id: self.id,
-            name: creature.name,
-            ability_scores: models::AbilityScoreSet {
-                str: abs.str,
-                dex: abs.dex,
-                con: abs.con,
-                int: abs.int,
-                wis: abs.wis,
-                cha: abs.cha,
-            },
-            ability_score_info: models::AbilityScoreInfo {
-                str: models::ScoreAndMofidier {
-                    score: abs.str,
-                    modifier: calc_ability_modifier(abs.str),
-                },
-                dex: models::ScoreAndMofidier {
-                    score: abs.dex,
-                    modifier: calc_ability_modifier(abs.dex),
-                },
-                con: models::ScoreAndMofidier {
-                    score: abs.con,
-                    modifier: calc_ability_modifier(abs.con),
-                },
-                int: models::ScoreAndMofidier {
-                    score: abs.int,
-                    modifier: calc_ability_modifier(abs.int),
-                },
-                wis: models::ScoreAndMofidier {
-                    score: abs.wis,
-                    modifier: calc_ability_modifier(abs.wis),
-                },
-                cha: models::ScoreAndMofidier {
-                    score: abs.cha,
-                    modifier: calc_ability_modifier(abs.cha),
-                },
-            },
-            alignment: models::Alignment {
-                morality: creature.alignment_morality,
-                order: creature.alignment_order,
-            },
-            player_name: self.player_name.clone(),
-            meta_information: models::MetaInformation {
-                class: class.name,
-                race: creature.race,
-                age: creature.age,
-                deity: creature.deity,
-                size: creature.size,
-            },
-            combat_numbers: models::CombatNumbers {
-                max_hit_points: creature.max_hit_points,
-                current_hit_points: creature.current_hit_points,
-            },
-            skills: character_skills,
-        };
-    }
-}
-
-fn get_character_skills(skills: Vec<Skill>,
-                        skill_choices: Vec<CharacterSkillChoice>,
-                        sub_skills: Vec<AugmentedCharacterSubSkillChoice>,
-                        class_skills: Vec<ClassSkill>,
-                        class_sub_skills: Vec<ClassSubSkill>,
-                        class_skill_constructors: Vec<ClassSkillConstructor>,
-                        abs: &AbilityScoreSet)
-                        -> Vec<models::CharacterSkill> {
-    let mut ret_skills = Vec::new();
-    let choice_map = skill_choice_map(&skill_choices);
-    let class_map = class_skill_map(&class_skills);
-    let class_sub_set = class_sub_skill_set(&class_sub_skills);
-    let class_constructor_set = class_skill_constructor_set(&class_skill_constructors);
-    for skill in skills.iter() {
-        let count = match choice_map.get(&skill.id) {
-            Some(choice) => choice.count,
-            None => 0,
-        };
-        let is_class_skill = class_map.contains_key(&skill.id);
-        let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
-        let ability_mod = abs.get_ability_mod(skill.ability.clone());
-        let total = count + ability_mod + class_mod;
-        ret_skills.push(models::CharacterSkill {
-            name: skill.name.clone(),
-            sub_name: None,
-            total: total,
-            ability: skill.ability.clone(),
-            ability_mod: ability_mod,
-            is_class_skill: is_class_skill,
-            class_mod: class_mod,
-            count: count,
-        });
-    }
-    for sub_skill in sub_skills.iter() {
-        let count = sub_skill.count;
-        let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id) ||
-                             class_constructor_set.contains(&sub_skill.skill_constructor_id);
-        let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
-        let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
-        let total = count + ability_mod + class_mod;
-        ret_skills.push(models::CharacterSkill {
-            name: sub_skill.name.clone(),
-            sub_name: Some(sub_skill.sub_name.clone()),
-            total: total,
-            ability: sub_skill.ability.clone(),
-            ability_mod: ability_mod,
-            is_class_skill: is_class_skill,
-            class_mod: class_mod,
-            count: count,
-        });
-    }
-    return ret_skills;
-}
-
-fn class_skill_constructor_set<'a>(s: &'a Vec<ClassSkillConstructor>) -> HashSet<i32> {
-    let mut m = HashSet::new();
-    for s in s.iter() {
-        m.insert(s.skill_constructor_id);
-    }
-    return m;
-}
-
-fn class_sub_skill_set<'a>(s: &'a Vec<ClassSubSkill>) -> HashSet<i32> {
-    let mut m = HashSet::new();
-    for s in s.iter() {
-        m.insert(s.sub_skill_id);
-    }
-    return m;
-}
-
-fn class_skill_map<'a>(s: &'a Vec<ClassSkill>) -> HashMap<i32, &'a ClassSkill> {
-    let mut m = HashMap::new();
-    for s in s.iter() {
-        m.insert(s.skill_id, s);
-    }
-    return m;
-}
-
-fn skill_choice_map<'a>(s: &'a Vec<CharacterSkillChoice>)
-                        -> HashMap<i32, &'a CharacterSkillChoice> {
-    let mut m = HashMap::new();
-    for s in s.iter() {
-        m.insert(s.skill_id, s);
-    }
-    return m;
 }
 
 #[derive(TableNamer)]
@@ -204,6 +37,7 @@ pub struct Creature {
     pub size: models::Size,
     pub max_hit_points: i32,
     pub current_hit_points: i32,
+    pub nonlethal_damage: i32,
 }
 
 #[derive(TableNamer)]
@@ -321,116 +155,23 @@ pub struct ClassSkillConstructor {
     pub skill_constructor_id: i32,
 }
 
-impl postgres::types::FromSql for models::AbilityName {
-    fn from_sql(ty: &postgres::types::Type,
-                raw: &[u8])
-                -> Result<Self, Box<stderror::Error + Send + Sync>> {
-        match ty {
-            &postgres::types::Type::Text => {
-                match try!(str::from_utf8(raw)) {
-                    "str" => Ok(models::AbilityName::Str),
-                    "dex" => Ok(models::AbilityName::Dex),
-                    "con" => Ok(models::AbilityName::Con),
-                    "int" => Ok(models::AbilityName::Int),
-                    "wis" => Ok(models::AbilityName::Wis),
-                    "cha" => Ok(models::AbilityName::Cha),
-                    _ => Err(Box::new(error::Error::ParseError {})),
-                }
-            }
-            _ => Err(Box::new(error::Error::ParseError {})),
-        }
-    }
-
-    fn accepts(ty: &postgres::types::Type) -> bool {
-        match ty {
-            &postgres::types::Type::Text => true,
-            _ => false,
-        }
-    }
+#[derive(TableNamer)]
+#[table_namer(table_name = "armor_pieces")]
+#[derive(FromRow)]
+pub struct ArmorPiece {
+    pub id: i32,
+    pub armor_class: String,
+    pub name: String,
+    pub armor_bonus: i32,
+    pub max_dex_bonus: i32,
+    pub armor_check_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub fast_speed: i32,
+    pub slow_speed: i32,
+    pub medium_weight: i32,
 }
 
-impl postgres::types::FromSql for models::AlignmentOrder {
-    fn from_sql(ty: &postgres::types::Type,
-                raw: &[u8])
-                -> Result<Self, Box<stderror::Error + Send + Sync>> {
-        match ty {
-            &postgres::types::Type::Text => {
-                match try!(str::from_utf8(raw)) {
-                    "chaotic" => Ok(models::AlignmentOrder::Chaotic),
-                    "neutral" => Ok(models::AlignmentOrder::Neutral),
-                    "lawful" => Ok(models::AlignmentOrder::Lawful),
-                    _ => Err(Box::new(error::Error::ParseError {})),
-                }
-            }
-            _ => Err(Box::new(error::Error::ParseError {})),
-        }
-    }
-
-    fn accepts(ty: &postgres::types::Type) -> bool {
-        match ty {
-            &postgres::types::Type::Text => true,
-            _ => false,
-        }
-    }
-}
-
-impl postgres::types::FromSql for models::AlignmentMorality {
-    fn from_sql(ty: &postgres::types::Type,
-                raw: &[u8])
-                -> Result<Self, Box<stderror::Error + Send + Sync>> {
-        match ty {
-            &postgres::types::Type::Text => {
-                match try!(str::from_utf8(raw)) {
-                    "evil" => Ok(models::AlignmentMorality::Evil),
-                    "neutral" => Ok(models::AlignmentMorality::Neutral),
-                    "good" => Ok(models::AlignmentMorality::Good),
-                    _ => Err(Box::new(error::Error::ParseError {})),
-                }
-            }
-            _ => Err(Box::new(error::Error::ParseError {})),
-        }
-    }
-
-    fn accepts(ty: &postgres::types::Type) -> bool {
-        match ty {
-            &postgres::types::Type::Text => true,
-            _ => false,
-        }
-    }
-}
-
-impl postgres::types::FromSql for models::Size {
-    fn from_sql(ty: &postgres::types::Type,
-                raw: &[u8])
-                -> Result<Self, Box<stderror::Error + Send + Sync>> {
-        match ty {
-            &postgres::types::Type::Text => {
-                match try!(str::from_utf8(raw)) {
-                    "colossal" => Ok(models::Size::Colossal),
-                    "gargantuan" => Ok(models::Size::Gargantuan),
-                    "huge" => Ok(models::Size::Huge),
-                    "large" => Ok(models::Size::Large),
-                    "medium" => Ok(models::Size::Medium),
-                    "small" => Ok(models::Size::Small),
-                    "tiny" => Ok(models::Size::Tiny),
-                    "diminutive" => Ok(models::Size::Diminutive),
-                    "fine" => Ok(models::Size::Fine),
-                    _ => Err(Box::new(error::Error::ParseError {})),
-                }
-            }
-            _ => Err(Box::new(error::Error::ParseError {})),
-        }
-    }
-
-    fn accepts(ty: &postgres::types::Type) -> bool {
-        match ty {
-            &postgres::types::Type::Text => true,
-            _ => false,
-        }
-    }
-}
-
-fn calc_ability_modifier(i: i32) -> i32 {
+pub fn calc_ability_modifier(i: i32) -> i32 {
     let rounded = if i % 2 == 0 {
         i
     } else if i > 0 {

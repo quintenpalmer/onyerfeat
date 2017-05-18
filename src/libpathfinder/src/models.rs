@@ -16,6 +16,7 @@ pub struct Character {
 pub struct CombatNumbers {
     pub max_hit_points: i32,
     pub current_hit_points: i32,
+    pub nonlethal_damage: i32,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -131,4 +132,17 @@ pub struct CharacterSkill {
     pub is_class_skill: bool,
     pub class_mod: i32,
     pub count: i32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ArmorPiece {
+    pub armor_class: String,
+    pub name: String,
+    pub armor_bonus: i32,
+    pub max_dex_bonus: i32,
+    pub armor_check_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub fast_speed: i32,
+    pub slow_speed: i32,
+    pub medium_weight: i32,
 }

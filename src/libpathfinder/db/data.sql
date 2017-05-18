@@ -33,6 +33,33 @@ SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
 
 
 --
+-- Data for Name: armor_pieces; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_check_penalty, arcane_spell_failure_chance, fast_speed, slow_speed, medium_weight) FROM stdin;
+1	light	Padded	1	8	0	5	30	20	10
+2	light	Leather	2	6	0	10	30	20	15
+3	light	Studded leather	3	5	-1	15	30	20	20
+4	light	Chain shirt	4	4	-2	20	30	20	25
+5	medium	Hide	4	4	-3	20	20	15	25
+6	medium	Scale mail	5	3	-4	25	20	15	30
+7	medium	Chainmail	6	2	-5	30	20	15	40
+8	medium	Breastplate	6	3	-4	25	20	15	30
+9	heavy	Splint mail	7	0	-7	40	20	15	45
+10	heavy	Banded mail	7	1	-6	35	20	15	35
+11	heavy	Half-plate	8	0	-7	40	20	15	50
+12	heavy	Full plate	9	1	-6	35	20	15	50
+\.
+
+
+--
+-- Name: armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('armor_pieces_id_seq', 12, true);
+
+
+--
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -45,8 +72,8 @@ COPY classes (id, name) FROM stdin;
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8	0
 \.
 
 

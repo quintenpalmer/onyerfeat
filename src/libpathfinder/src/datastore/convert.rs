@@ -13,7 +13,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
                                 class_skills: Vec<structs::ClassSkill>,
                                 class_sub_skills: Vec<structs::ClassSubSkill>,
-                                class_skill_constructors: Vec<structs::ClassSkillConstructor>)
+                                class_skill_constructors: Vec<structs::ClassSkillConstructor>,
+                                armor_piece: structs::ArmorPiece)
                                 -> models::Character {
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
@@ -21,10 +22,10 @@ pub fn into_canonical_character(character: structs::Character,
                                                 class_skills,
                                                 class_sub_skills,
                                                 class_skill_constructors,
-                                                &abs);
+                                                &abs,
+                                                &armor_piece);
     return models::Character {
         id: character.id,
-        name: creature.name,
         ability_scores: models::AbilityScoreSet {
             str: abs.str,
             dex: abs.dex,
@@ -59,12 +60,13 @@ pub fn into_canonical_character(character: structs::Character,
                 modifier: structs::calc_ability_modifier(abs.cha),
             },
         },
-        alignment: models::Alignment {
-            morality: creature.alignment_morality,
-            order: creature.alignment_order,
-        },
-        player_name: character.player_name.clone(),
         meta_information: models::MetaInformation {
+            name: creature.name,
+            player_name: character.player_name.clone(),
+            alignment: models::Alignment {
+                morality: creature.alignment_morality,
+                order: creature.alignment_order,
+            },
             class: class.name,
             race: creature.race,
             age: creature.age,
@@ -76,6 +78,7 @@ pub fn into_canonical_character(character: structs::Character,
             current_hit_points: creature.current_hit_points,
             nonlethal_damage: creature.nonlethal_damage,
         },
+        armor_piece: armor_piece.into_canonical(),
         skills: character_skills,
     };
 }
@@ -86,7 +89,8 @@ fn get_character_skills(skills: Vec<structs::Skill>,
                         class_skills: Vec<structs::ClassSkill>,
                         class_sub_skills: Vec<structs::ClassSubSkill>,
                         class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-                        abs: &structs::AbilityScoreSet)
+                        abs: &structs::AbilityScoreSet,
+                        armor_piece: &structs::ArmorPiece)
                         -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
@@ -94,6 +98,11 @@ fn get_character_skills(skills: Vec<structs::Skill>,
     let class_sub_set = class_sub_skill_set(&class_sub_skills);
     let class_constructor_set = class_skill_constructor_set(&class_skill_constructors);
     for skill in skills.iter() {
+        let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
+            Some(armor_piece.armor_check_penalty)
+        } else {
+            None
+        };
         let count = match choice_map.get(&skill.id) {
             Some(choice) => choice.count,
             None => 0,
@@ -101,7 +110,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
         let is_class_skill = class_map.contains_key(&skill.id);
         let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
         let ability_mod = abs.get_ability_mod(skill.ability.clone());
-        let total = count + ability_mod + class_mod;
+        let total = count + ability_mod + class_mod + armor_penalty.unwrap_or(0);
         ret_skills.push(models::CharacterSkill {
             name: skill.name.clone(),
             sub_name: None,
@@ -111,15 +120,21 @@ fn get_character_skills(skills: Vec<structs::Skill>,
             is_class_skill: is_class_skill,
             class_mod: class_mod,
             count: count,
+            armor_check_penalty: armor_penalty,
         });
     }
     for sub_skill in sub_skills.iter() {
+        let armor_penalty = if is_armor_penalized(sub_skill.ability.clone()) {
+            Some(armor_piece.armor_check_penalty)
+        } else {
+            None
+        };
         let count = sub_skill.count;
         let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id) ||
                              class_constructor_set.contains(&sub_skill.skill_constructor_id);
         let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
         let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
-        let total = count + ability_mod + class_mod;
+        let total = count + ability_mod + class_mod + armor_penalty.unwrap_or(0);
         ret_skills.push(models::CharacterSkill {
             name: sub_skill.name.clone(),
             sub_name: Some(sub_skill.sub_name.clone()),
@@ -129,6 +144,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
             is_class_skill: is_class_skill,
             class_mod: class_mod,
             count: count,
+            armor_check_penalty: armor_penalty,
         });
     }
     return ret_skills;
@@ -180,5 +196,13 @@ impl structs::ArmorPiece {
             slow_speed: self.slow_speed,
             medium_weight: self.medium_weight,
         }
+    }
+}
+
+fn is_armor_penalized(ability: models::AbilityName) -> bool {
+    match ability {
+        models::AbilityName::Str => true,
+        models::AbilityName::Dex => true,
+        _ => false,
     }
 }

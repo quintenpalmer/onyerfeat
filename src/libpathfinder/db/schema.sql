@@ -354,6 +354,40 @@ ALTER SEQUENCE classes_id_seq OWNED BY classes.id;
 
 
 --
+-- Name: creature_armor_pieces; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE creature_armor_pieces (
+    id integer NOT NULL,
+    creature_id integer NOT NULL,
+    armor_piece_id integer NOT NULL
+);
+
+
+ALTER TABLE creature_armor_pieces OWNER TO pathfinder_user;
+
+--
+-- Name: creature_armor_pieces_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE creature_armor_pieces_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE creature_armor_pieces_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: creature_armor_pieces_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE creature_armor_pieces_id_seq OWNED BY creature_armor_pieces.id;
+
+
+--
 -- Name: creatures; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -564,6 +598,13 @@ ALTER TABLE ONLY classes ALTER COLUMN id SET DEFAULT nextval('classes_id_seq'::r
 
 
 --
+-- Name: creature_armor_pieces id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces ALTER COLUMN id SET DEFAULT nextval('creature_armor_pieces_id_seq'::regclass);
+
+
+--
 -- Name: creatures id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -616,6 +657,14 @@ ALTER TABLE ONLY character_skill_choices
 
 
 --
+-- Name: character_skill_choices character_skills_unique_choices; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_skill_choices
+    ADD CONSTRAINT character_skills_unique_choices UNIQUE (character_id, skill_id);
+
+
+--
 -- Name: character_sub_skill_choices character_sub_skill_choices_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -624,11 +673,27 @@ ALTER TABLE ONLY character_sub_skill_choices
 
 
 --
+-- Name: character_sub_skill_choices character_sub_skill_unique_choices; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_sub_skill_choices
+    ADD CONSTRAINT character_sub_skill_unique_choices UNIQUE (character_id, sub_skill_id);
+
+
+--
 -- Name: characters characters_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY characters
     ADD CONSTRAINT characters_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: class_skill_constructors class_skill_constructor_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_skill_constructors
+    ADD CONSTRAINT class_skill_constructor_unique UNIQUE (class_id, skill_constructor_id);
 
 
 --
@@ -648,6 +713,14 @@ ALTER TABLE ONLY class_skills
 
 
 --
+-- Name: class_skills class_skills_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_skills
+    ADD CONSTRAINT class_skills_unique UNIQUE (class_id, skill_id);
+
+
+--
 -- Name: class_sub_skills class_sub_skills_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -656,11 +729,35 @@ ALTER TABLE ONLY class_sub_skills
 
 
 --
+-- Name: class_sub_skills class_sub_skills_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_sub_skills
+    ADD CONSTRAINT class_sub_skills_unique UNIQUE (class_id, sub_skill_id);
+
+
+--
 -- Name: classes classes_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY classes
     ADD CONSTRAINT classes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: creature_armor_pieces creature_armor_pieces_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces
+    ADD CONSTRAINT creature_armor_pieces_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: creature_armor_pieces creature_armor_pieces_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces
+    ADD CONSTRAINT creature_armor_pieces_unique UNIQUE (creature_id, armor_piece_id);
 
 
 --
@@ -789,6 +886,22 @@ ALTER TABLE ONLY class_sub_skills
 
 ALTER TABLE ONLY class_sub_skills
     ADD CONSTRAINT class_sub_skills_sub_skill_id_fkey FOREIGN KEY (sub_skill_id) REFERENCES sub_skills(id);
+
+
+--
+-- Name: creature_armor_pieces creature_armor_pieces_armor_piece_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces
+    ADD CONSTRAINT creature_armor_pieces_armor_piece_id_fkey FOREIGN KEY (armor_piece_id) REFERENCES armor_pieces(id);
+
+
+--
+-- Name: creature_armor_pieces creature_armor_pieces_creature_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces
+    ADD CONSTRAINT creature_armor_pieces_creature_id_fkey FOREIGN KEY (creature_id) REFERENCES creatures(id);
 
 
 --

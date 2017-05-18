@@ -1,13 +1,11 @@
 #[derive(Serialize, Deserialize)]
 pub struct Character {
     pub id: i32,
-    pub name: String,
     pub ability_scores: AbilityScoreSet,
     pub ability_score_info: AbilityScoreInfo,
-    pub alignment: Alignment,
-    pub player_name: String,
     pub meta_information: MetaInformation,
     pub combat_numbers: CombatNumbers,
+    pub armor_piece: ArmorPiece,
     pub skills: Vec<CharacterSkill>,
 }
 
@@ -84,6 +82,9 @@ pub struct ScoreAndMofidier {
 
 #[derive(Serialize, Deserialize)]
 pub struct MetaInformation {
+    pub name: String,
+    pub player_name: String,
+    pub alignment: Alignment,
     pub class: String,
     pub race: String,
     pub deity: Option<String>,
@@ -132,6 +133,7 @@ pub struct CharacterSkill {
     pub is_class_skill: bool,
     pub class_mod: i32,
     pub count: i32,
+    pub armor_check_penalty: Option<i32>,
 }
 
 #[derive(Serialize, Deserialize)]

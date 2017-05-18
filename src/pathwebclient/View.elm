@@ -54,20 +54,20 @@ innerPage : Models.Character -> Html.Html Common.Msg
 innerPage character =
     div []
         [ Html.h1 [ Attr.class "text-center" ] [ Html.text "Welcome!" ]
-        , Html.p [ Attr.class "text-center" ] [ Html.text <| "Hello, " ++ character.name ++ "! Good to see ya!" ]
+        , Html.p [ Attr.class "text-center" ] [ Html.text <| "Hello, " ++ character.metaInformation.name ++ "! Good to see ya!" ]
         , Html.div [ Attr.class "row" ]
             [ Html.div [ Attr.class "col-md-6" ]
                 [ Html.h1 [] [ Html.text "CHARACTER SHEET" ] ]
             , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text character.name ]
+                [ Html.u [] [ Html.text character.metaInformation.name ]
                 , Html.p [] [ Html.small [] [ Html.text "Character name" ] ]
                 ]
             , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| capitalize character.alignment.order ++ " " ++ capitalize character.alignment.morality ]
+                [ Html.u [] [ Html.text <| capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ]
                 , Html.p [] [ Html.small [] [ Html.text "Alignment" ] ]
                 ]
             , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text character.playerName ]
+                [ Html.u [] [ Html.text character.metaInformation.playerName ]
                 , Html.p [] [ Html.small [] [ Html.text "Player name" ] ]
                 ]
             ]
@@ -171,6 +171,34 @@ innerPage character =
                             ]
                         ]
                     ]
+                , Html.div []
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.h4 []
+                                [ Html.div []
+                                    [ displayField "name" character.armorPiece.name
+                                    ]
+                                , Html.div []
+                                    [ displayField "class" character.armorPiece.armorClass
+                                    , displayField "bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                                    ]
+                                , Html.div []
+                                    [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                                    ]
+                                , Html.div []
+                                    [ displayField "penalty" <| toString character.armorPiece.armorCheckPenalty
+                                    , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                                    , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                                    ]
+                                , Html.div []
+                                    [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                                    , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             , Html.div [ Attr.class "col-md-7", Attr.class "text-center" ]
                 [ Html.div [ Attr.class "panel panel-default" ]
@@ -185,13 +213,14 @@ innerPage character =
                                     , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
                                     , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
                                     , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Armor Check Penalty" ]
                                     ]
                                 ]
                             , Html.tbody [ Attr.class "text-center" ]
                                 (List.map
                                     (\skill ->
                                         Html.tr []
-                                            [ Html.td []
+                                            [ Html.td [ Attr.class "text-left" ]
                                                 [ Html.b []
                                                     [ Html.text <| buildSkillName skill ]
                                                 ]
@@ -220,6 +249,15 @@ innerPage character =
                                                         [ Html.text (toString skill.count) ]
                                                   else
                                                     Html.u [] [ Html.text "_" ]
+                                                ]
+                                            , Html.td []
+                                                [ case skill.armorCheckPenalty of
+                                                    Just pen ->
+                                                        Html.span [ Attr.class "label label-default" ]
+                                                            [ Html.text (toString pen) ]
+
+                                                    Nothing ->
+                                                        Html.u [] [ Html.text "_" ]
                                                 ]
                                             ]
                                     )
@@ -272,4 +310,14 @@ scoreTableRow name ability emoji =
                 else
                     "➖" ++ String.repeat (-ability.modifier) emoji
             ]
+        ]
+
+
+displayField : String -> String -> Html.Html Common.Msg
+displayField key val =
+    Html.span []
+        [ Html.h1 [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
+        , Html.text " "
+        , Html.u [ Attr.class "text-capitalize" ] [ Html.text key ]
+        , Html.text " "
         ]

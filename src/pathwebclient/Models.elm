@@ -21,12 +21,10 @@ type Model
 
 type alias Character =
     { id : Int
-    , name : String
-    , playerName : String
     , abilityScores : AbilityScoreSet
-    , alignment : Alignment
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
+    , armorPiece : ArmorPiece
     , skills : List Skill
     }
 
@@ -73,7 +71,10 @@ type Size
 
 
 type alias MetaInformation =
-    { class : String
+    { name : String
+    , playerName : String
+    , alignment : Alignment
+    , class : String
     , race : String
     , deity : Maybe String
     , age : Int
@@ -90,6 +91,7 @@ type alias Skill =
     , isClassSkill : Bool
     , classMod : Int
     , count : Int
+    , armorCheckPenalty : Maybe Int
     }
 
 
@@ -99,8 +101,7 @@ type alias ArmorPiece =
     , armorBonus : Int
     , maxDexBonus : Int
     , armorCheckPenalty : Int
-
-    --, arcaneSpellFailureChance : Int
+    , arcaneSpellFailureChance : Int
     , fastSpeed : Int
     , slowSpeed : Int
     , mediumWeight : Int

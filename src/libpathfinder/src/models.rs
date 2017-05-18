@@ -133,6 +133,7 @@ pub struct CharacterSkill {
     pub is_class_skill: bool,
     pub class_mod: i32,
     pub count: i32,
+    pub armor_check_penalty: Option<i32>,
 }
 
 #[derive(Serialize, Deserialize)]

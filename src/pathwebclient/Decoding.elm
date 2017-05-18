@@ -36,6 +36,7 @@ decodeSkill =
         |> Pipeline.required "is_class_skill" Decode.bool
         |> Pipeline.required "class_mod" Decode.int
         |> Pipeline.required "count" Decode.int
+        |> Pipeline.required "armor_check_penalty" (Decode.nullable Decode.int)
 
 
 decodeCombatNumbers : Decode.Decoder Models.CombatNumbers

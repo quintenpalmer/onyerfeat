@@ -185,6 +185,7 @@ innerPage character =
                                     , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
                                     , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
                                     , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+                                    , Html.th [ Attr.class "text-center" ] [ Html.text "Armor Check Penalty" ]
                                     ]
                                 ]
                             , Html.tbody [ Attr.class "text-center" ]
@@ -220,6 +221,15 @@ innerPage character =
                                                         [ Html.text (toString skill.count) ]
                                                   else
                                                     Html.u [] [ Html.text "_" ]
+                                                ]
+                                            , Html.td []
+                                                [ case skill.armorCheckPenalty of
+                                                    Just pen ->
+                                                        Html.span [ Attr.class "label label-default" ]
+                                                            [ Html.text (toString pen) ]
+
+                                                    Nothing ->
+                                                        Html.u [] [ Html.text "_" ]
                                                 ]
                                             ]
                                     )

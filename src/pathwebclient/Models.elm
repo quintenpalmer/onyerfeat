@@ -90,6 +90,7 @@ type alias Skill =
     , isClassSkill : Bool
     , classMod : Int
     , count : Int
+    , armorCheckPenalty : Maybe Int
     }
 
 

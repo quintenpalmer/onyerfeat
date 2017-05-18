@@ -729,6 +729,14 @@ ALTER TABLE ONLY class_sub_skills
 
 
 --
+-- Name: class_sub_skills class_sub_skills_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_sub_skills
+    ADD CONSTRAINT class_sub_skills_unique UNIQUE (class_id, sub_skill_id);
+
+
+--
 -- Name: classes classes_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 

@@ -115,7 +115,7 @@ innerPage character =
                             [ Html.table [ Attr.class "table table-striped" ]
                                 [ Html.thead []
                                     [ Html.tr []
-                                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]

@@ -197,7 +197,7 @@ innerPage character =
                                                     [ Html.text (toString skill.abilityMod) ]
                                                 ]
                                             , Html.td []
-                                                [ Html.b []
+                                                [ Html.b [ Attr.class "text-uppercase" ]
                                                     [ Html.text skill.ability ]
                                                 ]
                                             , Html.td []

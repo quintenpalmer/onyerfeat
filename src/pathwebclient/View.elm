@@ -118,7 +118,8 @@ innerPage character =
                                         [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
-                                        , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                                        , Html.th [ Attr.class "text-right" ] [ Html.text "-EModji" ]
+                                        , Html.th [ Attr.class "text-left" ] [ Html.text "EModji" ]
                                         ]
                                     ]
                                 , Html.tbody [ Attr.class "text-center" ]
@@ -303,12 +304,19 @@ scoreTableRow name ability emoji =
             [ Html.span [ Attr.class "label label-default" ]
                 [ Html.b [] [ Html.text (toString ability.modifier) ] ]
             ]
-        , Html.td []
+        , Html.td [ Attr.class "text-right" ]
             [ Html.text <|
-                if ability.modifier >= 0 then
+                if ability.modifier < 0 then
+                    String.repeat (-ability.modifier) emoji
+                else
+                    ""
+            ]
+        , Html.td [ Attr.class "text-left" ]
+            [ Html.text <|
+                if ability.modifier > 0 then
                     String.repeat (ability.modifier) emoji
                 else
-                    "➖" ++ String.repeat (-ability.modifier) emoji
+                    ""
             ]
         ]
 

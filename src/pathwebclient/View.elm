@@ -166,7 +166,7 @@ innerPage character =
                                 , Html.span [ Attr.class "label label-default" ]
                                     [ Html.text <| toString character.combatNumbers.nonlethalDamage
                                     ]
-                                , Html.span [] [ Html.text " )" ]
+                                , Html.span [] [ Html.text ")" ]
                                 ]
                             ]
                         ]

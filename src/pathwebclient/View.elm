@@ -172,6 +172,33 @@ innerPage character =
                             ]
                         ]
                     ]
+                , Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Armor Class" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.h4 []
+                                [ Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.armorClass.total ]
+                                , Html.text " = 10 + "
+                                , Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.armorClass.dex ]
+                                , Html.text " + "
+                                , Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.armorClass.armorAc ]
+                                , Html.text " + "
+                                , Html.span [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.armorClass.sizeMod ]
+                                ]
+                            , Html.h4 []
+                                [ Html.text "Total "
+                                , Html.text "Base "
+                                , Html.text "Dex "
+                                , Html.text "Armor "
+                                , Html.text "Size"
+                                ]
+                            ]
+                        ]
+                    ]
                 , Html.div []
                     [ Html.div [ Attr.class "panel panel-default" ]
                         [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]

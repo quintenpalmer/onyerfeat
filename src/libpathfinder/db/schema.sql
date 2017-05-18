@@ -657,6 +657,14 @@ ALTER TABLE ONLY character_skill_choices
 
 
 --
+-- Name: character_skill_choices character_skills_unique_choices; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY character_skill_choices
+    ADD CONSTRAINT character_skills_unique_choices UNIQUE (character_id, skill_id);
+
+
+--
 -- Name: character_sub_skill_choices character_sub_skill_choices_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 

@@ -25,7 +25,6 @@ pub fn into_canonical_character(character: structs::Character,
                                                 &abs);
     return models::Character {
         id: character.id,
-        name: creature.name,
         ability_scores: models::AbilityScoreSet {
             str: abs.str,
             dex: abs.dex,
@@ -60,12 +59,13 @@ pub fn into_canonical_character(character: structs::Character,
                 modifier: structs::calc_ability_modifier(abs.cha),
             },
         },
-        alignment: models::Alignment {
-            morality: creature.alignment_morality,
-            order: creature.alignment_order,
-        },
-        player_name: character.player_name.clone(),
         meta_information: models::MetaInformation {
+            name: creature.name,
+            player_name: character.player_name.clone(),
+            alignment: models::Alignment {
+                morality: creature.alignment_morality,
+                order: creature.alignment_order,
+            },
             class: class.name,
             race: creature.race,
             age: creature.age,

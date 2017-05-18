@@ -21,10 +21,7 @@ type Model
 
 type alias Character =
     { id : Int
-    , name : String
-    , playerName : String
     , abilityScores : AbilityScoreSet
-    , alignment : Alignment
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
     , skills : List Skill
@@ -73,7 +70,10 @@ type Size
 
 
 type alias MetaInformation =
-    { class : String
+    { name : String
+    , playerName : String
+    , alignment : Alignment
+    , class : String
     , race : String
     , deity : Maybe String
     , age : Int

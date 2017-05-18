@@ -11,12 +11,9 @@ decodeCharacterResp =
 
 decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
-    Decode.map8 Models.Character
+    Decode.map5 Models.Character
         (Decode.field "id" Decode.int)
-        (Decode.field "name" Decode.string)
-        (Decode.field "player_name" Decode.string)
         (Decode.field "ability_score_info" decodeAbilityScores)
-        (Decode.field "alignment" decodeAlignment)
         (Decode.field "meta_information" decodeMetaInformation)
         (Decode.field "combat_numbers" decodeCombatNumbers)
         (Decode.field "skills" decodeSkills)
@@ -75,7 +72,10 @@ decodeAlignment =
 
 decodeMetaInformation : Decode.Decoder Models.MetaInformation
 decodeMetaInformation =
-    Decode.map5 Models.MetaInformation
+    Decode.map8 Models.MetaInformation
+        (Decode.field "name" Decode.string)
+        (Decode.field "player_name" Decode.string)
+        (Decode.field "alignment" decodeAlignment)
         (Decode.field "class" Decode.string)
         (Decode.field "race" Decode.string)
         (Decode.field "deity" <| Decode.nullable Decode.string)

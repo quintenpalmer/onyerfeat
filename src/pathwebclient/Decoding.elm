@@ -1,6 +1,7 @@
 module Decoding exposing (decodeCharacterResp, decodeArmorPieces)
 
 import Json.Decode as Decode
+import Json.Decode.Pipeline as Pipeline
 import Models
 
 
@@ -11,12 +12,12 @@ decodeCharacterResp =
 
 decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
-    Decode.map5 Models.Character
-        (Decode.field "id" Decode.int)
-        (Decode.field "ability_score_info" decodeAbilityScores)
-        (Decode.field "meta_information" decodeMetaInformation)
-        (Decode.field "combat_numbers" decodeCombatNumbers)
-        (Decode.field "skills" decodeSkills)
+    Pipeline.decode Models.Character
+        |> Pipeline.required "id" Decode.int
+        |> Pipeline.required "ability_score_info" decodeAbilityScores
+        |> Pipeline.required "meta_information" decodeMetaInformation
+        |> Pipeline.required "combat_numbers" decodeCombatNumbers
+        |> Pipeline.required "skills" decodeSkills
 
 
 decodeSkills : Decode.Decoder (List Models.Skill)
@@ -26,61 +27,61 @@ decodeSkills =
 
 decodeSkill : Decode.Decoder Models.Skill
 decodeSkill =
-    Decode.map8 Models.Skill
-        (Decode.field "name" Decode.string)
-        (Decode.field "sub_name" <| Decode.nullable Decode.string)
-        (Decode.field "total" Decode.int)
-        (Decode.field "ability" Decode.string)
-        (Decode.field "ability_mod" Decode.int)
-        (Decode.field "is_class_skill" Decode.bool)
-        (Decode.field "class_mod" Decode.int)
-        (Decode.field "count" Decode.int)
+    Pipeline.decode Models.Skill
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "sub_name" (Decode.nullable Decode.string)
+        |> Pipeline.required "total" Decode.int
+        |> Pipeline.required "ability" Decode.string
+        |> Pipeline.required "ability_mod" Decode.int
+        |> Pipeline.required "is_class_skill" Decode.bool
+        |> Pipeline.required "class_mod" Decode.int
+        |> Pipeline.required "count" Decode.int
 
 
 decodeCombatNumbers : Decode.Decoder Models.CombatNumbers
 decodeCombatNumbers =
-    Decode.map3 Models.CombatNumbers
-        (Decode.field "max_hit_points" Decode.int)
-        (Decode.field "current_hit_points" Decode.int)
-        (Decode.field "nonlethal_damage" Decode.int)
+    Pipeline.decode Models.CombatNumbers
+        |> Pipeline.required "max_hit_points" Decode.int
+        |> Pipeline.required "current_hit_points" Decode.int
+        |> Pipeline.required "nonlethal_damage" Decode.int
 
 
 decodeAbilityScores : Decode.Decoder Models.AbilityScoreSet
 decodeAbilityScores =
-    Decode.map6 Models.AbilityScoreSet
-        (Decode.field "str" decodeAbility)
-        (Decode.field "dex" decodeAbility)
-        (Decode.field "con" decodeAbility)
-        (Decode.field "int" decodeAbility)
-        (Decode.field "wis" decodeAbility)
-        (Decode.field "cha" decodeAbility)
+    Pipeline.decode Models.AbilityScoreSet
+        |> Pipeline.required "str" decodeAbility
+        |> Pipeline.required "dex" decodeAbility
+        |> Pipeline.required "con" decodeAbility
+        |> Pipeline.required "int" decodeAbility
+        |> Pipeline.required "wis" decodeAbility
+        |> Pipeline.required "cha" decodeAbility
 
 
 decodeAbility : Decode.Decoder Models.Ability
 decodeAbility =
-    Decode.map2 Models.Ability
-        (Decode.field "score" Decode.int)
-        (Decode.field "modifier" Decode.int)
+    Pipeline.decode Models.Ability
+        |> Pipeline.required "score" Decode.int
+        |> Pipeline.required "modifier" Decode.int
 
 
 decodeAlignment : Decode.Decoder Models.Alignment
 decodeAlignment =
-    Decode.map2 Models.Alignment
-        (Decode.field "morality" Decode.string)
-        (Decode.field "order" Decode.string)
+    Pipeline.decode Models.Alignment
+        |> Pipeline.required "morality" Decode.string
+        |> Pipeline.required "order" Decode.string
 
 
 decodeMetaInformation : Decode.Decoder Models.MetaInformation
 decodeMetaInformation =
-    Decode.map8 Models.MetaInformation
-        (Decode.field "name" Decode.string)
-        (Decode.field "player_name" Decode.string)
-        (Decode.field "alignment" decodeAlignment)
-        (Decode.field "class" Decode.string)
-        (Decode.field "race" Decode.string)
-        (Decode.field "deity" <| Decode.nullable Decode.string)
-        (Decode.field "age" Decode.int)
-        (Decode.field "size" Decode.string |> Decode.andThen decodeSize)
+    Pipeline.decode Models.MetaInformation
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "player_name" Decode.string
+        |> Pipeline.required "alignment" decodeAlignment
+        |> Pipeline.required "class" Decode.string
+        |> Pipeline.required "race" Decode.string
+        |> Pipeline.required "deity" (Decode.nullable Decode.string)
+        |> Pipeline.required "age" Decode.int
+        |> Pipeline.required "size" (Decode.string |> Decode.andThen decodeSize)
 
 
 decodeSize : String -> Decode.Decoder Models.Size
@@ -124,13 +125,13 @@ decodeArmorPieces =
 
 decodeArmorPiece : Decode.Decoder Models.ArmorPiece
 decodeArmorPiece =
-    Decode.map8 Models.ArmorPiece
-        (Decode.field "armor_class" Decode.string)
-        (Decode.field "name" Decode.string)
-        (Decode.field "armor_bonus" Decode.int)
-        (Decode.field "max_dex_bonus" Decode.int)
-        (Decode.field "armor_check_penalty" Decode.int)
+    Pipeline.decode Models.ArmorPiece
+        |> Pipeline.required "armor_class" Decode.string
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "armor_bonus" Decode.int
+        |> Pipeline.required "max_dex_bonus" Decode.int
+        |> Pipeline.required "armor_check_penalty" Decode.int
         --(Decode.field "arcane_spell_failure_chance" Decode.int)
-        (Decode.field "fast_speed" Decode.int)
-        (Decode.field "slow_speed" Decode.int)
-        (Decode.field "medium_weight" Decode.int)
+        |> Pipeline.required "fast_speed" Decode.int
+        |> Pipeline.required "slow_speed" Decode.int
+        |> Pipeline.required "medium_weight" Decode.int

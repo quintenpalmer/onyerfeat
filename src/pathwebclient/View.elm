@@ -208,8 +208,11 @@ innerPage character =
                                                         "⬜"
                                                 ]
                                             , Html.td []
-                                                [ Html.span [ Attr.class "label label-default" ]
-                                                    [ Html.text (toString skill.count) ]
+                                                [ if skill.count > 0 then
+                                                    Html.span [ Attr.class "label label-default" ]
+                                                        [ Html.text (toString skill.count) ]
+                                                  else
+                                                    Html.u [] [ Html.text "_" ]
                                                 ]
                                             ]
                                     )

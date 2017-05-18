@@ -99,8 +99,7 @@ type alias ArmorPiece =
     , armorBonus : Int
     , maxDexBonus : Int
     , armorCheckPenalty : Int
-
-    --, arcaneSpellFailureChance : Int
+    , arcaneSpellFailureChance : Int
     , fastSpeed : Int
     , slowSpeed : Int
     , mediumWeight : Int

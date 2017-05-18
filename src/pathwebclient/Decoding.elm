@@ -131,7 +131,7 @@ decodeArmorPiece =
         |> Pipeline.required "armor_bonus" Decode.int
         |> Pipeline.required "max_dex_bonus" Decode.int
         |> Pipeline.required "armor_check_penalty" Decode.int
-        --(Decode.field "arcane_spell_failure_chance" Decode.int)
+        |> Pipeline.required "arcane_spell_failure_chance" Decode.int
         |> Pipeline.required "fast_speed" Decode.int
         |> Pipeline.required "slow_speed" Decode.int
         |> Pipeline.required "medium_weight" Decode.int

@@ -220,7 +220,7 @@ innerPage character =
                                 (List.map
                                     (\skill ->
                                         Html.tr []
-                                            [ Html.td []
+                                            [ Html.td [ Attr.class "text-left" ]
                                                 [ Html.b []
                                                     [ Html.text <| buildSkillName skill ]
                                                 ]

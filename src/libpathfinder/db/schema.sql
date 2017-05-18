@@ -689,6 +689,14 @@ ALTER TABLE ONLY characters
 
 
 --
+-- Name: class_skill_constructors class_skill_constructor_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_skill_constructors
+    ADD CONSTRAINT class_skill_constructor_unique UNIQUE (class_id, skill_constructor_id);
+
+
+--
 -- Name: class_skill_constructors class_skill_constructors_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 

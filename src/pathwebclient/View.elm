@@ -184,10 +184,22 @@ innerPage character =
                                 (List.map
                                     (\skill ->
                                         Html.tr []
-                                            [ Html.td [] [ Html.b [] [ Html.text <| buildSkillName skill ] ]
-                                            , Html.td [] [ Html.text (toString skill.total) ]
-                                            , Html.td [] [ Html.text (toString skill.abilityMod) ]
-                                            , Html.td [] [ Html.text skill.ability ]
+                                            [ Html.td []
+                                                [ Html.b []
+                                                    [ Html.text <| buildSkillName skill ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.span [ Attr.class "label label-default" ]
+                                                    [ Html.text (toString skill.total) ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.span [ Attr.class "label label-default" ]
+                                                    [ Html.text (toString skill.abilityMod) ]
+                                                ]
+                                            , Html.td []
+                                                [ Html.b []
+                                                    [ Html.text skill.ability ]
+                                                ]
                                             , Html.td []
                                                 [ Html.text <|
                                                     if skill.isClassSkill then
@@ -195,7 +207,10 @@ innerPage character =
                                                     else
                                                         "⬜"
                                                 ]
-                                            , Html.td [] [ Html.text (toString skill.count) ]
+                                            , Html.td []
+                                                [ Html.span [ Attr.class "label label-default" ]
+                                                    [ Html.text (toString skill.count) ]
+                                                ]
                                             ]
                                     )
                                     character.skills

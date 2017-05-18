@@ -23,3 +23,16 @@ WHERE
     cssc.character_id = $1
 GROUP BY cssc.id, scons.trained_only, scons.name, scons.ability, scons.id, sub_skills.id, sub_name
 "#;
+
+pub static CHARACTER_ARMOR_PIECE_QUERY: &'static str = r#"
+SELECT
+    a.*
+FROM
+    creature_armor_pieces cap
+INNER JOIN
+    armor_pieces a
+ON
+    cap.armor_piece_id = a.id
+WHERE
+    cap.creature_id = $1
+"#;

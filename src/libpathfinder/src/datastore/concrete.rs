@@ -48,6 +48,10 @@ impl Datastore {
         let class_skill_constructors: Vec<structs::ClassSkillConstructor> =
             try!(selects::select_by_field(&self.conn, "class_id", class.id));
 
+        let armor_piece: structs::ArmorPiece =
+            try!(selects::exec_and_select_one_by_field(&self.conn,
+                                                       queries::CHARACTER_ARMOR_PIECE_QUERY,
+                                                       creature.id));
 
         return Ok(convert::into_canonical_character(character,
                                                     creature,
@@ -58,7 +62,8 @@ impl Datastore {
                                                     sub_skills,
                                                     class_skills,
                                                     class_sub_skills,
-                                                    class_skill_constructors));
+                                                    class_skill_constructors,
+                                                    armor_piece));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

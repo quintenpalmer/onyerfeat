@@ -13,7 +13,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
                                 class_skills: Vec<structs::ClassSkill>,
                                 class_sub_skills: Vec<structs::ClassSubSkill>,
-                                class_skill_constructors: Vec<structs::ClassSkillConstructor>)
+                                class_skill_constructors: Vec<structs::ClassSkillConstructor>,
+                                armor_piece: structs::ArmorPiece)
                                 -> models::Character {
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
@@ -76,6 +77,7 @@ pub fn into_canonical_character(character: structs::Character,
             current_hit_points: creature.current_hit_points,
             nonlethal_damage: creature.nonlethal_damage,
         },
+        armor_piece: armor_piece.into_canonical(),
         skills: character_skills,
     };
 }

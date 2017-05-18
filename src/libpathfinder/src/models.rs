@@ -8,6 +8,7 @@ pub struct Character {
     pub player_name: String,
     pub meta_information: MetaInformation,
     pub combat_numbers: CombatNumbers,
+    pub armor_piece: ArmorPiece,
     pub skills: Vec<CharacterSkill>,
 }
 

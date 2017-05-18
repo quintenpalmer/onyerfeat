@@ -4,9 +4,8 @@ use libpathfinder_common::error;
 
 use models;
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "characters")]
-#[derive(FromRow)]
 pub struct Character {
     pub id: i32,
     pub player_name: String,
@@ -14,17 +13,15 @@ pub struct Character {
     pub creature_id: i32,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "classes")]
-#[derive(FromRow)]
 pub struct Class {
     pub id: i32,
     pub name: String,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "creatures")]
-#[derive(FromRow)]
 pub struct Creature {
     pub id: i32,
     pub name: String,
@@ -40,9 +37,8 @@ pub struct Creature {
     pub nonlethal_damage: i32,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "ability_score_sets")]
-#[derive(FromRow)]
 #[allow(dead_code)]
 pub struct AbilityScoreSet {
     id: i32,
@@ -67,9 +63,8 @@ impl AbilityScoreSet {
     }
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "skills")]
-#[derive(FromRow)]
 pub struct Skill {
     pub id: i32,
     pub name: String,
@@ -77,9 +72,8 @@ pub struct Skill {
     pub ability: models::AbilityName,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "skill_constructors")]
-#[derive(FromRow)]
 pub struct SkillConstructor {
     pub id: i32,
     pub name: String,
@@ -87,18 +81,16 @@ pub struct SkillConstructor {
     pub ability: models::AbilityName,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "sub_skills")]
-#[derive(FromRow)]
 pub struct SubSkill {
     pub id: i32,
     pub name: String,
     pub skill_constructor_id: i32,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "character_skill_choices")]
-#[derive(FromRow)]
 pub struct CharacterSkillChoice {
     pub id: i32,
     pub character_id: i32,
@@ -106,9 +98,8 @@ pub struct CharacterSkillChoice {
     pub count: i32,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "character_sub_skill_choices")]
-#[derive(FromRow)]
 pub struct CharacterSubSkillChoice {
     pub id: i32,
     pub character_id: i32,
@@ -127,9 +118,8 @@ pub struct AugmentedCharacterSubSkillChoice {
     pub ability: models::AbilityName,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "class_skills")]
-#[derive(FromRow)]
 pub struct ClassSkill {
     pub id: i32,
     pub class_id: i32,
@@ -137,27 +127,24 @@ pub struct ClassSkill {
 }
 
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "class_sub_skills")]
-#[derive(FromRow)]
 pub struct ClassSubSkill {
     pub id: i32,
     pub class_id: i32,
     pub sub_skill_id: i32,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "class_skill_constructors")]
-#[derive(FromRow)]
 pub struct ClassSkillConstructor {
     pub id: i32,
     pub class_id: i32,
     pub skill_constructor_id: i32,
 }
 
-#[derive(TableNamer)]
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "armor_pieces")]
-#[derive(FromRow)]
 pub struct ArmorPiece {
     pub id: i32,
     pub armor_class: String,

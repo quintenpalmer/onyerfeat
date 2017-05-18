@@ -108,22 +108,29 @@ innerPage character =
             ]
         , Html.div [ Attr.class "row" ]
             [ Html.div [ Attr.class "col-md-5" ]
-                [ Html.table [ Attr.class "table table-striped table-bordered" ]
-                    [ Html.thead []
-                        [ Html.tr []
-                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                [ Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Ability Scores" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.table [ Attr.class "table table-striped" ]
+                                [ Html.thead []
+                                    [ Html.tr []
+                                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                                        ]
+                                    ]
+                                , Html.tbody [ Attr.class "text-center" ]
+                                    [ scoreTableRow "STR" character.abilityScores.str "🐂"
+                                    , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                                    , scoreTableRow "CON" character.abilityScores.con "🐘"
+                                    , scoreTableRow "INT" character.abilityScores.int "🐙"
+                                    , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                                    , scoreTableRow "CHA" character.abilityScores.cha "🐶"
+                                    ]
+                                ]
                             ]
-                        ]
-                    , Html.tbody [ Attr.class "text-center" ]
-                        [ scoreTableRow "STR" character.abilityScores.str "🐂"
-                        , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                        , scoreTableRow "CON" character.abilityScores.con "🐘"
-                        , scoreTableRow "INT" character.abilityScores.int "🐙"
-                        , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                        , scoreTableRow "CHA" character.abilityScores.cha "🐶"
                         ]
                     ]
                 , Html.div [ Attr.class "text-center" ]

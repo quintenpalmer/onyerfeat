@@ -257,8 +257,14 @@ scoreTableRow : String -> Models.Ability -> String -> Html.Html Common.Msg
 scoreTableRow name ability emoji =
     Html.tr []
         [ Html.td [] [ Html.b [] [ Html.text name ] ]
-        , Html.td [] [ Html.text (toString ability.score) ]
-        , Html.td [] [ Html.b [] [ Html.text (toString ability.modifier) ] ]
+        , Html.td []
+            [ Html.span [ Attr.class "label label-default" ]
+                [ Html.text (toString ability.score) ]
+            ]
+        , Html.td []
+            [ Html.span [ Attr.class "label label-default" ]
+                [ Html.b [] [ Html.text (toString ability.modifier) ] ]
+            ]
         , Html.td []
             [ Html.text <|
                 if ability.modifier >= 0 then

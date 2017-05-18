@@ -24,6 +24,7 @@ type alias Character =
     , abilityScores : AbilityScoreSet
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
+    , armorPiece : ArmorPiece
     , skills : List Skill
     }
 

@@ -171,6 +171,34 @@ innerPage character =
                             ]
                         ]
                     ]
+                , Html.div []
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.h4 []
+                                [ Html.div []
+                                    [ displayField "name" character.armorPiece.name
+                                    ]
+                                , Html.div []
+                                    [ displayField "class" character.armorPiece.armorClass
+                                    , displayField "bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                                    ]
+                                , Html.div []
+                                    [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                                    ]
+                                , Html.div []
+                                    [ displayField "penalty" <| toString character.armorPiece.armorCheckPenalty
+                                    , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                                    , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                                    ]
+                                , Html.div []
+                                    [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                                    , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             , Html.div [ Attr.class "col-md-7", Attr.class "text-center" ]
                 [ Html.div [ Attr.class "panel panel-default" ]
@@ -282,4 +310,14 @@ scoreTableRow name ability emoji =
                 else
                     "➖" ++ String.repeat (-ability.modifier) emoji
             ]
+        ]
+
+
+displayField : String -> String -> Html.Html Common.Msg
+displayField key val =
+    Html.span []
+        [ Html.h1 [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
+        , Html.text " "
+        , Html.u [ Attr.class "text-capitalize" ] [ Html.text key ]
+        , Html.text " "
         ]

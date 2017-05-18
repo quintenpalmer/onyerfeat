@@ -17,6 +17,7 @@ decodeCharacter =
         |> Pipeline.required "ability_score_info" decodeAbilityScores
         |> Pipeline.required "meta_information" decodeMetaInformation
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
+        |> Pipeline.required "armor_piece" decodeArmorPiece
         |> Pipeline.required "skills" decodeSkills
 
 

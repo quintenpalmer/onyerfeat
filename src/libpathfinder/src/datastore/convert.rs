@@ -24,7 +24,8 @@ pub fn into_canonical_character(character: structs::Character,
                                                 class_sub_skills,
                                                 class_skill_constructors,
                                                 &abs,
-                                                &armor_piece);
+                                                &armor_piece,
+                                                &optional_shield);
     let armor_class = {
         let dex_mod = structs::calc_ability_modifier(abs.dex);
         let base = 10;
@@ -119,16 +120,21 @@ fn get_character_skills(skills: Vec<structs::Skill>,
                         class_sub_skills: Vec<structs::ClassSubSkill>,
                         class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                         abs: &structs::AbilityScoreSet,
-                        armor_piece: &structs::ArmorPiece)
+                        armor_piece: &structs::ArmorPiece,
+                        optional_shield: &Option<structs::Shield>)
                         -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     let class_map = class_skill_map(&class_skills);
     let class_sub_set = class_sub_skill_set(&class_sub_skills);
     let class_constructor_set = class_skill_constructor_set(&class_skill_constructors);
+    let shield_penalty = match *optional_shield {
+        Some(ref s) => s.skill_penalty,
+        None => 0,
+    };
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
-            Some(armor_piece.armor_check_penalty)
+            Some(armor_piece.armor_check_penalty + shield_penalty)
         } else {
             None
         };
@@ -154,7 +160,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
     }
     for sub_skill in sub_skills.iter() {
         let armor_penalty = if is_armor_penalized(sub_skill.ability.clone()) {
-            Some(armor_piece.armor_check_penalty)
+            Some(armor_piece.armor_check_penalty + shield_penalty)
         } else {
             None
         };

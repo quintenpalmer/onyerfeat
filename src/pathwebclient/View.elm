@@ -221,26 +221,22 @@ innerPage character =
                     [ Html.div [ Attr.class "panel panel-default" ]
                         [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]
                         , Html.div [ Attr.class "panel-body" ]
-                            [ Html.h4 []
-                                [ Html.div []
-                                    [ displayField "name" character.armorPiece.name
-                                    ]
-                                , Html.div []
-                                    [ displayField "class" character.armorPiece.armorClass
-                                    , displayField "bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
-                                    ]
-                                , Html.div []
-                                    [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                                    ]
-                                , Html.div []
-                                    [ displayField "penalty" <| toString character.armorPiece.armorCheckPenalty
-                                    , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                                    , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
-                                    ]
-                                , Html.div []
-                                    [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                                    , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
-                                    ]
+                            [ Html.div []
+                                [ displayField "name" character.armorPiece.name
+                                , displayField "class" character.armorPiece.armorClass
+                                ]
+                            , Html.div []
+                                [ displayField "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                                , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                                , displayField "skill penalty" <| toString character.armorPiece.armorCheckPenalty
+                                ]
+                            , Html.div []
+                                [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                                , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                                ]
+                            , Html.div []
+                                [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                                , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
                                 ]
                             ]
                         ]
@@ -368,9 +364,12 @@ scoreTableRow name ability emoji =
 
 displayField : String -> String -> Html.Html Common.Msg
 displayField key val =
-    Html.span []
-        [ Html.h1 [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
-        , Html.text " "
-        , Html.u [ Attr.class "text-capitalize" ] [ Html.text key ]
-        , Html.text " "
+    Html.div [ Attr.class "panel panel-default", Attr.style [ ( "display", "inline-block" ) ] ]
+        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", "100px" ) ] ]
+            [ Html.div [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
+            , Html.div [ Attr.class "text-capitalize" ]
+                [ Html.small []
+                    [ Html.text key ]
+                ]
+            ]
         ]

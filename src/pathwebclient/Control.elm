@@ -19,6 +19,12 @@ update msg character =
         Common.DoLoadSheet ->
             ( character, getCharacterSheet 1 )
 
+        Common.ShieldsLoaded (Ok newShields) ->
+            ( Models.MShields newShields, Cmd.none )
+
+        Common.ShieldsLoaded (Err e) ->
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+
         Common.CharacterLoaded (Ok newCharacter) ->
             ( Models.MCharacter newCharacter, Cmd.none )
 
@@ -33,6 +39,15 @@ getCharacterSheet id =
             "http://localhost:3000/api/characters?id=" ++ (toString id)
     in
         Http.send Common.CharacterLoaded (Http.get url Decoding.decodeCharacterResp)
+
+
+getShields : Cmd Common.Msg
+getShields =
+    let
+        url =
+            "http://localhost:3000/api/shields"
+    in
+        Http.send Common.ShieldsLoaded (Http.get url Decoding.decodeShields)
 
 
 subscriptions : Models.Model -> Sub Common.Msg

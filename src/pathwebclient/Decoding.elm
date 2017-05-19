@@ -1,4 +1,4 @@
-module Decoding exposing (decodeCharacterResp, decodeArmorPieces)
+module Decoding exposing (decodeCharacterResp, decodeArmorPieces, decodeShields)
 
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
@@ -149,3 +149,19 @@ decodeArmorPiece =
         |> Pipeline.required "fast_speed" Decode.int
         |> Pipeline.required "slow_speed" Decode.int
         |> Pipeline.required "medium_weight" Decode.int
+
+
+decodeShields : Decode.Decoder (List Models.Shield)
+decodeShields =
+    Decode.field "data" (Decode.list decodeShield)
+
+
+decodeShield : Decode.Decoder Models.Shield
+decodeShield =
+    Pipeline.decode Models.Shield
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "ac_bonus" Decode.int
+        |> Pipeline.required "max_dex" (Decode.nullable Decode.int)
+        |> Pipeline.required "skill_penalty" Decode.int
+        |> Pipeline.required "arcane_spell_failure_chance" Decode.int
+        |> Pipeline.required "weight" Decode.int

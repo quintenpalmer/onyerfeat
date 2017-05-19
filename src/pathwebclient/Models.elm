@@ -10,12 +10,14 @@ module Models
         , CombatNumbers
         , Skill
         , ArmorPiece
+        , Shield
         , ArmorClass
         )
 
 
 type Model
     = MCharacter Character
+    | MShields (List Shield)
     | MError String
     | MNotLoaded
 
@@ -117,4 +119,14 @@ type alias ArmorPiece =
     , fastSpeed : Int
     , slowSpeed : Int
     , mediumWeight : Int
+    }
+
+
+type alias Shield =
+    { name : String
+    , acBonus : Int
+    , maxDex : Maybe Int
+    , skillPenalty : Int
+    , arcaneSpellFailureChance : Int
+    , weight : Int
     }

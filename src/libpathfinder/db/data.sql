@@ -72,8 +72,8 @@ COPY classes (id, name) FROM stdin;
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	28	8	0
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	40	40	0	3
 \.
 
 
@@ -126,6 +126,9 @@ COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
 3	1	15	1
 4	1	20	1
 5	1	21	1
+6	1	11	1
+7	1	10	1
+8	1	19	1
 \.
 
 
@@ -133,7 +136,7 @@ COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
 -- Name: character_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('character_skill_choices_id_seq', 5, true);
+SELECT pg_catalog.setval('character_skill_choices_id_seq', 8, true);
 
 
 --
@@ -261,7 +264,7 @@ SELECT pg_catalog.setval('classes_id_seq', 1, true);
 --
 
 COPY creature_armor_pieces (id, creature_id, armor_piece_id) FROM stdin;
-1	1	4
+1	1	8
 \.
 
 

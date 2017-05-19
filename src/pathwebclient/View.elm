@@ -118,7 +118,8 @@ innerPage character =
                                         [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
                                         , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
-                                        , Html.th [ Attr.class "text-center" ] [ Html.text "EModji" ]
+                                        , Html.th [ Attr.class "text-right" ] [ Html.text "-EModji" ]
+                                        , Html.th [ Attr.class "text-left" ] [ Html.text "EModji" ]
                                         ]
                                     ]
                                 , Html.tbody [ Attr.class "text-center" ]
@@ -138,14 +139,9 @@ innerPage character =
                         [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Hit Points" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.h4 []
-                                [ Html.span [] [ Html.text "Current: " ]
-                                , Html.span [ Attr.class "label label-default" ]
-                                    [ Html.text <| toString character.combatNumbers.currentHitPoints
-                                    ]
-                                , Html.span [] [ Html.text " / Max: " ]
-                                , Html.span [ Attr.class "label label-default" ]
-                                    [ Html.text <| toString character.combatNumbers.maxHitPoints
-                                    ]
+                                [ displayField "current" <| toString character.combatNumbers.currentHitPoints
+                                , Html.text "➗"
+                                , displayField "max" <| toString character.combatNumbers.maxHitPoints
                                 ]
                             , Html.h4 []
                                 [ Html.small []
@@ -162,11 +158,63 @@ innerPage character =
                                     ]
                                 ]
                             , Html.h4 []
-                                [ Html.span [] [ Html.text " (Nonlethal: " ]
-                                , Html.span [ Attr.class "label label-default" ]
-                                    [ Html.text <| toString character.combatNumbers.nonlethalDamage
+                                [ displayField "nonlethal" <| toString character.combatNumbers.nonlethalDamage
+                                ]
+                            ]
+                        ]
+                    ]
+                , Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Armor Class" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.h4 []
+                                [ Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [ Attr.class "label label-default" ]
+                                        [ Html.text <| toString character.combatNumbers.armorClass.total ]
+                                    , Html.div [] [ Html.text "Total" ]
                                     ]
-                                , Html.span [] [ Html.text ")" ]
+                                , Html.div [ Attr.style [ ( "vertical-align", "top" ), ( "width", "20px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [] [ Html.text "=" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [] [ Html.text "10" ]
+                                    , Html.div [] [ Html.text "Base" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "vertical-align", "top" ), ( "width", "20px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [] [ Html.text "+" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [ Attr.class "label label-default" ]
+                                        [ Html.text <| toString character.combatNumbers.armorClass.dex ]
+                                    , Html.div [] [ Html.text "Dex" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "vertical-align", "top" ), ( "width", "20px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [] [ Html.text "+" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [ Attr.class "label label-default" ]
+                                        [ Html.text <| toString character.combatNumbers.armorClass.armorAc ]
+                                    , Html.div [] [ Html.text "Armor" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "vertical-align", "top" ), ( "width", "20px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [] [ Html.text "+" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [ Attr.class "label label-default" ]
+                                        [ Html.text <| toString character.combatNumbers.armorClass.sizeMod ]
+                                    , Html.div [] [ Html.text "Size" ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                , Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Base Attack Bonus" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.h2 []
+                                [ Html.div [ Attr.class "label label-default" ]
+                                    [ Html.text <| toString character.combatNumbers.baseAttackBonus ]
                                 ]
                             ]
                         ]
@@ -175,26 +223,22 @@ innerPage character =
                     [ Html.div [ Attr.class "panel panel-default" ]
                         [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]
                         , Html.div [ Attr.class "panel-body" ]
-                            [ Html.h4 []
-                                [ Html.div []
-                                    [ displayField "name" character.armorPiece.name
-                                    ]
-                                , Html.div []
-                                    [ displayField "class" character.armorPiece.armorClass
-                                    , displayField "bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
-                                    ]
-                                , Html.div []
-                                    [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                                    ]
-                                , Html.div []
-                                    [ displayField "penalty" <| toString character.armorPiece.armorCheckPenalty
-                                    , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                                    , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
-                                    ]
-                                , Html.div []
-                                    [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                                    , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
-                                    ]
+                            [ Html.div []
+                                [ displayField "name" character.armorPiece.name
+                                , displayField "class" character.armorPiece.armorClass
+                                ]
+                            , Html.div []
+                                [ displayField "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                                , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                                , displayField "skill penalty" <| toString character.armorPiece.armorCheckPenalty
+                                ]
+                            , Html.div []
+                                [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                                , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                                ]
+                            , Html.div []
+                                [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                                , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
                                 ]
                             ]
                         ]
@@ -303,21 +347,31 @@ scoreTableRow name ability emoji =
             [ Html.span [ Attr.class "label label-default" ]
                 [ Html.b [] [ Html.text (toString ability.modifier) ] ]
             ]
-        , Html.td []
+        , Html.td [ Attr.class "text-right" ]
             [ Html.text <|
-                if ability.modifier >= 0 then
+                if ability.modifier < 0 then
+                    String.repeat (-ability.modifier) emoji
+                else
+                    ""
+            ]
+        , Html.td [ Attr.class "text-left" ]
+            [ Html.text <|
+                if ability.modifier > 0 then
                     String.repeat (ability.modifier) emoji
                 else
-                    "➖" ++ String.repeat (-ability.modifier) emoji
+                    ""
             ]
         ]
 
 
 displayField : String -> String -> Html.Html Common.Msg
 displayField key val =
-    Html.span []
-        [ Html.h1 [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
-        , Html.text " "
-        , Html.u [ Attr.class "text-capitalize" ] [ Html.text key ]
-        , Html.text " "
+    Html.div [ Attr.class "panel panel-default", Attr.style [ ( "display", "inline-block" ) ] ]
+        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", "100px" ) ] ]
+            [ Html.div [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
+            , Html.div [ Attr.class "text-capitalize" ]
+                [ Html.small []
+                    [ Html.text key ]
+                ]
+            ]
         ]

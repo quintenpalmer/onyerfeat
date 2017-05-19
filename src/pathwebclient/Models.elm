@@ -10,6 +10,7 @@ module Models
         , CombatNumbers
         , Skill
         , ArmorPiece
+        , ArmorClass
         )
 
 
@@ -33,6 +34,17 @@ type alias CombatNumbers =
     { maxHitPoints : Int
     , currentHitPoints : Int
     , nonlethalDamage : Int
+    , armorClass : ArmorClass
+    , baseAttackBonus : Int
+    }
+
+
+type alias ArmorClass =
+    { total : Int
+    , base : Int
+    , dex : Int
+    , armorAc : Int
+    , sizeMod : Int
     }
 
 

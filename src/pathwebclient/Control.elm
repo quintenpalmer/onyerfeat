@@ -19,10 +19,10 @@ update msg character =
         Common.DoLoadSheet ->
             ( character, getCharacterSheet 1 )
 
-        Common.SheetLoaded (Ok newCharacter) ->
+        Common.CharacterLoaded (Ok newCharacter) ->
             ( Models.MCharacter newCharacter, Cmd.none )
 
-        Common.SheetLoaded (Err e) ->
+        Common.CharacterLoaded (Err e) ->
             ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
 
 
@@ -32,7 +32,7 @@ getCharacterSheet id =
         url =
             "http://localhost:3000/api/characters?id=" ++ (toString id)
     in
-        Http.send Common.SheetLoaded (Http.get url Decoding.decodeCharacterResp)
+        Http.send Common.CharacterLoaded (Http.get url Decoding.decodeCharacterResp)
 
 
 subscriptions : Models.Model -> Sub Common.Msg

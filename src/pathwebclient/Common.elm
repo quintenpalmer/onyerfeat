@@ -6,4 +6,4 @@ import Models
 
 type Msg
     = DoLoadSheet
-    | SheetLoaded (Result Http.Error Models.Character)
+    | CharacterLoaded (Result Http.Error Models.Character)

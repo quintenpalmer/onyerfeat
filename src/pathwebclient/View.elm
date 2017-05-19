@@ -175,9 +175,9 @@ innerPage character =
                         [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Hit Points" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.h4 []
-                                [ displayField "current" <| toString character.combatNumbers.currentHitPoints
+                                [ displayField "100px" "current" <| toString character.combatNumbers.currentHitPoints
                                 , Html.text "➗"
-                                , displayField "max" <| toString character.combatNumbers.maxHitPoints
+                                , displayField "100px" "max" <| toString character.combatNumbers.maxHitPoints
                                 ]
                             , Html.h4 []
                                 [ Html.small []
@@ -194,7 +194,7 @@ innerPage character =
                                     ]
                                 ]
                             , Html.h4 []
-                                [ displayField "nonlethal" <| toString character.combatNumbers.nonlethalDamage
+                                [ displayField "100px" "nonlethal" <| toString character.combatNumbers.nonlethalDamage
                                 ]
                             ]
                         ]
@@ -260,21 +260,21 @@ innerPage character =
                         [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.div []
-                                [ displayField "name" character.armorPiece.name
-                                , displayField "class" character.armorPiece.armorClass
+                                [ displayField "100px" "name" character.armorPiece.name
+                                , displayField "100px" "class" character.armorPiece.armorClass
                                 ]
                             , Html.div []
-                                [ displayField "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
-                                , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                                , displayField "skill penalty" <| toString character.armorPiece.armorCheckPenalty
+                                [ displayField "100px" "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                                , displayField "100px" "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                                , displayField "100px" "skill penalty" <| toString character.armorPiece.armorCheckPenalty
                                 ]
                             , Html.div []
-                                [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                                , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                                [ displayField "100px" "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                                , displayField "100px" "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
                                 ]
                             , Html.div []
-                                [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                                , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                                [ displayField "100px" "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                                , displayField "100px" "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
                                 ]
                             ]
                         ]
@@ -491,10 +491,10 @@ scoreTableRow name ability emoji =
         ]
 
 
-displayField : String -> String -> Html.Html Common.Msg
-displayField key val =
+displayField : String -> String -> String -> Html.Html Common.Msg
+displayField width key val =
     Html.div [ Attr.class "panel panel-default", Attr.style [ ( "display", "inline-block" ) ] ]
-        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", "100px" ) ] ]
+        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", width ) ] ]
             [ Html.div [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
             , Html.div [ Attr.class "text-capitalize" ]
                 [ Html.small []

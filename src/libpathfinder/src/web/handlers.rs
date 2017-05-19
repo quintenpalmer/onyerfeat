@@ -55,9 +55,7 @@ fn character_handler(ds: datastore::Datastore,
     let c = itry!(ds.get_character(id_param.id),
                   webshared::simple_server_error());
 
-    let resp = try!(webshared::Response { data: c }.encode());
-
-    return Ok(resp);
+    return webshared::Response { data: c }.encode();
 }
 
 fn skills_handler(ds: datastore::Datastore, req: &mut iron::Request) -> IronResult<iron::Response> {
@@ -65,21 +63,16 @@ fn skills_handler(ds: datastore::Datastore, req: &mut iron::Request) -> IronResu
 
     let c = itry!(ds.get_skills(), webshared::simple_server_error());
 
-    let resp = try!(webshared::Response { data: c }.encode());
-
-    return Ok(resp);
+    return webshared::Response { data: c }.encode();
 }
 
 fn armor_pieces_handler(ds: datastore::Datastore,
                         req: &mut iron::Request)
                         -> IronResult<iron::Response> {
     println!("handling request for armor pieces");
-
     let a = itry!(ds.get_armor_pieces(), webshared::simple_server_error());
 
-    let resp = try!(webshared::Response { data: a }.encode());
-
-    return Ok(resp);
+    return webshared::Response { data: a }.encode();
 }
 
 fn path_not_found(full_path: String) -> IronResult<iron::Response> {

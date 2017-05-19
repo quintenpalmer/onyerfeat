@@ -791,19 +791,19 @@ ALTER TABLE ONLY classes
 
 
 --
+-- Name: creature_armor_pieces creature_armor_pieces_creature_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces
+    ADD CONSTRAINT creature_armor_pieces_creature_unique UNIQUE (creature_id);
+
+
+--
 -- Name: creature_armor_pieces creature_armor_pieces_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY creature_armor_pieces
     ADD CONSTRAINT creature_armor_pieces_pkey PRIMARY KEY (id);
-
-
---
--- Name: creature_armor_pieces creature_armor_pieces_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY creature_armor_pieces
-    ADD CONSTRAINT creature_armor_pieces_unique UNIQUE (creature_id, armor_piece_id);
 
 
 --

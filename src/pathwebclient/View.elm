@@ -255,6 +255,36 @@ innerPage character =
                             ]
                         ]
                     ]
+                , case character.shield of
+                    Nothing ->
+                        Html.div [] [ Html.text "no shield" ]
+
+                    Just shield ->
+                        Html.div []
+                            [ Html.div [ Attr.class "panel panel-default" ]
+                                [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Shield" ] ]
+                                , Html.div [ Attr.class "panel-body" ]
+                                    [ Html.div []
+                                        [ displayField "160px" "name" shield.name
+                                        ]
+                                    , Html.div []
+                                        [ displayField "100px" "AC bonus" <| "+" ++ (toString shield.acBonus)
+                                        , displayField "100px" "max dex" <|
+                                            case shield.maxDex of
+                                                Just maxDex ->
+                                                    "+" ++ (toString shield.maxDex)
+
+                                                Nothing ->
+                                                    "_"
+                                        , displayField "100px" "skill penalty" <| toString shield.skillPenalty
+                                        ]
+                                    , Html.div []
+                                        [ displayField "100px" "spell failure" <| (toString shield.arcaneSpellFailureChance) ++ "%"
+                                        , displayField "100px" "weight" <| (toString shield.weight) ++ "lbs"
+                                        ]
+                                    ]
+                                ]
+                            ]
                 , Html.div []
                     [ Html.div [ Attr.class "panel panel-default" ]
                         [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]

@@ -14,7 +14,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 class_skills: Vec<structs::ClassSkill>,
                                 class_sub_skills: Vec<structs::ClassSubSkill>,
                                 class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-                                armor_piece: structs::ArmorPiece)
+                                armor_piece: structs::ArmorPiece,
+                                optional_shield: Option<structs::Shield>)
                                 -> models::Character {
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
@@ -23,21 +24,26 @@ pub fn into_canonical_character(character: structs::Character,
                                                 class_sub_skills,
                                                 class_skill_constructors,
                                                 &abs,
-                                                &armor_piece);
+                                                &armor_piece,
+                                                &optional_shield);
     let armor_class = {
         let dex_mod = structs::calc_ability_modifier(abs.dex);
         let base = 10;
         let armor_ac = armor_piece.armor_bonus;
+        let shield_ac = match optional_shield {
+            Some(ref shield) => shield.ac_bonus,
+            None => 0,
+        };
         let size_mod = creature.size.get_modifier();
         let armor_class = models::ArmorClass {
-            total: dex_mod + base + armor_ac + size_mod,
+            total: dex_mod + base + armor_ac + shield_ac + size_mod,
             base: base,
             dex: dex_mod,
             armor_ac: armor_ac,
             size_mod: size_mod,
             deflection_mod: 0,
             dodge_mod: 0,
-            shield_ac: 0,
+            shield_ac: shield_ac,
             natural_armor: 0,
         };
         armor_class
@@ -99,6 +105,10 @@ pub fn into_canonical_character(character: structs::Character,
             base_attack_bonus: creature.base_attack_bonus,
         },
         armor_piece: armor_piece.into_canonical(),
+        shield: match optional_shield {
+            Some(x) => Some(x.into_canonical()),
+            None => None,
+        },
         skills: character_skills,
     };
 }
@@ -110,16 +120,21 @@ fn get_character_skills(skills: Vec<structs::Skill>,
                         class_sub_skills: Vec<structs::ClassSubSkill>,
                         class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                         abs: &structs::AbilityScoreSet,
-                        armor_piece: &structs::ArmorPiece)
+                        armor_piece: &structs::ArmorPiece,
+                        optional_shield: &Option<structs::Shield>)
                         -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     let class_map = class_skill_map(&class_skills);
     let class_sub_set = class_sub_skill_set(&class_sub_skills);
     let class_constructor_set = class_skill_constructor_set(&class_skill_constructors);
+    let shield_penalty = match *optional_shield {
+        Some(ref s) => s.skill_penalty,
+        None => 0,
+    };
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
-            Some(armor_piece.armor_check_penalty)
+            Some(armor_piece.armor_check_penalty + shield_penalty)
         } else {
             None
         };
@@ -145,7 +160,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
     }
     for sub_skill in sub_skills.iter() {
         let armor_penalty = if is_armor_penalized(sub_skill.ability.clone()) {
-            Some(armor_piece.armor_check_penalty)
+            Some(armor_piece.armor_check_penalty + shield_penalty)
         } else {
             None
         };
@@ -215,6 +230,19 @@ impl structs::ArmorPiece {
             fast_speed: self.fast_speed,
             slow_speed: self.slow_speed,
             medium_weight: self.medium_weight,
+        }
+    }
+}
+
+impl structs::Shield {
+    pub fn into_canonical(&self) -> models::Shield {
+        models::Shield {
+            name: self.name.clone(),
+            ac_bonus: self.ac_bonus,
+            max_dex: self.max_dex,
+            skill_penalty: self.skill_penalty,
+            arcane_spell_failure_chance: self.arcane_spell_failure_chance,
+            weight: self.weight,
         }
     }
 }

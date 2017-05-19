@@ -16,13 +16,31 @@ init =
 update : Common.Msg -> Models.Model -> ( Models.Model, Cmd Common.Msg )
 update msg character =
     case msg of
-        Common.DoLoadSheet ->
-            ( character, getCharacterSheet 1 )
+        Common.LoadCharacter id ->
+            ( character, getCharacterSheet id )
 
-        Common.SheetLoaded (Ok newCharacter) ->
+        Common.LoadShields ->
+            ( character, getShields )
+
+        Common.LoadArmorPieces ->
+            ( character, getArmorPieces )
+
+        Common.ArmorPiecesLoaded (Ok newArmorPieces) ->
+            ( Models.MArmorPieces newArmorPieces, Cmd.none )
+
+        Common.ArmorPiecesLoaded (Err e) ->
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+
+        Common.ShieldsLoaded (Ok newShields) ->
+            ( Models.MShields newShields, Cmd.none )
+
+        Common.ShieldsLoaded (Err e) ->
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+
+        Common.CharacterLoaded (Ok newCharacter) ->
             ( Models.MCharacter newCharacter, Cmd.none )
 
-        Common.SheetLoaded (Err e) ->
+        Common.CharacterLoaded (Err e) ->
             ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
 
 
@@ -32,7 +50,25 @@ getCharacterSheet id =
         url =
             "http://localhost:3000/api/characters?id=" ++ (toString id)
     in
-        Http.send Common.SheetLoaded (Http.get url Decoding.decodeCharacterResp)
+        Http.send Common.CharacterLoaded (Http.get url Decoding.decodeCharacterResp)
+
+
+getShields : Cmd Common.Msg
+getShields =
+    let
+        url =
+            "http://localhost:3000/api/shields"
+    in
+        Http.send Common.ShieldsLoaded (Http.get url Decoding.decodeShields)
+
+
+getArmorPieces : Cmd Common.Msg
+getArmorPieces =
+    let
+        url =
+            "http://localhost:3000/api/armor_pieces"
+    in
+        Http.send Common.ArmorPiecesLoaded (Http.get url Decoding.decodeArmorPieces)
 
 
 subscriptions : Models.Model -> Sub Common.Msg

@@ -26,8 +26,9 @@ impl iron::middleware::Handler for Handler {
                          webshared::simple_server_error());
         let resp = match full_path.clone().as_ref() {
             "api/characters" => character_handler(conn, req),
-            "api/skills" => skills_handler(conn, req),
-            "api/armor_pieces" => armor_pieces_handler(conn, req),
+            "api/skills" => skills_handler(conn),
+            "api/armor_pieces" => armor_pieces_handler(conn),
+            "api/shields" => shields_handler(conn),
             _ => path_not_found(full_path),
         };
         match resp {
@@ -55,31 +56,29 @@ fn character_handler(ds: datastore::Datastore,
     let c = itry!(ds.get_character(id_param.id),
                   webshared::simple_server_error());
 
-    let resp = try!(webshared::Response { data: c }.encode());
-
-    return Ok(resp);
+    return webshared::Response { data: c }.encode();
 }
 
-fn skills_handler(ds: datastore::Datastore, req: &mut iron::Request) -> IronResult<iron::Response> {
+fn skills_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
     println!("handling request for character");
 
     let c = itry!(ds.get_skills(), webshared::simple_server_error());
 
-    let resp = try!(webshared::Response { data: c }.encode());
-
-    return Ok(resp);
+    return webshared::Response { data: c }.encode();
 }
 
-fn armor_pieces_handler(ds: datastore::Datastore,
-                        req: &mut iron::Request)
-                        -> IronResult<iron::Response> {
+fn armor_pieces_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
     println!("handling request for armor pieces");
-
     let a = itry!(ds.get_armor_pieces(), webshared::simple_server_error());
 
-    let resp = try!(webshared::Response { data: a }.encode());
+    return webshared::Response { data: a }.encode();
+}
 
-    return Ok(resp);
+fn shields_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
+    println!("handling request for shields");
+    let a = itry!(ds.get_shields(), webshared::simple_server_error());
+
+    return webshared::Response { data: a }.encode();
 }
 
 fn path_not_found(full_path: String) -> IronResult<iron::Response> {

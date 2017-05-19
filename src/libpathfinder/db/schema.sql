@@ -388,6 +388,40 @@ ALTER SEQUENCE creature_armor_pieces_id_seq OWNED BY creature_armor_pieces.id;
 
 
 --
+-- Name: creature_shields; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE creature_shields (
+    id integer NOT NULL,
+    creature_id integer NOT NULL,
+    shield_id integer NOT NULL
+);
+
+
+ALTER TABLE creature_shields OWNER TO pathfinder_user;
+
+--
+-- Name: creature_shields_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE creature_shields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE creature_shields_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: creature_shields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE creature_shields_id_seq OWNED BY creature_shields.id;
+
+
+--
 -- Name: creatures; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -429,6 +463,44 @@ ALTER TABLE creatures_id_seq OWNER TO pathfinder_user;
 --
 
 ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
+
+
+--
+-- Name: shields; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE shields (
+    id integer NOT NULL,
+    name text NOT NULL,
+    ac_bonus integer NOT NULL,
+    max_dex integer,
+    skill_penalty integer NOT NULL,
+    arcane_spell_failure_chance integer NOT NULL,
+    weight integer NOT NULL
+);
+
+
+ALTER TABLE shields OWNER TO pathfinder_user;
+
+--
+-- Name: shields_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE shields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shields_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: shields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE shields_id_seq OWNED BY shields.id;
 
 
 --
@@ -606,10 +678,24 @@ ALTER TABLE ONLY creature_armor_pieces ALTER COLUMN id SET DEFAULT nextval('crea
 
 
 --
+-- Name: creature_shields id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_shields ALTER COLUMN id SET DEFAULT nextval('creature_shields_id_seq'::regclass);
+
+
+--
 -- Name: creatures id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq'::regclass);
+
+
+--
+-- Name: shields id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY shields ALTER COLUMN id SET DEFAULT nextval('shields_id_seq'::regclass);
 
 
 --
@@ -746,6 +832,14 @@ ALTER TABLE ONLY classes
 
 
 --
+-- Name: creature_armor_pieces creature_armor_pieces_creature_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_armor_pieces
+    ADD CONSTRAINT creature_armor_pieces_creature_unique UNIQUE (creature_id);
+
+
+--
 -- Name: creature_armor_pieces creature_armor_pieces_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -754,11 +848,19 @@ ALTER TABLE ONLY creature_armor_pieces
 
 
 --
--- Name: creature_armor_pieces creature_armor_pieces_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: creature_shields creature_shields_creature_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
-ALTER TABLE ONLY creature_armor_pieces
-    ADD CONSTRAINT creature_armor_pieces_unique UNIQUE (creature_id, armor_piece_id);
+ALTER TABLE ONLY creature_shields
+    ADD CONSTRAINT creature_shields_creature_unique UNIQUE (creature_id);
+
+
+--
+-- Name: creature_shields creature_shields_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_shields
+    ADD CONSTRAINT creature_shields_pkey PRIMARY KEY (id);
 
 
 --
@@ -767,6 +869,14 @@ ALTER TABLE ONLY creature_armor_pieces
 
 ALTER TABLE ONLY creatures
     ADD CONSTRAINT creatures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shields shields_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY shields
+    ADD CONSTRAINT shields_pkey PRIMARY KEY (id);
 
 
 --
@@ -903,6 +1013,22 @@ ALTER TABLE ONLY creature_armor_pieces
 
 ALTER TABLE ONLY creature_armor_pieces
     ADD CONSTRAINT creature_armor_pieces_creature_id_fkey FOREIGN KEY (creature_id) REFERENCES creatures(id);
+
+
+--
+-- Name: creature_shields creature_shields_creature_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_shields
+    ADD CONSTRAINT creature_shields_creature_id_fkey FOREIGN KEY (creature_id) REFERENCES creatures(id);
+
+
+--
+-- Name: creature_shields creature_shields_shield_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_shields
+    ADD CONSTRAINT creature_shields_shield_id_fkey FOREIGN KEY (shield_id) REFERENCES shields(id);
 
 
 --

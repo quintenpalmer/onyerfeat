@@ -3,6 +3,7 @@ module View exposing (view)
 import Css
 import Html exposing (div)
 import Html.Attributes as Attr
+import Html.Events as Events
 import Char
 import Common
 import Models
@@ -37,7 +38,36 @@ view model =
             ]
             [ Html.text "Pathfinder Character Sheet" ]
         , div [ Attr.class "container" ]
-            [ case model of
+            [ Html.ul [ Attr.class "nav nav-pills" ]
+                [ Html.li
+                    (case model of
+                        Models.MCharacter _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 1 ] [ Html.text "Load Idrigoth" ] ]
+                , Html.li
+                    (case model of
+                        Models.MShields _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick Common.LoadShields ] [ Html.text "Load Shields" ] ]
+                , Html.li
+                    (case model of
+                        Models.MArmorPieces _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick Common.LoadArmorPieces ] [ Html.text "Load Armor" ] ]
+                ]
+            , case model of
                 Models.MCharacter c ->
                     innerPage c
 
@@ -46,6 +76,12 @@ view model =
 
                 Models.MNotLoaded ->
                     Html.h1 [] [ Html.text "Loading" ]
+
+                Models.MShields ss ->
+                    displayShields ss
+
+                Models.MArmorPieces pieces ->
+                    displayArmorPieces pieces
             ]
         ]
 
@@ -139,9 +175,9 @@ innerPage character =
                         [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Hit Points" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.h4 []
-                                [ displayField "current" <| toString character.combatNumbers.currentHitPoints
+                                [ displayField "100px" "current" <| toString character.combatNumbers.currentHitPoints
                                 , Html.text "➗"
-                                , displayField "max" <| toString character.combatNumbers.maxHitPoints
+                                , displayField "100px" "max" <| toString character.combatNumbers.maxHitPoints
                                 ]
                             , Html.h4 []
                                 [ Html.small []
@@ -158,7 +194,7 @@ innerPage character =
                                     ]
                                 ]
                             , Html.h4 []
-                                [ displayField "nonlethal" <| toString character.combatNumbers.nonlethalDamage
+                                [ displayField "100px" "nonlethal" <| toString character.combatNumbers.nonlethalDamage
                                 ]
                             ]
                         ]
@@ -201,6 +237,14 @@ innerPage character =
                                     ]
                                 , Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
                                     [ Html.div [ Attr.class "label label-default" ]
+                                        [ Html.text <| toString character.combatNumbers.armorClass.shieldAc ]
+                                    , Html.div [] [ Html.text "Shield" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "vertical-align", "top" ), ( "width", "20px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [] [ Html.text "+" ]
+                                    ]
+                                , Html.div [ Attr.style [ ( "width", "50px" ), ( "display", "inline-block" ) ] ]
+                                    [ Html.div [ Attr.class "label label-default" ]
                                         [ Html.text <| toString character.combatNumbers.armorClass.sizeMod ]
                                     , Html.div [] [ Html.text "Size" ]
                                     ]
@@ -219,26 +263,56 @@ innerPage character =
                             ]
                         ]
                     ]
+                , case character.shield of
+                    Nothing ->
+                        Html.div [] [ Html.text "no shield" ]
+
+                    Just shield ->
+                        Html.div []
+                            [ Html.div [ Attr.class "panel panel-default" ]
+                                [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Shield" ] ]
+                                , Html.div [ Attr.class "panel-body" ]
+                                    [ Html.div []
+                                        [ displayField "160px" "name" shield.name
+                                        ]
+                                    , Html.div []
+                                        [ displayField "100px" "AC bonus" <| "+" ++ (toString shield.acBonus)
+                                        , displayField "100px" "max dex" <|
+                                            case shield.maxDex of
+                                                Just maxDex ->
+                                                    "+" ++ (toString shield.maxDex)
+
+                                                Nothing ->
+                                                    "_"
+                                        , displayField "100px" "skill penalty" <| toString shield.skillPenalty
+                                        ]
+                                    , Html.div []
+                                        [ displayField "100px" "spell failure" <| (toString shield.arcaneSpellFailureChance) ++ "%"
+                                        , displayField "100px" "weight" <| (toString shield.weight) ++ "lbs"
+                                        ]
+                                    ]
+                                ]
+                            ]
                 , Html.div []
                     [ Html.div [ Attr.class "panel panel-default" ]
                         [ Html.div [ Attr.class "panel-heading", Attr.class "text-center" ] [ Html.h3 [] [ Html.text "Armor Piece" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.div []
-                                [ displayField "name" character.armorPiece.name
-                                , displayField "class" character.armorPiece.armorClass
+                                [ displayField "100px" "name" character.armorPiece.name
+                                , displayField "100px" "class" character.armorPiece.armorClass
                                 ]
                             , Html.div []
-                                [ displayField "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
-                                , displayField "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                                , displayField "skill penalty" <| toString character.armorPiece.armorCheckPenalty
+                                [ displayField "100px" "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                                , displayField "100px" "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                                , displayField "100px" "skill penalty" <| toString character.armorPiece.armorCheckPenalty
                                 ]
                             , Html.div []
-                                [ displayField "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                                , displayField "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                                [ displayField "100px" "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                                , displayField "100px" "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
                                 ]
                             , Html.div []
-                                [ displayField "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                                , displayField "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                                [ displayField "100px" "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                                , displayField "100px" "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
                                 ]
                             ]
                         ]
@@ -315,6 +389,97 @@ innerPage character =
         ]
 
 
+displayShields : List Models.Shield -> Html.Html Common.Msg
+displayShields shields =
+    Html.div [ Attr.class "container" ]
+        [ Html.div [ Attr.class "col-md-7", Attr.class "text-center" ]
+            [ Html.div [ Attr.class "panel panel-default" ]
+                [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Shields" ] ]
+                , Html.div [ Attr.class "panel-body" ]
+                    [ Html.table [ Attr.class "table table-striped" ]
+                        [ Html.thead []
+                            [ Html.tr []
+                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "AC Bonus" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Max Dex" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Skill Penalty" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Arcane Spell Failure Chance" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Weight" ]
+                                ]
+                            ]
+                        , Html.tbody [ Attr.class "text-center" ]
+                            (List.map
+                                (\shield ->
+                                    Html.tr []
+                                        [ Html.td [ Attr.class "text-left" ]
+                                            [ Html.text shield.name ]
+                                        , Html.td []
+                                            [ Html.text <| toString shield.acBonus ]
+                                        , Html.td []
+                                            [ Html.text <|
+                                                case shield.maxDex of
+                                                    Nothing ->
+                                                        "_"
+
+                                                    Just maxDex ->
+                                                        toString maxDex
+                                            ]
+                                        , Html.td []
+                                            [ Html.text <| toString shield.skillPenalty ]
+                                        , Html.td []
+                                            [ Html.text <| toString shield.arcaneSpellFailureChance ]
+                                        , Html.td []
+                                            [ Html.text <| toString shield.weight ]
+                                        ]
+                                )
+                                shields
+                            )
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
+displayArmorPieces : List Models.ArmorPiece -> Html.Html Common.Msg
+displayArmorPieces armorPieces =
+    Html.div [ Attr.class "col-md-9" ]
+        [ Html.h2 [ Attr.class "text-center" ] [ Html.text "Armor" ]
+        , Html.table [ Attr.class "table table-striped table-bordered" ]
+            [ Html.thead []
+                [ Html.tr []
+                    [ Html.th [ Attr.class "text-center" ] [ Html.text "Armor Class" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Armor Bonus" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Max Dex Bonus" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Armor Check Penalty" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Arcane Spell Failure Chance" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Fast Speed" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Slow Speed" ]
+                    , Html.th [ Attr.class "text-center" ] [ Html.text "Medium Weight" ]
+                    ]
+                ]
+            , Html.tbody [ Attr.class "text-center" ]
+                (List.map
+                    (\piece ->
+                        Html.tr []
+                            [ Html.td [] [ Html.b [] [ Html.text piece.armorClass ] ]
+                            , Html.td [] [ Html.b [] [ Html.text piece.name ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.armorBonus ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.maxDexBonus ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.armorCheckPenalty ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.arcaneSpellFailureChance ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.fastSpeed ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.slowSpeed ] ]
+                            , Html.td [] [ Html.b [] [ Html.text <| toString piece.mediumWeight ] ]
+                            ]
+                    )
+                    armorPieces
+                )
+            ]
+        ]
+
+
 capitalize : String -> String
 capitalize string =
     case String.uncons string of
@@ -364,10 +529,10 @@ scoreTableRow name ability emoji =
         ]
 
 
-displayField : String -> String -> Html.Html Common.Msg
-displayField key val =
+displayField : String -> String -> String -> Html.Html Common.Msg
+displayField width key val =
     Html.div [ Attr.class "panel panel-default", Attr.style [ ( "display", "inline-block" ) ] ]
-        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", "100px" ) ] ]
+        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", width ) ] ]
             [ Html.div [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
             , Html.div [ Attr.class "text-capitalize" ]
                 [ Html.small []

@@ -4,6 +4,29 @@ use libpathfinder_common::FromRow;
 use libpathfinder_common::TableNamer;
 use libpathfinder_common::error;
 
+pub fn exec_and_select_optional_one_by_field<T, F>(conn: &postgres::Connection,
+                                                   query: &'static str,
+                                                   id: F)
+                                                   -> Result<Option<T>, error::Error>
+    where T: FromRow,
+          F: postgres::types::ToSql
+{
+    let stmt = try!(conn.prepare(query).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
+    return match rows.len() {
+        0 => Ok(None),
+        1 => {
+            let row = rows.get(0);
+            match T::parse_row(row) {
+                Ok(o) => Ok(Some(o)),
+                Err(e) => Err(e),
+            }
+        }
+        _ => Err(error::Error::ManyResultsOnSelectOne("creature armor query".to_string())),
+    };
+}
+
 pub fn exec_and_select_one_by_field<T, F>(conn: &postgres::Connection,
                                           query: &'static str,
                                           id: F)

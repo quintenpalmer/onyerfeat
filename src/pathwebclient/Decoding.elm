@@ -1,4 +1,4 @@
-module Decoding exposing (decodeCharacterResp, decodeArmorPieces)
+module Decoding exposing (decodeCharacterResp, decodeArmorPieces, decodeShields)
 
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
@@ -18,6 +18,7 @@ decodeCharacter =
         |> Pipeline.required "meta_information" decodeMetaInformation
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
         |> Pipeline.required "armor_piece" decodeArmorPiece
+        |> Pipeline.required "shield" (Decode.nullable decodeShield)
         |> Pipeline.required "skills" decodeSkills
 
 
@@ -57,6 +58,7 @@ decodeArmorClass =
         |> Pipeline.required "base" Decode.int
         |> Pipeline.required "dex" Decode.int
         |> Pipeline.required "armor_ac" Decode.int
+        |> Pipeline.required "shield_ac" Decode.int
         |> Pipeline.required "size_mod" Decode.int
 
 
@@ -149,3 +151,19 @@ decodeArmorPiece =
         |> Pipeline.required "fast_speed" Decode.int
         |> Pipeline.required "slow_speed" Decode.int
         |> Pipeline.required "medium_weight" Decode.int
+
+
+decodeShields : Decode.Decoder (List Models.Shield)
+decodeShields =
+    Decode.field "data" (Decode.list decodeShield)
+
+
+decodeShield : Decode.Decoder Models.Shield
+decodeShield =
+    Pipeline.decode Models.Shield
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "ac_bonus" Decode.int
+        |> Pipeline.required "max_dex" (Decode.nullable Decode.int)
+        |> Pipeline.required "skill_penalty" Decode.int
+        |> Pipeline.required "arcane_spell_failure_chance" Decode.int
+        |> Pipeline.required "weight" Decode.int

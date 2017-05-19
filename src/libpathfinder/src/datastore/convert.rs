@@ -29,16 +29,20 @@ pub fn into_canonical_character(character: structs::Character,
         let dex_mod = structs::calc_ability_modifier(abs.dex);
         let base = 10;
         let armor_ac = armor_piece.armor_bonus;
+        let shield_ac = match optional_shield {
+            Some(ref shield) => shield.ac_bonus,
+            None => 0,
+        };
         let size_mod = creature.size.get_modifier();
         let armor_class = models::ArmorClass {
-            total: dex_mod + base + armor_ac + size_mod,
+            total: dex_mod + base + armor_ac + shield_ac + size_mod,
             base: base,
             dex: dex_mod,
             armor_ac: armor_ac,
             size_mod: size_mod,
             deflection_mod: 0,
             dodge_mod: 0,
-            shield_ac: 0,
+            shield_ac: shield_ac,
             natural_armor: 0,
         };
         armor_class

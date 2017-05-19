@@ -35,6 +35,7 @@ pub struct Creature {
     pub max_hit_points: i32,
     pub current_hit_points: i32,
     pub nonlethal_damage: i32,
+    pub base_attack_bonus: i32,
 }
 
 #[derive(TableNamer, FromRow)]

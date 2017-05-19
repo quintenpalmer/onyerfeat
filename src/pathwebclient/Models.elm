@@ -35,6 +35,7 @@ type alias CombatNumbers =
     , currentHitPoints : Int
     , nonlethalDamage : Int
     , armorClass : ArmorClass
+    , baseAttackBonus : Int
     }
 
 

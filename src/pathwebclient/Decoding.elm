@@ -47,6 +47,7 @@ decodeCombatNumbers =
         |> Pipeline.required "current_hit_points" Decode.int
         |> Pipeline.required "nonlethal_damage" Decode.int
         |> Pipeline.required "armor_class" decodeArmorClass
+        |> Pipeline.required "base_attack_bonus" Decode.int
 
 
 decodeArmorClass : Decode.Decoder Models.ArmorClass

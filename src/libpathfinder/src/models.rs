@@ -16,6 +16,7 @@ pub struct CombatNumbers {
     pub current_hit_points: i32,
     pub nonlethal_damage: i32,
     pub armor_class: ArmorClass,
+    pub base_attack_bonus: i32,
 }
 
 #[derive(Serialize, Deserialize)]

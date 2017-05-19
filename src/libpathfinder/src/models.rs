@@ -183,3 +183,13 @@ pub struct ArmorPiece {
     pub slow_speed: i32,
     pub medium_weight: i32,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct Shield {
+    pub name: String,
+    pub ac_bonus: i32,
+    pub max_dex: Option<i32>,
+    pub skill_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub weight: i32,
+}

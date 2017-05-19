@@ -219,6 +219,19 @@ impl structs::ArmorPiece {
     }
 }
 
+impl structs::Shield {
+    pub fn into_canonical(&self) -> models::Shield {
+        models::Shield {
+            name: self.name.clone(),
+            ac_bonus: self.ac_bonus,
+            max_dex: self.max_dex,
+            skill_penalty: self.skill_penalty,
+            arcane_spell_failure_chance: self.arcane_spell_failure_chance,
+            weight: self.weight,
+        }
+    }
+}
+
 fn is_armor_penalized(ability: models::AbilityName) -> bool {
     match ability {
         models::AbilityName::Str => true,

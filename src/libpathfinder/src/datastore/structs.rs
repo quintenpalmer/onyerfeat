@@ -160,6 +160,18 @@ pub struct ArmorPiece {
 }
 
 #[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "shields")]
+pub struct Shield {
+    pub id: i32,
+    pub name: String,
+    pub ac_bonus: i32,
+    pub max_dex: Option<i32>,
+    pub skill_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub weight: i32,
+}
+
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "creature_armor_pieces")]
 pub struct CreatureArmorPiece {
     pub id: i32,

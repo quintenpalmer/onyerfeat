@@ -432,6 +432,44 @@ ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
 
 
 --
+-- Name: shields; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE shields (
+    id integer NOT NULL,
+    name text NOT NULL,
+    ac_bonus integer NOT NULL,
+    max_dex integer,
+    skill_penalty integer NOT NULL,
+    arcane_spell_failure_chance integer NOT NULL,
+    weight integer NOT NULL
+);
+
+
+ALTER TABLE shields OWNER TO pathfinder_user;
+
+--
+-- Name: shields_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE shields_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shields_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: shields_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE shields_id_seq OWNED BY shields.id;
+
+
+--
 -- Name: skill_constructors; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -613,6 +651,13 @@ ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq
 
 
 --
+-- Name: shields id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY shields ALTER COLUMN id SET DEFAULT nextval('shields_id_seq'::regclass);
+
+
+--
 -- Name: skill_constructors id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -767,6 +812,14 @@ ALTER TABLE ONLY creature_armor_pieces
 
 ALTER TABLE ONLY creatures
     ADD CONSTRAINT creatures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shields shields_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY shields
+    ADD CONSTRAINT shields_pkey PRIMARY KEY (id);
 
 
 --

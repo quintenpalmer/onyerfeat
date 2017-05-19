@@ -283,6 +283,27 @@ SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 
 
 --
+-- Data for Name: shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_chance, weight) FROM stdin;
+1	Buckler	1	\N	-1	5	5
+2	Shield, light wooden	1	\N	-1	5	5
+3	Shield, light steel	1	\N	-1	5	6
+4	Shield, heavy wooden	2	\N	-2	15	10
+5	Shield, heavy steel	2	\N	-2	15	15
+6	Shield, tower	4	2	-10	50	45
+\.
+
+
+--
+-- Name: shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('shields_id_seq', 6, true);
+
+
+--
 -- Name: skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 

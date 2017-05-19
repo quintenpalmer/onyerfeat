@@ -22,6 +22,15 @@ update msg character =
         Common.LoadShields ->
             ( character, getShields )
 
+        Common.LoadArmorPieces ->
+            ( character, getArmorPieces )
+
+        Common.ArmorPiecesLoaded (Ok newArmorPieces) ->
+            ( Models.MArmorPieces newArmorPieces, Cmd.none )
+
+        Common.ArmorPiecesLoaded (Err e) ->
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+
         Common.ShieldsLoaded (Ok newShields) ->
             ( Models.MShields newShields, Cmd.none )
 
@@ -51,6 +60,15 @@ getShields =
             "http://localhost:3000/api/shields"
     in
         Http.send Common.ShieldsLoaded (Http.get url Decoding.decodeShields)
+
+
+getArmorPieces : Cmd Common.Msg
+getArmorPieces =
+    let
+        url =
+            "http://localhost:3000/api/armor_pieces"
+    in
+        Http.send Common.ArmorPiecesLoaded (Http.get url Decoding.decodeArmorPieces)
 
 
 subscriptions : Models.Model -> Sub Common.Msg

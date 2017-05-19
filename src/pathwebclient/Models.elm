@@ -18,6 +18,7 @@ module Models
 type Model
     = MCharacter Character
     | MShields (List Shield)
+    | MArmorPieces (List ArmorPiece)
     | MError String
     | MNotLoaded
 

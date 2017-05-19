@@ -36,3 +36,16 @@ ON
 WHERE
     cap.creature_id = $1
 "#;
+
+pub static CHARACTER_SHIELD_QUERY: &'static str = r#"
+SELECT
+    shields.*
+FROM
+    creature_shields cs
+INNER JOIN
+    shields
+ON
+    cs.shield_id = shields.id
+WHERE
+    cs.creature_id = $1
+"#;

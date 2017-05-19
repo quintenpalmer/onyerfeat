@@ -53,6 +53,11 @@ impl Datastore {
                                                        queries::CHARACTER_ARMOR_PIECE_QUERY,
                                                        creature.id));
 
+        let option_shield: Option<structs::Shield> =
+            try!(selects::exec_and_select_optional_one_by_field(&self.conn,
+                                                                queries::CHARACTER_SHIELD_QUERY,
+                                                                creature.id));
+
         return Ok(convert::into_canonical_character(character,
                                                     creature,
                                                     abs,
@@ -63,7 +68,8 @@ impl Datastore {
                                                     class_skills,
                                                     class_sub_skills,
                                                     class_skill_constructors,
-                                                    armor_piece));
+                                                    armor_piece,
+                                                    option_shield));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

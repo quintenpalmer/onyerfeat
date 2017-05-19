@@ -6,6 +6,7 @@ pub struct Character {
     pub meta_information: MetaInformation,
     pub combat_numbers: CombatNumbers,
     pub armor_piece: ArmorPiece,
+    pub shield: Option<Shield>,
     pub skills: Vec<CharacterSkill>,
 }
 

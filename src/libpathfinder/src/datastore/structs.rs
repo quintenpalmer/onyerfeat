@@ -179,6 +179,14 @@ pub struct CreatureArmorPiece {
     pub armor_pieces_id: i32,
 }
 
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "creature_shields")]
+pub struct CreatureShield {
+    pub id: i32,
+    pub creature_id: i32,
+    pub shield_id: i32,
+}
+
 pub fn calc_ability_modifier(i: i32) -> i32 {
     let rounded = if i % 2 == 0 {
         i

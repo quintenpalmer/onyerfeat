@@ -16,8 +16,8 @@ init =
 update : Common.Msg -> Models.Model -> ( Models.Model, Cmd Common.Msg )
 update msg character =
     case msg of
-        Common.DoLoadSheet ->
-            ( character, getCharacterSheet 1 )
+        Common.LoadCharacter id ->
+            ( character, getCharacterSheet id )
 
         Common.ShieldsLoaded (Ok newShields) ->
             ( Models.MShields newShields, Cmd.none )

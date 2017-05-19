@@ -19,6 +19,9 @@ update msg character =
         Common.LoadCharacter id ->
             ( character, getCharacterSheet id )
 
+        Common.LoadShields ->
+            ( character, getShields )
+
         Common.ShieldsLoaded (Ok newShields) ->
             ( Models.MShields newShields, Cmd.none )
 

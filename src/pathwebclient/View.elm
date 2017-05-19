@@ -3,6 +3,7 @@ module View exposing (view)
 import Css
 import Html exposing (div)
 import Html.Attributes as Attr
+import Html.Events as Events
 import Char
 import Common
 import Models
@@ -37,7 +38,27 @@ view model =
             ]
             [ Html.text "Pathfinder Character Sheet" ]
         , div [ Attr.class "container" ]
-            [ case model of
+            [ Html.ul [ Attr.class "nav nav-pills" ]
+                [ Html.li
+                    (case model of
+                        Models.MCharacter _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 1 ] [ Html.text "Load Idrigoth" ] ]
+                , Html.li
+                    (case model of
+                        Models.MShields _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick Common.LoadShields ] [ Html.text "Load Shields" ] ]
+                ]
+            , case model of
                 Models.MCharacter c ->
                     innerPage c
 

@@ -139,14 +139,9 @@ innerPage character =
                         [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Hit Points" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.h4 []
-                                [ Html.span [] [ Html.text "Current: " ]
-                                , Html.span [ Attr.class "label label-default" ]
-                                    [ Html.text <| toString character.combatNumbers.currentHitPoints
-                                    ]
-                                , Html.span [] [ Html.text " / Max: " ]
-                                , Html.span [ Attr.class "label label-default" ]
-                                    [ Html.text <| toString character.combatNumbers.maxHitPoints
-                                    ]
+                                [ displayField "current" <| toString character.combatNumbers.currentHitPoints
+                                , Html.text "➗"
+                                , displayField "max" <| toString character.combatNumbers.maxHitPoints
                                 ]
                             , Html.h4 []
                                 [ Html.small []
@@ -163,11 +158,7 @@ innerPage character =
                                     ]
                                 ]
                             , Html.h4 []
-                                [ Html.span [] [ Html.text " (Nonlethal: " ]
-                                , Html.span [ Attr.class "label label-default" ]
-                                    [ Html.text <| toString character.combatNumbers.nonlethalDamage
-                                    ]
-                                , Html.span [] [ Html.text ")" ]
+                                [ displayField "nonlethal" <| toString character.combatNumbers.nonlethalDamage
                                 ]
                             ]
                         ]

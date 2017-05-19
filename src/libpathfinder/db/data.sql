@@ -264,7 +264,7 @@ SELECT pg_catalog.setval('classes_id_seq', 1, true);
 --
 
 COPY creature_armor_pieces (id, creature_id, armor_piece_id) FROM stdin;
-1	1	4
+1	1	8
 \.
 
 

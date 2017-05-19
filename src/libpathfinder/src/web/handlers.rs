@@ -26,8 +26,8 @@ impl iron::middleware::Handler for Handler {
                          webshared::simple_server_error());
         let resp = match full_path.clone().as_ref() {
             "api/characters" => character_handler(conn, req),
-            "api/skills" => skills_handler(conn, req),
-            "api/armor_pieces" => armor_pieces_handler(conn, req),
+            "api/skills" => skills_handler(conn),
+            "api/armor_pieces" => armor_pieces_handler(conn),
             _ => path_not_found(full_path),
         };
         match resp {
@@ -58,7 +58,7 @@ fn character_handler(ds: datastore::Datastore,
     return webshared::Response { data: c }.encode();
 }
 
-fn skills_handler(ds: datastore::Datastore, req: &mut iron::Request) -> IronResult<iron::Response> {
+fn skills_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
     println!("handling request for character");
 
     let c = itry!(ds.get_skills(), webshared::simple_server_error());
@@ -66,9 +66,7 @@ fn skills_handler(ds: datastore::Datastore, req: &mut iron::Request) -> IronResu
     return webshared::Response { data: c }.encode();
 }
 
-fn armor_pieces_handler(ds: datastore::Datastore,
-                        req: &mut iron::Request)
-                        -> IronResult<iron::Response> {
+fn armor_pieces_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
     println!("handling request for armor pieces");
     let a = itry!(ds.get_armor_pieces(), webshared::simple_server_error());
 

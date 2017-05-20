@@ -14,6 +14,7 @@ decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
     Pipeline.decode Models.Character
         |> Pipeline.required "id" Decode.int
+        |> Pipeline.required "level" Decode.int
         |> Pipeline.required "ability_score_info" decodeAbilityScores
         |> Pipeline.required "meta_information" decodeMetaInformation
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
@@ -49,6 +50,24 @@ decodeCombatNumbers =
         |> Pipeline.required "nonlethal_damage" Decode.int
         |> Pipeline.required "armor_class" decodeArmorClass
         |> Pipeline.required "base_attack_bonus" Decode.int
+        |> Pipeline.required "saving_throws" decodeSavingThrows
+
+
+decodeSavingThrows : Decode.Decoder Models.SavingThrows
+decodeSavingThrows =
+    Pipeline.decode Models.SavingThrows
+        |> Pipeline.required "fortitude" decodeSavingThrow
+        |> Pipeline.required "reflex" decodeSavingThrow
+        |> Pipeline.required "will" decodeSavingThrow
+
+
+decodeSavingThrow : Decode.Decoder Models.SavingThrow
+decodeSavingThrow =
+    Pipeline.decode Models.SavingThrow
+        |> Pipeline.required "total" Decode.int
+        |> Pipeline.required "base" Decode.int
+        |> Pipeline.required "ability_mod" Decode.int
+        |> Pipeline.required "ability_name" Decode.string
 
 
 decodeArmorClass : Decode.Decoder Models.ArmorClass

@@ -27,6 +27,25 @@ pub fn exec_and_select_optional_one_by_field<T, F>(conn: &postgres::Connection,
     };
 }
 
+pub fn exec_and_select_one_by_two_fields<T, F, I>(conn: &postgres::Connection,
+                                                  query: &'static str,
+                                                  id1: F,
+                                                  id2: I)
+                                                  -> Result<T, error::Error>
+    where T: FromRow,
+          F: postgres::types::ToSql,
+          I: postgres::types::ToSql
+{
+    let stmt = try!(conn.prepare(query).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id1, &id2]).map_err(error::Error::Postgres));
+    if rows.len() != 1 {
+        return Err(error::Error::ManyResultsOnSelectOne("custom sql query".to_string()));
+    }
+    let row = rows.get(0);
+    return T::parse_row(row);
+}
+
 pub fn exec_and_select_one_by_field<T, F>(conn: &postgres::Connection,
                                           query: &'static str,
                                           id: F)

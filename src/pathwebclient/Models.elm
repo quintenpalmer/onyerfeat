@@ -12,6 +12,8 @@ module Models
         , ArmorPiece
         , Shield
         , ArmorClass
+        , SavingThrows
+        , SavingThrow
         )
 
 
@@ -26,6 +28,7 @@ type Model
 
 type alias Character =
     { id : Int
+    , level : Int
     , abilityScores : AbilityScoreSet
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
@@ -41,6 +44,22 @@ type alias CombatNumbers =
     , nonlethalDamage : Int
     , armorClass : ArmorClass
     , baseAttackBonus : Int
+    , savingThrows : SavingThrows
+    }
+
+
+type alias SavingThrows =
+    { fortitude : SavingThrow
+    , reflex : SavingThrow
+    , will : SavingThrow
+    }
+
+
+type alias SavingThrow =
+    { total : Int
+    , base : Int
+    , abilityMod : Int
+    , abilityName : String
     }
 
 

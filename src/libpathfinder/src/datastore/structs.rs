@@ -25,6 +25,7 @@ pub struct Class {
 pub struct Creature {
     pub id: i32,
     pub name: String,
+    pub level: i32,
     pub alignment_order: models::AlignmentOrder,
     pub alignment_morality: models::AlignmentMorality,
     pub ability_score_set_id: i32,
@@ -49,19 +50,6 @@ pub struct AbilityScoreSet {
     pub int: i32,
     pub wis: i32,
     pub cha: i32,
-}
-
-impl AbilityScoreSet {
-    pub fn get_ability_mod(&self, ability_name: models::AbilityName) -> i32 {
-        calc_ability_modifier(match ability_name {
-            models::AbilityName::Str => self.str,
-            models::AbilityName::Dex => self.dex,
-            models::AbilityName::Con => self.con,
-            models::AbilityName::Int => self.int,
-            models::AbilityName::Wis => self.wis,
-            models::AbilityName::Cha => self.cha,
-        })
-    }
 }
 
 #[derive(TableNamer, FromRow)]
@@ -187,13 +175,13 @@ pub struct CreatureShield {
     pub shield_id: i32,
 }
 
-pub fn calc_ability_modifier(i: i32) -> i32 {
-    let rounded = if i % 2 == 0 {
-        i
-    } else if i > 0 {
-        i - 1
-    } else {
-        i + 1
-    };
-    return (rounded - 10) / 2;
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "class_saving_throws")]
+pub struct ClassSavingThrows {
+    pub id: i32,
+    pub class_id: i32,
+    pub level: i32,
+    pub fortitude: i32,
+    pub reflex: i32,
+    pub will: i32,
 }

@@ -1,6 +1,7 @@
 #[derive(Serialize, Deserialize)]
 pub struct Character {
     pub id: i32,
+    pub level: i32,
     pub ability_scores: AbilityScoreSet,
     pub ability_score_info: AbilityScoreInfo,
     pub meta_information: MetaInformation,
@@ -18,6 +19,22 @@ pub struct CombatNumbers {
     pub nonlethal_damage: i32,
     pub armor_class: ArmorClass,
     pub base_attack_bonus: i32,
+    pub saving_throws: SavingThrows,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SavingThrows {
+    pub fortitude: SavingThrow,
+    pub reflex: SavingThrow,
+    pub will: SavingThrow,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SavingThrow {
+    pub total: i32,
+    pub base: i32,
+    pub ability_mod: i32,
+    pub ability_name: AbilityName,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -108,6 +125,20 @@ pub struct AbilityScoreInfo {
     pub int: ScoreAndMofidier,
     pub wis: ScoreAndMofidier,
     pub cha: ScoreAndMofidier,
+}
+
+
+impl AbilityScoreInfo {
+    pub fn get_ability_mod(&self, ability_name: AbilityName) -> i32 {
+        match ability_name {
+            AbilityName::Str => self.str.modifier,
+            AbilityName::Dex => self.dex.modifier,
+            AbilityName::Con => self.con.modifier,
+            AbilityName::Int => self.int.modifier,
+            AbilityName::Wis => self.wis.modifier,
+            AbilityName::Cha => self.cha.modifier,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]

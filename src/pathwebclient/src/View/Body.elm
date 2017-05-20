@@ -1,4 +1,4 @@
-module View exposing (view)
+module View.Body exposing (view)
 
 import Css
 import Html exposing (div)

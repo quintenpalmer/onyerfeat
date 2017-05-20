@@ -31,7 +31,10 @@ pub struct SavingThrows {
 
 #[derive(Serialize, Deserialize)]
 pub struct SavingThrow {
+    pub total: i32,
     pub base: i32,
+    pub ability_mod: i32,
+    pub ability_name: AbilityName,
 }
 
 #[derive(Serialize, Deserialize)]

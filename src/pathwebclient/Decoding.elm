@@ -64,7 +64,10 @@ decodeSavingThrows =
 decodeSavingThrow : Decode.Decoder Models.SavingThrow
 decodeSavingThrow =
     Pipeline.decode Models.SavingThrow
+        |> Pipeline.required "total" Decode.int
         |> Pipeline.required "base" Decode.int
+        |> Pipeline.required "ability_mod" Decode.int
+        |> Pipeline.required "ability_name" Decode.string
 
 
 decodeArmorClass : Decode.Decoder Models.ArmorClass

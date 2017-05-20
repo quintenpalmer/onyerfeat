@@ -86,7 +86,6 @@ pub fn into_canonical_character(character: structs::Character,
             wis: abs.wis,
             cha: abs.cha,
         },
-        ability_score_info: ability_score_model,
         meta_information: models::MetaInformation {
             name: creature.name,
             player_name: character.player_name.clone(),
@@ -106,7 +105,7 @@ pub fn into_canonical_character(character: structs::Character,
             nonlethal_damage: creature.nonlethal_damage,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
-            saving_throws: base_saving_throws.into_canonical(),
+            saving_throws: base_saving_throws.into_canonical(&ability_score_model),
         },
         armor_piece: armor_piece.into_canonical(),
         shield: match optional_shield {
@@ -114,6 +113,7 @@ pub fn into_canonical_character(character: structs::Character,
             None => None,
         },
         skills: character_skills,
+        ability_score_info: ability_score_model,
     };
 }
 
@@ -252,13 +252,28 @@ impl structs::Shield {
 }
 
 impl structs::ClassSavingThrows {
-    pub fn into_canonical(&self) -> models::SavingThrows {
+    pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
         models::SavingThrows {
-            fortitude: models::SavingThrow { base: self.fortitude },
-            reflex: models::SavingThrow { base: self.reflex },
-            will: models::SavingThrow { base: self.will },
+            fortitude: build_saving_throw(self.fortitude,
+                                          abs.con.modifier,
+                                          models::AbilityName::Con),
+            reflex: build_saving_throw(self.reflex, abs.dex.modifier, models::AbilityName::Dex),
+            will: build_saving_throw(self.will, abs.wis.modifier, models::AbilityName::Wis),
         }
     }
+}
+
+fn build_saving_throw(class_base: i32,
+                      ability_mod: i32,
+                      ability_name: models::AbilityName)
+                      -> models::SavingThrow {
+    let total = class_base + ability_mod;
+    return models::SavingThrow {
+        total: total,
+        base: class_base,
+        ability_mod: ability_mod,
+        ability_name: ability_name,
+    };
 }
 
 fn is_armor_penalized(ability: models::AbilityName) -> bool {

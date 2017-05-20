@@ -56,7 +56,10 @@ type alias SavingThrows =
 
 
 type alias SavingThrow =
-    { base : Int
+    { total : Int
+    , base : Int
+    , abilityMod : Int
+    , abilityName : String
     }
 
 

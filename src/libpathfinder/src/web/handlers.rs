@@ -1,3 +1,6 @@
+use rand;
+use rand::distributions::IndependentSample;
+
 use iron;
 use iron::IronResult;
 
@@ -29,6 +32,7 @@ impl iron::middleware::Handler for Handler {
             "api/skills" => skills_handler(conn),
             "api/armor_pieces" => armor_pieces_handler(conn),
             "api/shields" => shields_handler(conn),
+            "api/roll" => dice_roll_handler(req),
             _ => path_not_found(full_path),
         };
         match resp {
@@ -79,6 +83,24 @@ fn shields_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
     let a = itry!(ds.get_shields(), webshared::simple_server_error());
 
     return webshared::Response { data: a }.encode();
+}
+
+
+#[derive(QueryParam)]
+struct DiceParam {
+    pub die: i32,
+}
+
+fn dice_roll_handler(req: &mut iron::Request) -> IronResult<iron::Response> {
+    println!("handling request for dice roll");
+
+    let dice_param = try!(DiceParam::parse_from(req));
+
+    let between = rand::distributions::Range::new(1, dice_param.die + 1);
+    let mut rng = rand::thread_rng();
+    let roll = between.ind_sample(&mut rng);
+
+    return webshared::Response { data: roll }.encode();
 }
 
 fn path_not_found(full_path: String) -> IronResult<iron::Response> {

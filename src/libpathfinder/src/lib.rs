@@ -1,3 +1,5 @@
+extern crate rand;
+
 extern crate serde;
 extern crate serde_json;
 #[macro_use]

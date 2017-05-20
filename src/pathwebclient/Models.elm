@@ -12,6 +12,8 @@ module Models
         , ArmorPiece
         , Shield
         , ArmorClass
+        , SavingThrows
+        , SavingThrow
         )
 
 
@@ -42,6 +44,19 @@ type alias CombatNumbers =
     , nonlethalDamage : Int
     , armorClass : ArmorClass
     , baseAttackBonus : Int
+    , savingThrows : SavingThrows
+    }
+
+
+type alias SavingThrows =
+    { fortitude : SavingThrow
+    , reflex : SavingThrow
+    , will : SavingThrow
+    }
+
+
+type alias SavingThrow =
+    { base : Int
     }
 
 

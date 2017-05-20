@@ -50,6 +50,21 @@ decodeCombatNumbers =
         |> Pipeline.required "nonlethal_damage" Decode.int
         |> Pipeline.required "armor_class" decodeArmorClass
         |> Pipeline.required "base_attack_bonus" Decode.int
+        |> Pipeline.required "saving_throws" decodeSavingThrows
+
+
+decodeSavingThrows : Decode.Decoder Models.SavingThrows
+decodeSavingThrows =
+    Pipeline.decode Models.SavingThrows
+        |> Pipeline.required "fortitude" decodeSavingThrow
+        |> Pipeline.required "reflex" decodeSavingThrow
+        |> Pipeline.required "will" decodeSavingThrow
+
+
+decodeSavingThrow : Decode.Decoder Models.SavingThrow
+decodeSavingThrow =
+    Pipeline.decode Models.SavingThrow
+        |> Pipeline.required "base" Decode.int
 
 
 decodeArmorClass : Decode.Decoder Models.ArmorClass

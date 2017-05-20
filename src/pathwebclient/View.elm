@@ -270,6 +270,40 @@ innerPage character =
                     ]
                 , Html.div [ Attr.class "text-center" ]
                     [ Html.div [ Attr.class "panel panel-default" ]
+                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Saving Throws" ] ]
+                        , Html.div [ Attr.class "panel-body" ]
+                            [ Html.table [ Attr.class "table table-striped" ]
+                                [ Html.thead []
+                                    [ Html.tr []
+                                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Base" ]
+                                        ]
+                                    ]
+                                , Html.tbody [ Attr.class "text-center" ]
+                                    (List.map
+                                        (\( name, throw ) ->
+                                            Html.tr []
+                                                [ Html.td []
+                                                    [ Html.b [ Attr.class "text-capitalize" ]
+                                                        [ Html.text name ]
+                                                    ]
+                                                , Html.td []
+                                                    [ Html.span [ Attr.class "label label-default" ]
+                                                        [ Html.text (toString throw.base) ]
+                                                    ]
+                                                ]
+                                        )
+                                        [ ( "fortitude", character.combatNumbers.savingThrows.fortitude )
+                                        , ( "reflex", character.combatNumbers.savingThrows.reflex )
+                                        , ( "will", character.combatNumbers.savingThrows.will )
+                                        ]
+                                    )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Html.div [ Attr.class "text-center" ]
+                    [ Html.div [ Attr.class "panel panel-default" ]
                         [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Base Attack Bonus" ] ]
                         , Html.div [ Attr.class "panel-body" ]
                             [ Html.h2 []

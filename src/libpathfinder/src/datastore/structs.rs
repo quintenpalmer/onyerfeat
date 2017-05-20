@@ -188,6 +188,17 @@ pub struct CreatureShield {
     pub shield_id: i32,
 }
 
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "class_saving_throws")]
+pub struct ClassSavingThrows {
+    pub id: i32,
+    pub class_id: i32,
+    pub level: i32,
+    pub fortitude: i32,
+    pub reflex: i32,
+    pub will: i32,
+}
+
 pub fn calc_ability_modifier(i: i32) -> i32 {
     let rounded = if i % 2 == 0 {
         i

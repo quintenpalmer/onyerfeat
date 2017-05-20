@@ -19,6 +19,19 @@ pub struct CombatNumbers {
     pub nonlethal_damage: i32,
     pub armor_class: ArmorClass,
     pub base_attack_bonus: i32,
+    pub saving_throws: SavingThrows,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SavingThrows {
+    pub fortitude: SavingThrow,
+    pub reflex: SavingThrow,
+    pub will: SavingThrow,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SavingThrow {
+    pub base: i32,
 }
 
 #[derive(Serialize, Deserialize)]

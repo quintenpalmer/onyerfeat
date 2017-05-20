@@ -57,6 +57,11 @@ impl Datastore {
             try!(selects::exec_and_select_optional_one_by_field(&self.conn,
                                                                 queries::CHARACTER_SHIELD_QUERY,
                                                                 creature.id));
+        let base_saving_throws: structs::ClassSavingThrows =
+            try!(selects::exec_and_select_one_by_two_fields(&self.conn,
+                                                            queries::BASE_SAVING_THROWS,
+                                                            class.id,
+                                                            creature.level));
 
         return Ok(convert::into_canonical_character(character,
                                                     creature,
@@ -69,7 +74,8 @@ impl Datastore {
                                                     class_sub_skills,
                                                     class_skill_constructors,
                                                     armor_piece,
-                                                    option_shield));
+                                                    option_shield,
+                                                    base_saving_throws));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

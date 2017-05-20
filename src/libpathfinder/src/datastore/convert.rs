@@ -15,7 +15,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 class_sub_skills: Vec<structs::ClassSubSkill>,
                                 class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                                 armor_piece: structs::ArmorPiece,
-                                optional_shield: Option<structs::Shield>)
+                                optional_shield: Option<structs::Shield>,
+                                base_saving_throws: structs::ClassSavingThrows)
                                 -> models::Character {
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
@@ -104,6 +105,7 @@ pub fn into_canonical_character(character: structs::Character,
             nonlethal_damage: creature.nonlethal_damage,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
+            saving_throws: base_saving_throws.into_canonical(),
         },
         armor_piece: armor_piece.into_canonical(),
         shield: match optional_shield {
@@ -244,6 +246,16 @@ impl structs::Shield {
             skill_penalty: self.skill_penalty,
             arcane_spell_failure_chance: self.arcane_spell_failure_chance,
             weight: self.weight,
+        }
+    }
+}
+
+impl structs::ClassSavingThrows {
+    pub fn into_canonical(&self) -> models::SavingThrows {
+        models::SavingThrows {
+            fortitude: models::SavingThrow { base: self.fortitude },
+            reflex: models::SavingThrow { base: self.reflex },
+            will: models::SavingThrow { base: self.will },
         }
     }
 }

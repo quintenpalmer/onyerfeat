@@ -49,3 +49,14 @@ ON
 WHERE
     cs.creature_id = $1
 "#;
+
+pub static BASE_SAVING_THROWS: &'static str = r#"
+SELECT
+    *
+FROM
+    class_saving_throws
+WHERE
+    class_id = $1
+AND
+    level = $2
+"#;

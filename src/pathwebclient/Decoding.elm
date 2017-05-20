@@ -1,4 +1,4 @@
-module Decoding exposing (decodeCharacterResp, decodeArmorPieces, decodeShields)
+module Decoding exposing (decodeCharacterResp, decodeArmorPieces, decodeShields, decodeDie)
 
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
@@ -167,3 +167,8 @@ decodeShield =
         |> Pipeline.required "skill_penalty" Decode.int
         |> Pipeline.required "arcane_spell_failure_chance" Decode.int
         |> Pipeline.required "weight" Decode.int
+
+
+decodeDie : Decode.Decoder Int
+decodeDie =
+    Decode.field "data" Decode.int

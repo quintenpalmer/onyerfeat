@@ -19,6 +19,7 @@ type Model
     = MCharacter Character
     | MShields (List Shield)
     | MArmorPieces (List ArmorPiece)
+    | MDiceTab (Maybe Int)
     | MError String
     | MNotLoaded
 

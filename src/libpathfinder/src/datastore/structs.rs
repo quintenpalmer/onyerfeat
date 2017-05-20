@@ -25,6 +25,7 @@ pub struct Class {
 pub struct Creature {
     pub id: i32,
     pub name: String,
+    pub level: i32,
     pub alignment_order: models::AlignmentOrder,
     pub alignment_morality: models::AlignmentMorality,
     pub ability_score_set_id: i32,

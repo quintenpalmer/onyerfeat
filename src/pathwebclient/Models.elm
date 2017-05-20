@@ -26,6 +26,7 @@ type Model
 
 type alias Character =
     { id : Int
+    , level : Int
     , abilityScores : AbilityScoreSet
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers

@@ -50,6 +50,7 @@ pub fn into_canonical_character(character: structs::Character,
     };
     return models::Character {
         id: character.id,
+        level: creature.level,
         ability_scores: models::AbilityScoreSet {
             str: abs.str,
             dex: abs.dex,

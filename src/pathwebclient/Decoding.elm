@@ -14,6 +14,7 @@ decodeCharacter : Decode.Decoder Models.Character
 decodeCharacter =
     Pipeline.decode Models.Character
         |> Pipeline.required "id" Decode.int
+        |> Pipeline.required "level" Decode.int
         |> Pipeline.required "ability_score_info" decodeAbilityScores
         |> Pipeline.required "meta_information" decodeMetaInformation
         |> Pipeline.required "combat_numbers" decodeCombatNumbers

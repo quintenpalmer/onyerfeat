@@ -1,6 +1,7 @@
 #[derive(Serialize, Deserialize)]
 pub struct Character {
     pub id: i32,
+    pub level: i32,
     pub ability_scores: AbilityScoreSet,
     pub ability_score_info: AbilityScoreInfo,
     pub meta_information: MetaInformation,

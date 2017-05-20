@@ -66,6 +66,15 @@ view model =
                             [ Attr.style [ ( "role", "presentation" ) ] ]
                     )
                     [ Html.a [ Attr.href "#", Events.onClick Common.LoadArmorPieces ] [ Html.text "Load Armor" ] ]
+                , Html.li
+                    (case model of
+                        Models.MDiceTab _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick Common.DiceTab ] [ Html.text "Dice Rolls" ] ]
                 ]
             , case model of
                 Models.MCharacter c ->
@@ -82,6 +91,9 @@ view model =
 
                 Models.MArmorPieces pieces ->
                     displayArmorPieces pieces
+
+                Models.MDiceTab mRoll ->
+                    displayDiceTab mRoll
             ]
         ]
 
@@ -477,6 +489,30 @@ displayArmorPieces armorPieces =
                     armorPieces
                 )
             ]
+        ]
+
+
+displayDiceTab : Maybe Int -> Html.Html Common.Msg
+displayDiceTab mRoll =
+    Html.div []
+        [ Html.h1 [] [ Html.text "Dice Rolls" ]
+        , Html.div []
+            [ Html.text <|
+                "Roll: "
+                    ++ case mRoll of
+                        Just val ->
+                            toString val
+
+                        Nothing ->
+                            ""
+            ]
+        , Html.div [ Attr.class "btn btn-group", Attr.style [ ( "role", "group" ) ] ] <|
+            List.map
+                (\num ->
+                    Html.button [ Attr.class "btn btn-default", Events.onClick <| Common.LoadDie num ]
+                        [ Html.text <| "1d" ++ toString num ]
+                )
+                [ 2, 3, 4, 6, 8, 10, 12, 20, 100 ]
         ]
 
 

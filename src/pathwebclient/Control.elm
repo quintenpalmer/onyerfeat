@@ -25,6 +25,18 @@ update msg character =
         Common.LoadArmorPieces ->
             ( character, getArmorPieces )
 
+        Common.DiceTab ->
+            ( Models.MDiceTab Nothing, Cmd.none )
+
+        Common.LoadDie die ->
+            ( Models.MDiceTab Nothing, getDiceRoll die )
+
+        Common.DiceLoaded (Ok dieRoll) ->
+            ( Models.MDiceTab <| Just dieRoll, Cmd.none )
+
+        Common.DiceLoaded (Err e) ->
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+
         Common.ArmorPiecesLoaded (Ok newArmorPieces) ->
             ( Models.MArmorPieces newArmorPieces, Cmd.none )
 
@@ -69,6 +81,15 @@ getArmorPieces =
             "http://localhost:3000/api/armor_pieces"
     in
         Http.send Common.ArmorPiecesLoaded (Http.get url Decoding.decodeArmorPieces)
+
+
+getDiceRoll : Int -> Cmd Common.Msg
+getDiceRoll die =
+    let
+        url =
+            "http://localhost:3000/api/roll?die=" ++ (toString die)
+    in
+        Http.send Common.DiceLoaded (Http.get url Decoding.decodeDie)
 
 
 subscriptions : Models.Model -> Sub Common.Msg

@@ -18,6 +18,32 @@ pub fn into_canonical_character(character: structs::Character,
                                 optional_shield: Option<structs::Shield>,
                                 base_saving_throws: structs::ClassSavingThrows)
                                 -> models::Character {
+    let ability_score_model = models::AbilityScoreInfo {
+        str: models::ScoreAndMofidier {
+            score: abs.str,
+            modifier: structs::calc_ability_modifier(abs.str),
+        },
+        dex: models::ScoreAndMofidier {
+            score: abs.dex,
+            modifier: structs::calc_ability_modifier(abs.dex),
+        },
+        con: models::ScoreAndMofidier {
+            score: abs.con,
+            modifier: structs::calc_ability_modifier(abs.con),
+        },
+        int: models::ScoreAndMofidier {
+            score: abs.int,
+            modifier: structs::calc_ability_modifier(abs.int),
+        },
+        wis: models::ScoreAndMofidier {
+            score: abs.wis,
+            modifier: structs::calc_ability_modifier(abs.wis),
+        },
+        cha: models::ScoreAndMofidier {
+            score: abs.cha,
+            modifier: structs::calc_ability_modifier(abs.cha),
+        },
+    };
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
                                                 sub_skills,
@@ -60,32 +86,7 @@ pub fn into_canonical_character(character: structs::Character,
             wis: abs.wis,
             cha: abs.cha,
         },
-        ability_score_info: models::AbilityScoreInfo {
-            str: models::ScoreAndMofidier {
-                score: abs.str,
-                modifier: structs::calc_ability_modifier(abs.str),
-            },
-            dex: models::ScoreAndMofidier {
-                score: abs.dex,
-                modifier: structs::calc_ability_modifier(abs.dex),
-            },
-            con: models::ScoreAndMofidier {
-                score: abs.con,
-                modifier: structs::calc_ability_modifier(abs.con),
-            },
-            int: models::ScoreAndMofidier {
-                score: abs.int,
-                modifier: structs::calc_ability_modifier(abs.int),
-            },
-            wis: models::ScoreAndMofidier {
-                score: abs.wis,
-                modifier: structs::calc_ability_modifier(abs.wis),
-            },
-            cha: models::ScoreAndMofidier {
-                score: abs.cha,
-                modifier: structs::calc_ability_modifier(abs.cha),
-            },
-        },
+        ability_score_info: ability_score_model,
         meta_information: models::MetaInformation {
             name: creature.name,
             player_name: character.player_name.clone(),

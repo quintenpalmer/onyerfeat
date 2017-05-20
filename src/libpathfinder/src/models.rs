@@ -124,6 +124,20 @@ pub struct AbilityScoreInfo {
     pub cha: ScoreAndMofidier,
 }
 
+
+impl AbilityScoreInfo {
+    pub fn get_ability_mod(&self, ability_name: AbilityName) -> i32 {
+        match ability_name {
+            AbilityName::Str => self.str.modifier,
+            AbilityName::Dex => self.dex.modifier,
+            AbilityName::Con => self.con.modifier,
+            AbilityName::Int => self.int.modifier,
+            AbilityName::Wis => self.wis.modifier,
+            AbilityName::Cha => self.cha.modifier,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct ScoreAndMofidier {
     pub score: i32,

@@ -21,27 +21,27 @@ pub fn into_canonical_character(character: structs::Character,
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
             score: abs.str,
-            modifier: structs::calc_ability_modifier(abs.str),
+            modifier: calc_ability_modifier(abs.str),
         },
         dex: models::ScoreAndMofidier {
             score: abs.dex,
-            modifier: structs::calc_ability_modifier(abs.dex),
+            modifier: calc_ability_modifier(abs.dex),
         },
         con: models::ScoreAndMofidier {
             score: abs.con,
-            modifier: structs::calc_ability_modifier(abs.con),
+            modifier: calc_ability_modifier(abs.con),
         },
         int: models::ScoreAndMofidier {
             score: abs.int,
-            modifier: structs::calc_ability_modifier(abs.int),
+            modifier: calc_ability_modifier(abs.int),
         },
         wis: models::ScoreAndMofidier {
             score: abs.wis,
-            modifier: structs::calc_ability_modifier(abs.wis),
+            modifier: calc_ability_modifier(abs.wis),
         },
         cha: models::ScoreAndMofidier {
             score: abs.cha,
-            modifier: structs::calc_ability_modifier(abs.cha),
+            modifier: calc_ability_modifier(abs.cha),
         },
     };
     let character_skills = get_character_skills(skills,
@@ -50,11 +50,11 @@ pub fn into_canonical_character(character: structs::Character,
                                                 class_skills,
                                                 class_sub_skills,
                                                 class_skill_constructors,
-                                                &abs,
+                                                &ability_score_model,
                                                 &armor_piece,
                                                 &optional_shield);
     let armor_class = {
-        let dex_mod = structs::calc_ability_modifier(abs.dex);
+        let dex_mod = ability_score_model.dex.modifier;
         let base = 10;
         let armor_ac = armor_piece.armor_bonus;
         let shield_ac = match optional_shield {
@@ -123,7 +123,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
                         class_skills: Vec<structs::ClassSkill>,
                         class_sub_skills: Vec<structs::ClassSubSkill>,
                         class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-                        abs: &structs::AbilityScoreSet,
+                        abs: &models::AbilityScoreInfo,
                         armor_piece: &structs::ArmorPiece,
                         optional_shield: &Option<structs::Shield>)
                         -> Vec<models::CharacterSkill> {
@@ -267,4 +267,15 @@ fn is_armor_penalized(ability: models::AbilityName) -> bool {
         models::AbilityName::Dex => true,
         _ => false,
     }
+}
+
+fn calc_ability_modifier(i: i32) -> i32 {
+    let rounded = if i % 2 == 0 {
+        i
+    } else if i > 0 {
+        i - 1
+    } else {
+        i + 1
+    };
+    return (rounded - 10) / 2;
 }

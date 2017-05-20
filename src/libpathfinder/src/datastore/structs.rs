@@ -52,19 +52,6 @@ pub struct AbilityScoreSet {
     pub cha: i32,
 }
 
-impl AbilityScoreSet {
-    pub fn get_ability_mod(&self, ability_name: models::AbilityName) -> i32 {
-        calc_ability_modifier(match ability_name {
-            models::AbilityName::Str => self.str,
-            models::AbilityName::Dex => self.dex,
-            models::AbilityName::Con => self.con,
-            models::AbilityName::Int => self.int,
-            models::AbilityName::Wis => self.wis,
-            models::AbilityName::Cha => self.cha,
-        })
-    }
-}
-
 #[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "skills")]
 pub struct Skill {
@@ -197,15 +184,4 @@ pub struct ClassSavingThrows {
     pub fortitude: i32,
     pub reflex: i32,
     pub will: i32,
-}
-
-pub fn calc_ability_modifier(i: i32) -> i32 {
-    let rounded = if i % 2 == 0 {
-        i
-    } else if i > 0 {
-        i - 1
-    } else {
-        i + 1
-    };
-    return (rounded - 10) / 2;
 }

@@ -81,7 +81,7 @@ view model =
                 ]
             , case model of
                 Models.MCharacter c ->
-                    innerPage c
+                    displayCharacterSheet c
 
                 Models.MError e ->
                     Html.h1 [] [ Html.text e ]
@@ -101,8 +101,8 @@ view model =
         ]
 
 
-innerPage : Models.Character -> Html.Html Common.Msg
-innerPage character =
+displayCharacterSheet : Models.Character -> Html.Html Common.Msg
+displayCharacterSheet character =
     div []
         [ Html.h1 [ Attr.class "text-center" ] [ Html.text "Welcome!" ]
         , Html.p [ Attr.class "text-center" ] [ Html.text <| "Hello, " ++ character.metaInformation.name ++ "! Good to see ya!" ]

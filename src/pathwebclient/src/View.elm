@@ -32,7 +32,7 @@ view model =
     div
         [ fullPage
         ]
-        [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "assets/bootstrap/css/bootstrap.min.css" ] []
+        [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/bootstrap/css/bootstrap.min.css" ] []
         , div
             [ header
             ]

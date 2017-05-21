@@ -94,10 +94,30 @@ displayCharacterSheet character =
                     ]
                 , Elements.panelled "Hit Points"
                     True
-                    [ Html.h4 []
-                        [ displayField "100px" "current" <| toString character.combatNumbers.currentHitPoints
-                        , Html.text "➗"
-                        , displayField "100px" "max" <| toString character.combatNumbers.maxHitPoints
+                    [ Html.table [ Attr.class "table table-striped table-bordered" ]
+                        [ Html.thead []
+                            [ Html.tr []
+                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Current" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Max" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Nonlethal" ]
+                                ]
+                            ]
+                        , Html.tbody [ Attr.class "text-center" ]
+                            [ Html.tr []
+                                [ Html.td []
+                                    [ Html.span [ Attr.class "label label-default" ]
+                                        [ Html.text (toString character.combatNumbers.currentHitPoints) ]
+                                    ]
+                                , Html.td []
+                                    [ Html.span [ Attr.class "label label-default" ]
+                                        [ Html.text (toString character.combatNumbers.currentHitPoints) ]
+                                    ]
+                                , Html.td []
+                                    [ Html.span [ Attr.class "label label-default" ]
+                                        [ Html.text (toString character.combatNumbers.nonlethalDamage) ]
+                                    ]
+                                ]
+                            ]
                         ]
                     , Html.h4 []
                         [ Html.small []
@@ -112,9 +132,6 @@ displayCharacterSheet character =
                                         "⬜"
                                     )
                             ]
-                        ]
-                    , Html.h4 []
-                        [ displayField "100px" "nonlethal" <| toString character.combatNumbers.nonlethalDamage
                         ]
                     ]
                 , Elements.panelled "Armor Class"

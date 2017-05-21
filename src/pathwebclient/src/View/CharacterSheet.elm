@@ -5,6 +5,7 @@ import Html
 import Html.Attributes as Attr
 import Common
 import Models
+import View.Elements as Elements
 
 
 displayCharacterSheet : Models.Character -> Html.Html Common.Msg
@@ -69,29 +70,25 @@ displayCharacterSheet character =
             ]
         , Html.div [ Attr.class "row" ]
             [ Html.div [ Attr.class "col-md-5" ]
-                [ Html.div [ Attr.class "text-center" ]
-                    [ Html.div [ Attr.class "panel panel-default" ]
-                        [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Ability Scores" ] ]
-                        , Html.div [ Attr.class "panel-body" ]
-                            [ Html.table [ Attr.class "table table-striped" ]
-                                [ Html.thead []
-                                    [ Html.tr []
-                                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
-                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
-                                        , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
-                                        , Html.th [ Attr.class "text-right" ] [ Html.text "-EModji" ]
-                                        , Html.th [ Attr.class "text-left" ] [ Html.text "EModji" ]
-                                        ]
-                                    ]
-                                , Html.tbody [ Attr.class "text-center" ]
-                                    [ scoreTableRow "STR" character.abilityScores.str "🐂"
-                                    , scoreTableRow "DEX" character.abilityScores.dex "🐆"
-                                    , scoreTableRow "CON" character.abilityScores.con "🐘"
-                                    , scoreTableRow "INT" character.abilityScores.int "🐙"
-                                    , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
-                                    , scoreTableRow "CHA" character.abilityScores.cha "🐶"
-                                    ]
+                [ Elements.panelled "Ability Scores"
+                    True
+                    [ Html.table [ Attr.class "table table-striped" ]
+                        [ Html.thead []
+                            [ Html.tr []
+                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Score" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Modifier" ]
+                                , Html.th [ Attr.class "text-right" ] [ Html.text "-EModji" ]
+                                , Html.th [ Attr.class "text-left" ] [ Html.text "EModji" ]
                                 ]
+                            ]
+                        , Html.tbody [ Attr.class "text-center" ]
+                            [ scoreTableRow "STR" character.abilityScores.str "🐂"
+                            , scoreTableRow "DEX" character.abilityScores.dex "🐆"
+                            , scoreTableRow "CON" character.abilityScores.con "🐘"
+                            , scoreTableRow "INT" character.abilityScores.int "🐙"
+                            , scoreTableRow "WIS" character.abilityScores.wis "\x1F989"
+                            , scoreTableRow "CHA" character.abilityScores.cha "🐶"
                             ]
                         ]
                     ]

@@ -1,6 +1,7 @@
 module View.Elements
     exposing
         ( panelled
+        , labelDefault
         )
 
 import Html
@@ -24,3 +25,10 @@ panelled title center children =
                 children
             ]
         ]
+
+
+labelDefault : String -> List (Html.Html Common.Msg)
+labelDefault text =
+    [ Html.span [ Attr.class "label label-default label-large" ]
+        [ Html.text text ]
+    ]

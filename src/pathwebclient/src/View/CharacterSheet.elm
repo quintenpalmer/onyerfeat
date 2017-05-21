@@ -300,16 +300,33 @@ displayCharacterSheet character =
             [ Attr.class "row" ]
             [ Elements.panelled "Armor Piece"
                 False
-                [ Html.div []
-                    [ displayField "100px" "name" character.armorPiece.name
-                    , displayField "100px" "class" character.armorPiece.armorClass
-                    , displayField "100px" "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
-                    , displayField "100px" "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                    , displayField "100px" "skill penalty" <| toString character.armorPiece.armorCheckPenalty
-                    , displayField "100px" "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                    , displayField "100px" "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
-                    , displayField "100px" "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                    , displayField "100px" "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                [ Html.table [ Attr.class "table table-striped table-bordered" ]
+                    [ Html.thead []
+                        [ Html.tr []
+                            [ Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "name" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "class" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "AC bonus" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "max dex" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "skill penalty" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "spell failure" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "weight" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "fast speed" ]
+                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "slow speed" ]
+                            ]
+                        ]
+                    , Html.tbody [ Attr.class "text-center" ]
+                        [ Html.tr []
+                            [ Html.td [] <| Elements.labelDefault character.armorPiece.name
+                            , Html.td [] <| Elements.labelDefault character.armorPiece.armorClass
+                            , Html.td [] <| Elements.labelDefault <| "+" ++ (toString character.armorPiece.armorBonus)
+                            , Html.td [] <| Elements.labelDefault <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                            , Html.td [] <| Elements.labelDefault <| toString character.armorPiece.armorCheckPenalty
+                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                            ]
+                        ]
                     ]
                 ]
             , case character.shield of

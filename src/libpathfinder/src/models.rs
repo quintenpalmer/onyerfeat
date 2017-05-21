@@ -47,7 +47,6 @@ pub struct ArmorClass {
     // TODO implement this
     pub dodge_mod: i32,
     pub armor_ac: i32,
-    // TODO implement this
     pub shield_ac: i32,
     // TODO implement this
     pub natural_armor: i32,

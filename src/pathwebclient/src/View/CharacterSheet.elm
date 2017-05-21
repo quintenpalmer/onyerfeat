@@ -229,52 +229,6 @@ displayCharacterSheet character =
                             [ Html.text <| toString character.combatNumbers.baseAttackBonus ]
                         ]
                     ]
-                , Elements.panelled "Armor Piece"
-                    False
-                    [ Html.div []
-                        [ displayField "100px" "name" character.armorPiece.name
-                        , displayField "100px" "class" character.armorPiece.armorClass
-                        ]
-                    , Html.div []
-                        [ displayField "100px" "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
-                        , displayField "100px" "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                        , displayField "100px" "skill penalty" <| toString character.armorPiece.armorCheckPenalty
-                        ]
-                    , Html.div []
-                        [ displayField "100px" "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                        , displayField "100px" "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
-                        ]
-                    , Html.div []
-                        [ displayField "100px" "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                        , displayField "100px" "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
-                        ]
-                    ]
-                , case character.shield of
-                    Nothing ->
-                        Html.div [] [ Html.text "no shield" ]
-
-                    Just shield ->
-                        Elements.panelled "Shield"
-                            False
-                            [ Html.div []
-                                [ displayField "160px" "name" shield.name
-                                ]
-                            , Html.div []
-                                [ displayField "100px" "AC bonus" <| "+" ++ (toString shield.acBonus)
-                                , displayField "100px" "max dex" <|
-                                    case shield.maxDex of
-                                        Just maxDex ->
-                                            "+" ++ (toString shield.maxDex)
-
-                                        Nothing ->
-                                            "_"
-                                , displayField "100px" "skill penalty" <| toString shield.skillPenalty
-                                ]
-                            , Html.div []
-                                [ displayField "100px" "spell failure" <| (toString shield.arcaneSpellFailureChance) ++ "%"
-                                , displayField "100px" "weight" <| (toString shield.weight) ++ "lbs"
-                                ]
-                            ]
                 ]
             , Html.div [ Attr.class "col-md-7" ]
                 [ Elements.panelled "Skills"
@@ -341,6 +295,45 @@ displayCharacterSheet character =
                         ]
                     ]
                 ]
+            ]
+        , Html.div
+            [ Attr.class "row" ]
+            [ Elements.panelled "Armor Piece"
+                False
+                [ Html.div []
+                    [ displayField "100px" "name" character.armorPiece.name
+                    , displayField "100px" "class" character.armorPiece.armorClass
+                    , displayField "100px" "AC bonus" <| "+" ++ (toString character.armorPiece.armorBonus)
+                    , displayField "100px" "max dex" <| "+" ++ (toString character.armorPiece.maxDexBonus)
+                    , displayField "100px" "skill penalty" <| toString character.armorPiece.armorCheckPenalty
+                    , displayField "100px" "spell failure" <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
+                    , displayField "100px" "weight" <| (toString character.armorPiece.mediumWeight) ++ "lbs"
+                    , displayField "100px" "fast speed" <| (toString character.armorPiece.fastSpeed) ++ "ft"
+                    , displayField "100px" "slow speed" <| (toString character.armorPiece.slowSpeed) ++ "ft"
+                    ]
+                ]
+            , case character.shield of
+                Nothing ->
+                    Html.div [] [ Html.text "no shield" ]
+
+                Just shield ->
+                    Elements.panelled "Shield"
+                        False
+                        [ Html.div []
+                            [ displayField "160px" "name" shield.name
+                            , displayField "100px" "AC bonus" <| "+" ++ (toString shield.acBonus)
+                            , displayField "100px" "max dex" <|
+                                case shield.maxDex of
+                                    Just maxDex ->
+                                        "+" ++ (toString shield.maxDex)
+
+                                    Nothing ->
+                                        "_"
+                            , displayField "100px" "skill penalty" <| toString shield.skillPenalty
+                            , displayField "100px" "spell failure" <| (toString shield.arcaneSpellFailureChance) ++ "%"
+                            , displayField "100px" "weight" <| (toString shield.weight) ++ "lbs"
+                            ]
+                        ]
             ]
         ]
 

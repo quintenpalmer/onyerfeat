@@ -36,6 +36,7 @@ view model =
         [ fullPage
         ]
         [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/bootstrap/css/bootstrap.min.css" ] []
+        , Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/css/style.css" ] []
         , div
             [ header
             ]

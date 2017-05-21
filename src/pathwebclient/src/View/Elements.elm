@@ -18,7 +18,7 @@ panelled title center children =
         )
     <|
         [ Html.div [ Attr.class "panel panel-default" ]
-            [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text title ] ]
+            [ Html.div [ Attr.class "panel-heading panel-small-header" ] [ Html.text title ]
             , Html.div [ Attr.class "panel-body" ]
                 children
             ]

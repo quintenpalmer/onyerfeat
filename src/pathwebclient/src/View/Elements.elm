@@ -50,7 +50,7 @@ table bordered pairs =
         [ Html.thead []
             [ Html.tr [] <|
                 List.map
-                    (\x -> Html.th [ Attr.class "text-center" ] [ Html.text x ])
+                    (\x -> Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text x ])
                     (List.map Tuple.first pairs)
             ]
         , Html.tbody [ Attr.class "text-center" ]

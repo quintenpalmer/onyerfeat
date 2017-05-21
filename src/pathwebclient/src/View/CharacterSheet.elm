@@ -268,33 +268,16 @@ displayCharacterSheet character =
             [ Attr.class "row" ]
             [ Elements.panelled "Armor Piece"
                 False
-                [ Html.table [ Attr.class "table table-striped table-bordered" ]
-                    [ Html.thead []
-                        [ Html.tr []
-                            [ Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "name" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "class" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "AC bonus" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "max dex" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "skill penalty" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "spell failure" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "fast speed" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "slow speed" ]
-                            , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "weight" ]
-                            ]
-                        ]
-                    , Html.tbody [ Attr.class "text-center" ]
-                        [ Html.tr []
-                            [ Html.td [] <| Elements.labelDefault character.armorPiece.name
-                            , Html.td [] <| Elements.labelDefault character.armorPiece.armorClass
-                            , Html.td [] <| Elements.labelDefault <| "+" ++ (toString character.armorPiece.armorBonus)
-                            , Html.td [] <| Elements.labelDefault <| "+" ++ (toString character.armorPiece.maxDexBonus)
-                            , Html.td [] <| Elements.labelDefault <| toString character.armorPiece.armorCheckPenalty
-                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.arcaneSpellFailureChance) ++ "%"
-                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.fastSpeed) ++ "ft"
-                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.slowSpeed) ++ "ft"
-                            , Html.td [] <| Elements.labelDefault <| (toString character.armorPiece.mediumWeight) ++ "lbs"
-                            ]
-                        ]
+                [ Elements.table True
+                    [ ( "name", character.armorPiece.name )
+                    , ( "class", character.armorPiece.armorClass )
+                    , ( "AC bonus", "+" ++ (toString character.armorPiece.armorBonus) )
+                    , ( "max dex", "+" ++ (toString character.armorPiece.maxDexBonus) )
+                    , ( "skill penalty", toString character.armorPiece.armorCheckPenalty )
+                    , ( "spell failure", (toString character.armorPiece.arcaneSpellFailureChance) ++ "%" )
+                    , ( "fast speed", (toString character.armorPiece.fastSpeed) ++ "ft" )
+                    , ( "slow speed", (toString character.armorPiece.slowSpeed) ++ "ft" )
+                    , ( "weight", (toString character.armorPiece.mediumWeight) ++ "lbs" )
                     ]
                 ]
             , Elements.panelled "Shield"

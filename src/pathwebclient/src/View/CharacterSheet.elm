@@ -92,11 +92,19 @@ displayCharacterSheet character =
                             [ Html.text <|
                                 String.append
                                     (String.repeat
-                                        (character.combatNumbers.currentHitPoints)
+                                        (round
+                                            (toFloat character.combatNumbers.currentHitPoints
+                                                * (20.0 / toFloat character.combatNumbers.maxHitPoints)
+                                            )
+                                        )
                                         "⬛"
                                     )
                                     (String.repeat
-                                        (character.combatNumbers.maxHitPoints - character.combatNumbers.currentHitPoints)
+                                        (round
+                                            (toFloat (character.combatNumbers.maxHitPoints - character.combatNumbers.currentHitPoints)
+                                                * (20.0 / toFloat character.combatNumbers.maxHitPoints)
+                                            )
+                                        )
                                         "⬜"
                                     )
                             ]

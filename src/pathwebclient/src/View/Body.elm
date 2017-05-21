@@ -1,6 +1,5 @@
 module View.Body exposing (view)
 
-import Css
 import Html
 import Html.Attributes as Attr
 import Html.Events as Events
@@ -12,26 +11,12 @@ import View.ArmorTable as ArmorTable
 import View.DiceTab as DiceTab
 
 
-cssStyle =
-    Css.asPairs >> Attr.style
-
-
-header =
-    cssStyle
-        [ Css.padding <| Css.px 20
-        , Css.color <| Css.rgb 250 250 250
-        , Css.backgroundColor <| Css.rgb 70 70 70
-        ]
-
-
 view : Models.Model -> Html.Html Common.Msg
 view model =
     Html.div [ Attr.class "font-inc" ]
         [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/bootstrap/css/bootstrap.min.css" ] []
         , Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/css/style.css" ] []
-        , Html.div
-            [ header
-            ]
+        , Html.div [ Attr.class "main-heading" ]
             [ Html.text "Pathfinder Character Sheet" ]
         , Html.div [ Attr.class "container" ]
             [ Html.ul [ Attr.class "nav nav-pills" ]

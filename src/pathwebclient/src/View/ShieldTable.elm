@@ -4,16 +4,19 @@ import Html
 import Html.Attributes as Attr
 import Common
 import Models
+import View.Elements as Elements
 
 
 displayShields : List Models.Shield -> Html.Html Common.Msg
 displayShields shields =
-    Html.div [ Attr.class "container" ]
-        [ Html.div [ Attr.class "col-md-7", Attr.class "text-center" ]
-            [ Html.div [ Attr.class "panel panel-default" ]
-                [ Html.div [ Attr.class "panel-heading" ] [ Html.h3 [] [ Html.text "Shields" ] ]
-                , Html.div [ Attr.class "panel-body" ]
-                    [ Html.table [ Attr.class "table table-striped" ]
+    Html.div []
+        [ Html.div [ Attr.class "text-center" ] [ Html.h1 [] [ Html.text "SHIELDS" ] ]
+        , Html.div [ Attr.class "row" ]
+            [ Html.div [ Attr.class "col-md-2" ] []
+            , Html.div [ Attr.class "col-md-8" ]
+                [ Elements.panelled "Shield Table"
+                    True
+                    [ Html.table [ Attr.class "table table-striped table-bordered" ]
                         [ Html.thead []
                             [ Html.tr []
                                 [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]

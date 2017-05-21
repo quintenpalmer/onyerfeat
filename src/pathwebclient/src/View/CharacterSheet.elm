@@ -13,50 +13,45 @@ displayCharacterSheet character =
     Html.div []
         [ Html.div [ Attr.class "text-center" ] [ Html.h1 [] [ Html.text "CHARACTER SHEET" ] ]
         , Html.div [ Attr.class "row" ]
-            [ Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text character.metaInformation.name ]
-                , Html.p [] [ Html.small [] [ Html.text "Character name" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ]
-                , Html.p [] [ Html.small [] [ Html.text "Alignment" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text character.metaInformation.playerName ]
-                , Html.p [] [ Html.small [] [ Html.text "Player name" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| toString character.level ]
-                , Html.p [] [ Html.small [] [ Html.text "Character/Class Level" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| capitalize character.metaInformation.class ]
-                , Html.p [] [ Html.small [] [ Html.text "Class" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| capitalize character.metaInformation.race ]
-                , Html.p [] [ Html.small [] [ Html.text "Race" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| toString character.metaInformation.age ]
-                , Html.p [] [ Html.small [] [ Html.text "Age" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u [] [ Html.text <| toString character.metaInformation.size ]
-                , Html.p [] [ Html.small [] [ Html.text "Size" ] ]
-                ]
-            , Html.div [ Attr.class "col-md-2" ]
-                [ Html.u []
-                    [ Html.text <|
-                        capitalize <|
-                            case character.metaInformation.deity of
-                                Just s ->
-                                    s
+            [ Elements.panelled "Meta Information"
+                True
+                [ Html.table [ Attr.class "table table-striped table-bordered" ]
+                    [ Html.thead []
+                        [ Html.tr []
+                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Character Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Player name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Alignment" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Level" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Race" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Size" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Age" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Deity" ]
+                            ]
+                        ]
+                    , Html.tbody [ Attr.class "text-center" ]
+                        [ Html.tr []
+                            [ Html.td [] [ Html.text character.metaInformation.name ]
+                            , Html.td [] [ Html.text character.metaInformation.playerName ]
+                            , Html.td [] [ Html.text <| capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ]
+                            , Html.td [] [ Html.text <| capitalize character.metaInformation.race ]
+                            , Html.td [] [ Html.text <| capitalize character.metaInformation.class ]
+                            , Html.td [] [ Html.text <| toString character.level ]
+                            , Html.td [] [ Html.text <| toString character.metaInformation.size ]
+                            , Html.td [] [ Html.text <| toString character.metaInformation.age ]
+                            , Html.td []
+                                [ Html.text <|
+                                    capitalize <|
+                                        case character.metaInformation.deity of
+                                            Just s ->
+                                                s
 
-                                Nothing ->
-                                    "_"
+                                            Nothing ->
+                                                "_"
+                                ]
+                            ]
+                        ]
                     ]
-                , Html.p [] [ Html.small [] [ Html.text "Deity" ] ]
                 ]
             ]
         , Html.div [ Attr.class "row" ]

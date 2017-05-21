@@ -16,15 +16,15 @@ displayCharacterSheet character =
             [ Elements.panelled "Meta Information"
                 True
                 [ Elements.table True
-                    [ ( "Character Name", character.metaInformation.name )
-                    , ( "Player name", character.metaInformation.playerName )
-                    , ( "Alignment", capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality )
-                    , ( "Race", capitalize character.metaInformation.race )
-                    , ( "Class", capitalize character.metaInformation.class )
-                    , ( "Class Level", toString character.level )
-                    , ( "Size", toString character.metaInformation.size )
-                    , ( "Age", toString character.metaInformation.age )
-                    , ( "Deity"
+                    [ ( "character name", character.metaInformation.name )
+                    , ( "player name", character.metaInformation.playerName )
+                    , ( "alignment", capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality )
+                    , ( "race", capitalize character.metaInformation.race )
+                    , ( "class", capitalize character.metaInformation.class )
+                    , ( "class level", toString character.level )
+                    , ( "size", toString character.metaInformation.size )
+                    , ( "age", toString character.metaInformation.age )
+                    , ( "deity"
                       , capitalize <|
                             case character.metaInformation.deity of
                                 Just s ->

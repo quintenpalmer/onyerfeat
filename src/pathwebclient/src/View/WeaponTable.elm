@@ -42,7 +42,7 @@ displayWeapons weapons =
                                         , Html.td [] [ Html.b [] [ Html.text <| displayDice weapon.smallDamage ] ]
                                         , Html.td [] [ Html.b [] [ Html.text <| displayDice weapon.mediumDamage ] ]
                                         , Html.td [] [ Html.b [] [ Html.text <| displayCriticalDamage weapon.critical ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString weapon.range ] ]
+                                        , Html.td [] [ Html.b [] [ Html.text <| (toString weapon.range) ++ "ft" ] ]
                                         , Html.td [] [ Html.b [] [ Html.text <| (toString weapon.weight) ++ "lbs" ] ]
                                         , Html.td [] [ Html.b [] [ Html.text <| displayPhysicalDamage weapon.damageType ] ]
                                         ]

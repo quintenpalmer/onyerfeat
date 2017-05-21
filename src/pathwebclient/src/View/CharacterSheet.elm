@@ -329,14 +329,14 @@ displayCharacterSheet character =
                         ]
                     ]
                 ]
-            , case character.shield of
-                Nothing ->
-                    Html.div [] [ Html.text "no shield" ]
+            , Elements.panelled "Shield"
+                False
+                [ case character.shield of
+                    Nothing ->
+                        Html.div [] [ Html.text "no shield" ]
 
-                Just shield ->
-                    Elements.panelled "Shield"
-                        False
-                        [ Html.div []
+                    Just shield ->
+                        Html.div []
                             [ displayField "160px" "name" shield.name
                             , displayField "100px" "AC bonus" <| "+" ++ (toString shield.acBonus)
                             , displayField "100px" "max dex" <|
@@ -350,7 +350,7 @@ displayCharacterSheet character =
                             , displayField "100px" "spell failure" <| (toString shield.arcaneSpellFailureChance) ++ "%"
                             , displayField "100px" "weight" <| (toString shield.weight) ++ "lbs"
                             ]
-                        ]
+                ]
             ]
         ]
 

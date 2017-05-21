@@ -336,19 +336,34 @@ displayCharacterSheet character =
                         Html.div [] [ Html.text "no shield" ]
 
                     Just shield ->
-                        Html.div []
-                            [ displayField "160px" "name" shield.name
-                            , displayField "100px" "AC bonus" <| "+" ++ (toString shield.acBonus)
-                            , displayField "100px" "max dex" <|
-                                case shield.maxDex of
-                                    Just maxDex ->
-                                        "+" ++ (toString shield.maxDex)
+                        Html.table [ Attr.class "table table-striped table-bordered" ]
+                            [ Html.thead []
+                                [ Html.tr []
+                                    [ Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "name" ]
+                                    , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "AC bonus" ]
+                                    , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "max dex" ]
+                                    , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "skill penalty" ]
+                                    , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "spell failure" ]
+                                    , Html.th [ Attr.class "text-center text-capitalize" ] [ Html.text "weight" ]
+                                    ]
+                                ]
+                            , Html.tbody [ Attr.class "text-center" ]
+                                [ Html.tr []
+                                    [ Html.td [] <| Elements.labelDefault shield.name
+                                    , Html.td [] <| Elements.labelDefault <| "+" ++ (toString shield.acBonus)
+                                    , Html.td [] <|
+                                        Elements.labelDefault <|
+                                            case shield.maxDex of
+                                                Just maxDex ->
+                                                    "+" ++ (toString shield.maxDex)
 
-                                    Nothing ->
-                                        "_"
-                            , displayField "100px" "skill penalty" <| toString shield.skillPenalty
-                            , displayField "100px" "spell failure" <| (toString shield.arcaneSpellFailureChance) ++ "%"
-                            , displayField "100px" "weight" <| (toString shield.weight) ++ "lbs"
+                                                Nothing ->
+                                                    "_"
+                                    , Html.td [] <| Elements.labelDefault <| toString shield.skillPenalty
+                                    , Html.td [] <| Elements.labelDefault <| (toString shield.arcaneSpellFailureChance) ++ "%"
+                                    , Html.td [] <| Elements.labelDefault <| (toString shield.weight) ++ "lbs"
+                                    ]
+                                ]
                             ]
                 ]
             ]

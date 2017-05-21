@@ -44,6 +44,7 @@ pub fn into_canonical_character(character: structs::Character,
             modifier: calc_ability_modifier(abs.cha),
         },
     };
+    let size_mod = creature.size.get_modifier();
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
                                                 sub_skills,
@@ -61,7 +62,6 @@ pub fn into_canonical_character(character: structs::Character,
             Some(ref shield) => shield.ac_bonus,
             None => 0,
         };
-        let size_mod = creature.size.get_modifier();
         let armor_class = models::ArmorClass {
             total: dex_mod + base + armor_ac + shield_ac + size_mod,
             base: base,
@@ -106,6 +106,9 @@ pub fn into_canonical_character(character: structs::Character,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
             saving_throws: base_saving_throws.into_canonical(&ability_score_model),
+            combat_maneuvers: build_combat_maneuvers(&ability_score_model,
+                                                     creature.base_attack_bonus,
+                                                     size_mod),
         },
         armor_piece: armor_piece.into_canonical(),
         shield: match optional_shield {
@@ -274,6 +277,40 @@ fn build_saving_throw(class_base: i32,
         ability_mod: ability_mod,
         ability_name: ability_name,
     };
+}
+
+fn build_combat_maneuvers(abilities: &models::AbilityScoreInfo,
+                          base_attack_bonus: i32,
+                          size_mod: i32)
+                          -> models::CombatManeuvers {
+    let bonus = {
+        let str_mod = abilities.str.modifier;
+        let total = str_mod + base_attack_bonus + size_mod;
+        models::CombatManeuverBonus {
+            total: total,
+            str: str_mod,
+            base_attack_bonus: base_attack_bonus,
+            size_mod: size_mod,
+        }
+    };
+    let defense = {
+        let base = 10;
+        let str_mod = abilities.str.modifier;
+        let dex_mod = abilities.dex.modifier;
+        let total = base + str_mod + dex_mod + base_attack_bonus + size_mod;
+        models::CombatManeuverDefense {
+            total: total,
+            base: base,
+            str: str_mod,
+            dex: dex_mod,
+            base_attack_bonus: base_attack_bonus,
+            size_mod: size_mod,
+        }
+    };
+    models::CombatManeuvers {
+        bonus: bonus,
+        defense: defense,
+    }
 }
 
 fn is_armor_penalized(ability: models::AbilityName) -> bool {

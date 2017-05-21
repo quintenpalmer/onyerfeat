@@ -16,22 +16,24 @@ displayCharacterSheet character =
             [ Elements.panelled "Meta Information"
                 True
                 [ Elements.table True
-                    [ ( "character name", character.metaInformation.name )
-                    , ( "player name", character.metaInformation.playerName )
-                    , ( "alignment", capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality )
-                    , ( "race", capitalize character.metaInformation.race )
-                    , ( "class", capitalize character.metaInformation.class )
-                    , ( "class level", toString character.level )
-                    , ( "size", toString character.metaInformation.size )
-                    , ( "age", toString character.metaInformation.age )
+                    [ ( "character name", ( True, character.metaInformation.name ) )
+                    , ( "player name", ( True, character.metaInformation.playerName ) )
+                    , ( "alignment", ( True, capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ) )
+                    , ( "race", ( True, capitalize character.metaInformation.race ) )
+                    , ( "class", ( True, capitalize character.metaInformation.class ) )
+                    , ( "class level", ( True, toString character.level ) )
+                    , ( "size", ( True, toString character.metaInformation.size ) )
+                    , ( "age", ( True, toString character.metaInformation.age ) )
                     , ( "deity"
-                      , capitalize <|
+                      , ( True
+                        , capitalize <|
                             case character.metaInformation.deity of
                                 Just s ->
                                     s
 
                                 Nothing ->
                                     "_"
+                        )
                       )
                     ]
                 ]
@@ -74,15 +76,15 @@ displayCharacterSheet character =
                             [ Html.tr []
                                 [ Html.td []
                                     [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.currentHitPoints) ]
+                                        [ Html.text <| toString character.combatNumbers.currentHitPoints ]
                                     ]
                                 , Html.td []
                                     [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.currentHitPoints) ]
+                                        [ Html.text <| toString character.combatNumbers.currentHitPoints ]
                                     ]
                                 , Html.td []
                                     [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.nonlethalDamage) ]
+                                        [ Html.text <| toString character.combatNumbers.nonlethalDamage ]
                                     ]
                                 ]
                             ]
@@ -112,45 +114,13 @@ displayCharacterSheet character =
                     ]
                 , Elements.panelled "Armor Class"
                     True
-                    [ Html.table [ Attr.class "table table-striped" ]
-                        [ Html.thead []
-                            [ Html.tr []
-                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Total" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Base" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Dex" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Armor" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Shield" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Size" ]
-                                ]
-                            ]
-                        , Html.tbody [ Attr.class "text-center" ]
-                            [ Html.tr []
-                                [ Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.total) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span []
-                                        [ Html.text "10" ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.dex) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.armorAc) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.shieldAc) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.sizeMod) ]
-                                    ]
-                                ]
-                            ]
+                    [ Elements.table False
+                        [ ( "Total", ( True, toString character.combatNumbers.armorClass.total ) )
+                        , ( "Base", ( False, "10" ) )
+                        , ( "Dex", ( True, toString character.combatNumbers.armorClass.dex ) )
+                        , ( "Armor", ( True, toString character.combatNumbers.armorClass.armorAc ) )
+                        , ( "Shield", ( True, toString character.combatNumbers.armorClass.shieldAc ) )
+                        , ( "Size", ( True, toString character.combatNumbers.armorClass.sizeMod ) )
                         ]
                     ]
                 , Elements.panelled "Saving Throws"
@@ -175,15 +145,15 @@ displayCharacterSheet character =
                                             ]
                                         , Html.td []
                                             [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text (toString throw.total) ]
+                                                [ Html.text <| toString throw.total ]
                                             ]
                                         , Html.td []
                                             [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text (toString throw.base) ]
+                                                [ Html.text <| toString throw.base ]
                                             ]
                                         , Html.td []
                                             [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text (toString throw.abilityMod) ]
+                                                [ Html.text <| toString throw.abilityMod ]
                                             ]
                                         , Html.td []
                                             [ Html.b [ Attr.class "text-uppercase" ]
@@ -203,6 +173,31 @@ displayCharacterSheet character =
                     [ Html.h2 []
                         [ Html.div [ Attr.class "label label-default" ]
                             [ Html.text <| toString character.combatNumbers.baseAttackBonus ]
+                        ]
+                    ]
+                , Elements.panelled "Combat Maneuvers"
+                    True
+                    [ Html.div []
+                        [ Html.div []
+                            [ Html.h4 [] [ Html.text "Combat Maneuver Bonus" ]
+                            , Elements.table False
+                                [ ( "total", ( True, toString character.combatNumbers.combatManeuvers.bonus.total ) )
+                                , ( "str", ( True, toString character.combatNumbers.combatManeuvers.bonus.str ) )
+                                , ( "base attack", ( True, toString character.combatNumbers.combatManeuvers.bonus.baseAttackBonus ) )
+                                , ( "size modifier", ( True, toString character.combatNumbers.combatManeuvers.bonus.sizeMod ) )
+                                ]
+                            ]
+                        , Html.div []
+                            [ Html.h4 [] [ Html.text "Combat Maneuver Defense" ]
+                            , Elements.table False
+                                [ ( "total", ( True, toString character.combatNumbers.combatManeuvers.defense.total ) )
+                                , ( "base", ( False, toString character.combatNumbers.combatManeuvers.defense.base ) )
+                                , ( "str", ( True, toString character.combatNumbers.combatManeuvers.defense.str ) )
+                                , ( "dex", ( True, toString character.combatNumbers.combatManeuvers.defense.dex ) )
+                                , ( "base attack", ( True, toString character.combatNumbers.combatManeuvers.defense.baseAttackBonus ) )
+                                , ( "size modifier", ( True, toString character.combatNumbers.combatManeuvers.defense.sizeMod ) )
+                                ]
+                            ]
                         ]
                     ]
                 ]
@@ -231,11 +226,11 @@ displayCharacterSheet character =
                                             ]
                                         , Html.td []
                                             [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text (toString skill.total) ]
+                                                [ Html.text <| toString skill.total ]
                                             ]
                                         , Html.td []
                                             [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text (toString skill.abilityMod) ]
+                                                [ Html.text <| toString skill.abilityMod ]
                                             ]
                                         , Html.td []
                                             [ Html.b [ Attr.class "text-uppercase" ]
@@ -251,7 +246,7 @@ displayCharacterSheet character =
                                         , Html.td []
                                             [ if skill.count > 0 then
                                                 Html.span [ Attr.class "label label-default" ]
-                                                    [ Html.text (toString skill.count) ]
+                                                    [ Html.text <| toString skill.count ]
                                               else
                                                 Html.u [] [ Html.text "_" ]
                                             ]
@@ -259,7 +254,7 @@ displayCharacterSheet character =
                                             [ case skill.armorCheckPenalty of
                                                 Just pen ->
                                                     Html.span [ Attr.class "label label-default" ]
-                                                        [ Html.text (toString pen) ]
+                                                        [ Html.text <| toString pen ]
 
                                                 Nothing ->
                                                     Html.u [] [ Html.text "_" ]
@@ -277,15 +272,15 @@ displayCharacterSheet character =
             [ Elements.panelled "Armor Piece"
                 False
                 [ Elements.table True
-                    [ ( "name", character.armorPiece.name )
-                    , ( "class", character.armorPiece.armorClass )
-                    , ( "AC bonus", "+" ++ (toString character.armorPiece.armorBonus) )
-                    , ( "max dex", "+" ++ (toString character.armorPiece.maxDexBonus) )
-                    , ( "skill penalty", toString character.armorPiece.armorCheckPenalty )
-                    , ( "spell failure", (toString character.armorPiece.arcaneSpellFailureChance) ++ "%" )
-                    , ( "fast speed", (toString character.armorPiece.fastSpeed) ++ "ft" )
-                    , ( "slow speed", (toString character.armorPiece.slowSpeed) ++ "ft" )
-                    , ( "weight", (toString character.armorPiece.mediumWeight) ++ "lbs" )
+                    [ ( "name", ( True, character.armorPiece.name ) )
+                    , ( "class", ( True, character.armorPiece.armorClass ) )
+                    , ( "AC bonus", ( True, "+" ++ (toString character.armorPiece.armorBonus) ) )
+                    , ( "max dex", ( True, "+" ++ (toString character.armorPiece.maxDexBonus) ) )
+                    , ( "skill penalty", ( True, toString character.armorPiece.armorCheckPenalty ) )
+                    , ( "spell failure", ( True, (toString character.armorPiece.arcaneSpellFailureChance) ++ "%" ) )
+                    , ( "fast speed", ( True, (toString character.armorPiece.fastSpeed) ++ "ft" ) )
+                    , ( "slow speed", ( True, (toString character.armorPiece.slowSpeed) ++ "ft" ) )
+                    , ( "weight", ( True, (toString character.armorPiece.mediumWeight) ++ "lbs" ) )
                     ]
                 ]
             , Elements.panelled "Shield"
@@ -296,19 +291,21 @@ displayCharacterSheet character =
 
                     Just shield ->
                         Elements.table True
-                            [ ( "name", shield.name )
-                            , ( "AC bonus", "+" ++ (toString shield.acBonus) )
+                            [ ( "name", ( True, shield.name ) )
+                            , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
                             , ( "max dex"
-                              , case shield.maxDex of
+                              , ( True
+                                , case shield.maxDex of
                                     Just maxDex ->
                                         "+" ++ (toString shield.maxDex)
 
                                     Nothing ->
                                         "_"
+                                )
                               )
-                            , ( "skill penalty", toString shield.skillPenalty )
-                            , ( "spell failure", (toString shield.arcaneSpellFailureChance) ++ "%" )
-                            , ( "weight", (toString shield.weight) ++ "lbs" )
+                            , ( "skill penalty", ( True, toString shield.skillPenalty ) )
+                            , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
+                            , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
                             ]
                 ]
             ]
@@ -341,11 +338,11 @@ scoreTableRow name ability emoji =
         [ Html.td [] [ Html.b [] [ Html.text name ] ]
         , Html.td []
             [ Html.span [ Attr.class "label label-default" ]
-                [ Html.text (toString ability.score) ]
+                [ Html.text <| toString ability.score ]
             ]
         , Html.td []
             [ Html.span [ Attr.class "label label-default" ]
-                [ Html.b [] [ Html.text (toString ability.modifier) ] ]
+                [ Html.b [] [ Html.text <| toString ability.modifier ] ]
             ]
         , Html.td [ Attr.class "text-right" ]
             [ Html.text <|

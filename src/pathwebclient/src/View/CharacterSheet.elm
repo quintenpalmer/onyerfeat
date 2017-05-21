@@ -397,8 +397,8 @@ scoreTableRow name ability emoji =
 displayField : String -> String -> String -> Html.Html Common.Msg
 displayField width key val =
     Html.div [ Attr.class "panel panel-default", Attr.style [ ( "display", "inline-block" ) ] ]
-        [ Html.div [ Attr.class "panel-body", Attr.class "text-center", Attr.style [ ( "padding", "5px" ), ( "width", width ) ] ]
-            [ Html.div [ Attr.class "text-capitalize", Attr.class "label label-default" ] [ Html.text val ]
+        [ Html.div [ Attr.class "panel-body text-center panel-body-tight", Attr.class "text-center", Attr.style [ ( "width", width ) ] ]
+            [ Html.div [ Attr.class "text-capitalize", Attr.class "label label-default label-large" ] [ Html.text val ]
             , Html.div [ Attr.class "text-capitalize" ]
                 [ Html.small []
                     [ Html.text key ]

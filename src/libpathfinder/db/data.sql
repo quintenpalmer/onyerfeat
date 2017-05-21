@@ -198,6 +198,41 @@ SELECT pg_catalog.setval('characters_id_seq', 3, true);
 
 
 --
+-- Data for Name: class_saving_throws; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM stdin;
+1	1	1	2	0	0
+2	1	2	3	0	0
+3	1	3	3	1	1
+4	1	4	4	1	1
+5	1	5	4	1	1
+6	1	6	5	2	2
+7	1	7	5	2	2
+8	1	8	6	2	2
+9	1	9	6	3	3
+10	1	10	7	3	3
+11	1	11	7	3	3
+12	1	12	8	4	4
+13	1	13	8	4	4
+14	1	14	9	4	4
+15	1	15	9	5	5
+16	1	16	10	5	5
+17	1	17	10	5	5
+18	1	18	11	6	6
+19	1	19	11	6	6
+20	1	20	12	6	6
+\.
+
+
+--
+-- Name: class_saving_throws_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('class_saving_throws_id_seq', 20, true);
+
+
+--
 -- Data for Name: class_skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 

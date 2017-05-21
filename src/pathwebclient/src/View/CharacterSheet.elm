@@ -40,7 +40,7 @@ displayCharacterSheet character =
             [ Html.div [ Attr.class "col-md-5" ]
                 [ Elements.panelled "Ability Scores"
                     True
-                    [ Html.table [ Attr.class "table table-striped" ]
+                    [ Html.table [ Attr.class "table table-striped table-bordered" ]
                         [ Html.thead []
                             [ Html.tr []
                                 [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]

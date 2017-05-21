@@ -1,4 +1,10 @@
-module Decoding exposing (decodeCharacterResp, decodeArmorPieces, decodeShields, decodeDie)
+module Decoding
+    exposing
+        ( decodeCharacterResp
+        , decodeArmorPieces
+        , decodeShields
+        , decodeDie
+        )
 
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline

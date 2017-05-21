@@ -254,6 +254,23 @@ impl structs::Shield {
     }
 }
 
+impl structs::Weapon {
+    pub fn into_canonical(&self) -> models::Weapon {
+        models::Weapon {
+            name: self.name.clone(),
+            training_type: self.training_type.clone(),
+            size_style: self.size_style.clone(),
+            cost: self.cost,
+            small_damage: self.small_damage.clone(),
+            medium_damage: self.medium_damage.clone(),
+            critical: self.critical.clone(),
+            range: self.range,
+            weight: self.weight,
+            damage_type: self.damage_type.clone(),
+        }
+    }
+}
+
 impl structs::ClassSavingThrows {
     pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
         models::SavingThrows {

@@ -116,3 +116,55 @@ impl postgres::types::FromSql for models::Size {
         }
     }
 }
+
+impl postgres::types::FromSql for models::WeaponTrainingType {
+    fn from_sql(ty: &postgres::types::Type,
+                raw: &[u8])
+                -> Result<Self, Box<stderror::Error + Send + Sync>> {
+        match ty {
+            &postgres::types::Type::Text => {
+                match try!(str::from_utf8(raw)) {
+                    "simple" => Ok(models::WeaponTrainingType::Simple),
+                    "martial" => Ok(models::WeaponTrainingType::Martial),
+                    "exotic" => Ok(models::WeaponTrainingType::Exotic),
+                    _ => Err(Box::new(error::Error::ParseError {})),
+                }
+            }
+            _ => Err(Box::new(error::Error::ParseError {})),
+        }
+    }
+
+    fn accepts(ty: &postgres::types::Type) -> bool {
+        match ty {
+            &postgres::types::Type::Text => true,
+            _ => false,
+        }
+    }
+}
+
+impl postgres::types::FromSql for models::WeaponSizeStyle {
+    fn from_sql(ty: &postgres::types::Type,
+                raw: &[u8])
+                -> Result<Self, Box<stderror::Error + Send + Sync>> {
+        match ty {
+            &postgres::types::Type::Text => {
+                match try!(str::from_utf8(raw)) {
+                    "unarmed_melee" => Ok(models::WeaponSizeStyle::UnarmedMelee),
+                    "light_melee" => Ok(models::WeaponSizeStyle::LightMelee),
+                    "one_handed_melee" => Ok(models::WeaponSizeStyle::OneHandedMelee),
+                    "two_handed_melee" => Ok(models::WeaponSizeStyle::TwoHandedMelee),
+                    "ranged" => Ok(models::WeaponSizeStyle::Ranged),
+                    _ => Err(Box::new(error::Error::ParseError {})),
+                }
+            }
+            _ => Err(Box::new(error::Error::ParseError {})),
+        }
+    }
+
+    fn accepts(ty: &postgres::types::Type) -> bool {
+        match ty {
+            &postgres::types::Type::Text => true,
+            _ => false,
+        }
+    }
+}

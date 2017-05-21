@@ -30,6 +30,44 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: critical_damage; Type: TYPE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TYPE critical_damage AS (
+	required_roll integer,
+	multiplier integer
+);
+
+
+ALTER TYPE critical_damage OWNER TO pathfinder_user;
+
+--
+-- Name: dice_damage; Type: TYPE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TYPE dice_damage AS (
+	num_dice integer,
+	die_size integer
+);
+
+
+ALTER TYPE dice_damage OWNER TO pathfinder_user;
+
+--
+-- Name: physical_damage_type; Type: TYPE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TYPE physical_damage_type AS (
+	bludgeoning boolean,
+	piercing boolean,
+	slashing boolean,
+	and_together boolean
+);
+
+
+ALTER TYPE physical_damage_type OWNER TO pathfinder_user;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -646,6 +684,48 @@ ALTER SEQUENCE sub_skills_id_seq OWNED BY sub_skills.id;
 
 
 --
+-- Name: weapons; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE weapons (
+    id integer NOT NULL,
+    name text NOT NULL,
+    training_type text NOT NULL,
+    size_style text NOT NULL,
+    cost integer NOT NULL,
+    small_damage dice_damage NOT NULL,
+    medium_damage dice_damage NOT NULL,
+    critical critical_damage NOT NULL,
+    range integer,
+    weight integer NOT NULL,
+    damage_type physical_damage_type NOT NULL
+);
+
+
+ALTER TABLE weapons OWNER TO pathfinder_user;
+
+--
+-- Name: weapons_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE weapons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weapons_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: weapons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE weapons_id_seq OWNED BY weapons.id;
+
+
+--
 -- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -762,6 +842,13 @@ ALTER TABLE ONLY skills ALTER COLUMN id SET DEFAULT nextval('skills_id_seq'::reg
 --
 
 ALTER TABLE ONLY sub_skills ALTER COLUMN id SET DEFAULT nextval('sub_skills_id_seq'::regclass);
+
+
+--
+-- Name: weapons id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY weapons ALTER COLUMN id SET DEFAULT nextval('weapons_id_seq'::regclass);
 
 
 --
@@ -954,6 +1041,14 @@ ALTER TABLE ONLY skills
 
 ALTER TABLE ONLY sub_skills
     ADD CONSTRAINT sub_skills_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: weapons weapons_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY weapons
+    ADD CONSTRAINT weapons_pkey PRIMARY KEY (id);
 
 
 --

@@ -376,6 +376,22 @@ SELECT pg_catalog.setval('sub_skills_id_seq', 12, true);
 
 
 --
+-- Data for Name: weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_damage, critical, range, weight, damage_type) FROM stdin;
+1	Waraxe, dwarven	exotic	one_handed_melee	30	(1,8)	(1,10)	(20,3)	\N	8	(f,f,t,f)
+\.
+
+
+--
+-- Name: weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('weapons_id_seq', 1, true);
+
+
+--
 -- PostgreSQL database dump complete
 --
 

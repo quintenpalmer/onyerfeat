@@ -16,22 +16,24 @@ displayCharacterSheet character =
             [ Elements.panelled "Meta Information"
                 True
                 [ Elements.table True
-                    [ ( "character name", character.metaInformation.name )
-                    , ( "player name", character.metaInformation.playerName )
-                    , ( "alignment", capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality )
-                    , ( "race", capitalize character.metaInformation.race )
-                    , ( "class", capitalize character.metaInformation.class )
-                    , ( "class level", toString character.level )
-                    , ( "size", toString character.metaInformation.size )
-                    , ( "age", toString character.metaInformation.age )
+                    [ ( "character name", ( True, character.metaInformation.name ) )
+                    , ( "player name", ( True, character.metaInformation.playerName ) )
+                    , ( "alignment", ( True, capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ) )
+                    , ( "race", ( True, capitalize character.metaInformation.race ) )
+                    , ( "class", ( True, capitalize character.metaInformation.class ) )
+                    , ( "class level", ( True, toString character.level ) )
+                    , ( "size", ( True, toString character.metaInformation.size ) )
+                    , ( "age", ( True, toString character.metaInformation.age ) )
                     , ( "deity"
-                      , capitalize <|
+                      , ( True
+                        , capitalize <|
                             case character.metaInformation.deity of
                                 Just s ->
                                     s
 
                                 Nothing ->
                                     "_"
+                        )
                       )
                     ]
                 ]
@@ -211,21 +213,21 @@ displayCharacterSheet character =
                         [ Html.div []
                             [ Html.h4 [] [ Html.text "Combat Maneuver Bonus" ]
                             , Elements.table False
-                                [ ( "total", toString character.combatNumbers.combatManeuvers.bonus.total )
-                                , ( "str", toString character.combatNumbers.combatManeuvers.bonus.str )
-                                , ( "base attack", toString character.combatNumbers.combatManeuvers.bonus.baseAttackBonus )
-                                , ( "size modifier", toString character.combatNumbers.combatManeuvers.bonus.sizeMod )
+                                [ ( "total", ( True, toString character.combatNumbers.combatManeuvers.bonus.total ) )
+                                , ( "str", ( True, toString character.combatNumbers.combatManeuvers.bonus.str ) )
+                                , ( "base attack", ( True, toString character.combatNumbers.combatManeuvers.bonus.baseAttackBonus ) )
+                                , ( "size modifier", ( True, toString character.combatNumbers.combatManeuvers.bonus.sizeMod ) )
                                 ]
                             ]
                         , Html.div []
                             [ Html.h4 [] [ Html.text "Combat Maneuver Defense" ]
                             , Elements.table False
-                                [ ( "total", toString character.combatNumbers.combatManeuvers.defense.total )
-                                , ( "base", toString character.combatNumbers.combatManeuvers.defense.base )
-                                , ( "str", toString character.combatNumbers.combatManeuvers.defense.str )
-                                , ( "dex", toString character.combatNumbers.combatManeuvers.defense.dex )
-                                , ( "base attack", toString character.combatNumbers.combatManeuvers.defense.baseAttackBonus )
-                                , ( "size modifier", toString character.combatNumbers.combatManeuvers.defense.sizeMod )
+                                [ ( "total", ( True, toString character.combatNumbers.combatManeuvers.defense.total ) )
+                                , ( "base", ( False, toString character.combatNumbers.combatManeuvers.defense.base ) )
+                                , ( "str", ( True, toString character.combatNumbers.combatManeuvers.defense.str ) )
+                                , ( "dex", ( True, toString character.combatNumbers.combatManeuvers.defense.dex ) )
+                                , ( "base attack", ( True, toString character.combatNumbers.combatManeuvers.defense.baseAttackBonus ) )
+                                , ( "size modifier", ( True, toString character.combatNumbers.combatManeuvers.defense.sizeMod ) )
                                 ]
                             ]
                         ]
@@ -302,15 +304,15 @@ displayCharacterSheet character =
             [ Elements.panelled "Armor Piece"
                 False
                 [ Elements.table True
-                    [ ( "name", character.armorPiece.name )
-                    , ( "class", character.armorPiece.armorClass )
-                    , ( "AC bonus", "+" ++ (toString character.armorPiece.armorBonus) )
-                    , ( "max dex", "+" ++ (toString character.armorPiece.maxDexBonus) )
-                    , ( "skill penalty", toString character.armorPiece.armorCheckPenalty )
-                    , ( "spell failure", (toString character.armorPiece.arcaneSpellFailureChance) ++ "%" )
-                    , ( "fast speed", (toString character.armorPiece.fastSpeed) ++ "ft" )
-                    , ( "slow speed", (toString character.armorPiece.slowSpeed) ++ "ft" )
-                    , ( "weight", (toString character.armorPiece.mediumWeight) ++ "lbs" )
+                    [ ( "name", ( True, character.armorPiece.name ) )
+                    , ( "class", ( True, character.armorPiece.armorClass ) )
+                    , ( "AC bonus", ( True, "+" ++ (toString character.armorPiece.armorBonus) ) )
+                    , ( "max dex", ( True, "+" ++ (toString character.armorPiece.maxDexBonus) ) )
+                    , ( "skill penalty", ( True, toString character.armorPiece.armorCheckPenalty ) )
+                    , ( "spell failure", ( True, (toString character.armorPiece.arcaneSpellFailureChance) ++ "%" ) )
+                    , ( "fast speed", ( True, (toString character.armorPiece.fastSpeed) ++ "ft" ) )
+                    , ( "slow speed", ( True, (toString character.armorPiece.slowSpeed) ++ "ft" ) )
+                    , ( "weight", ( True, (toString character.armorPiece.mediumWeight) ++ "lbs" ) )
                     ]
                 ]
             , Elements.panelled "Shield"
@@ -321,19 +323,21 @@ displayCharacterSheet character =
 
                     Just shield ->
                         Elements.table True
-                            [ ( "name", shield.name )
-                            , ( "AC bonus", "+" ++ (toString shield.acBonus) )
+                            [ ( "name", ( True, shield.name ) )
+                            , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
                             , ( "max dex"
-                              , case shield.maxDex of
+                              , ( True
+                                , case shield.maxDex of
                                     Just maxDex ->
                                         "+" ++ (toString shield.maxDex)
 
                                     Nothing ->
                                         "_"
+                                )
                               )
-                            , ( "skill penalty", toString shield.skillPenalty )
-                            , ( "spell failure", (toString shield.arcaneSpellFailureChance) ++ "%" )
-                            , ( "weight", (toString shield.weight) ++ "lbs" )
+                            , ( "skill penalty", ( True, toString shield.skillPenalty ) )
+                            , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
+                            , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
                             ]
                 ]
             ]

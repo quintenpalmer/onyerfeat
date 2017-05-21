@@ -36,7 +36,7 @@ labelDefault text =
     ]
 
 
-table : Bool -> List ( String, String ) -> Html.Html Common.Msg
+table : Bool -> List ( String, ( Bool, String ) ) -> Html.Html Common.Msg
 table bordered pairs =
     Html.table
         [ Attr.class
@@ -56,7 +56,13 @@ table bordered pairs =
         , Html.tbody [ Attr.class "text-center" ]
             [ Html.tr [] <|
                 List.map
-                    (\x -> Html.td [] <| labelDefault x)
+                    (\( labelled, x ) ->
+                        Html.td [] <|
+                            if labelled then
+                                labelDefault x
+                            else
+                                [ (Html.text x) ]
+                    )
                     (List.map Tuple.second pairs)
             ]
         ]

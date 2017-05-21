@@ -114,45 +114,13 @@ displayCharacterSheet character =
                     ]
                 , Elements.panelled "Armor Class"
                     True
-                    [ Html.table [ Attr.class "table table-striped" ]
-                        [ Html.thead []
-                            [ Html.tr []
-                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Total" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Base" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Dex" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Armor" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Shield" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Size" ]
-                                ]
-                            ]
-                        , Html.tbody [ Attr.class "text-center" ]
-                            [ Html.tr []
-                                [ Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.total) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span []
-                                        [ Html.text "10" ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.dex) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.armorAc) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.shieldAc) ]
-                                    ]
-                                , Html.td []
-                                    [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text (toString character.combatNumbers.armorClass.sizeMod) ]
-                                    ]
-                                ]
-                            ]
+                    [ Elements.table False
+                        [ ( "Total", ( True, toString character.combatNumbers.armorClass.total ) )
+                        , ( "Base", ( False, "10" ) )
+                        , ( "Dex", ( True, toString character.combatNumbers.armorClass.dex ) )
+                        , ( "Armor", ( True, toString character.combatNumbers.armorClass.armorAc ) )
+                        , ( "Shield", ( True, toString character.combatNumbers.armorClass.shieldAc ) )
+                        , ( "Size", ( True, toString character.combatNumbers.armorClass.sizeMod ) )
                         ]
                     ]
                 , Elements.panelled "Saving Throws"

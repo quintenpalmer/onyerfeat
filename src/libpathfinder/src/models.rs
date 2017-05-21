@@ -259,7 +259,7 @@ pub struct Weapon {
     pub small_damage: DiceDamage,
     pub medium_damage: DiceDamage,
     pub critical: CriticalDamage,
-    pub range: Option<i32>,
+    pub range: i32,
     pub weight: i32,
     pub damage_type: PhysicalDamageType,
 }

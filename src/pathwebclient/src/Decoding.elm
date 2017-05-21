@@ -238,7 +238,7 @@ decodeWeapon =
         |> Pipeline.required "small_damage" decodeDiceDamage
         |> Pipeline.required "medium_damage" decodeDiceDamage
         |> Pipeline.required "critical" decodeCriticalDamage
-        |> Pipeline.required "range" (Decode.nullable Decode.int)
+        |> Pipeline.required "range" Decode.int
         |> Pipeline.required "weight" Decode.int
         |> Pipeline.required "damage_type" decodePhysicalDamageType
 

@@ -264,7 +264,7 @@ impl structs::Weapon {
             small_damage: self.small_damage.clone(),
             medium_damage: self.medium_damage.clone(),
             critical: self.critical.clone(),
-            range: self.range,
+            range: self.range.unwrap_or(5),
             weight: self.weight,
             damage_type: self.damage_type.clone(),
         }

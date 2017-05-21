@@ -196,7 +196,7 @@ type alias Weapon =
     , smallDamage : DiceDamage
     , mediumDamage : DiceDamage
     , critical : CriticalDamage
-    , range : Maybe Int
+    , range : Int
     , weight : Int
     , damageType : PhysicalDamageType
     }

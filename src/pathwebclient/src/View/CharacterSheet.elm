@@ -31,16 +31,16 @@ displayCharacterSheet character =
                         ]
                     , Html.tbody [ Attr.class "text-center" ]
                         [ Html.tr []
-                            [ Html.td [] [ Html.text character.metaInformation.name ]
-                            , Html.td [] [ Html.text character.metaInformation.playerName ]
-                            , Html.td [] [ Html.text <| capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ]
-                            , Html.td [] [ Html.text <| capitalize character.metaInformation.race ]
-                            , Html.td [] [ Html.text <| capitalize character.metaInformation.class ]
-                            , Html.td [] [ Html.text <| toString character.level ]
-                            , Html.td [] [ Html.text <| toString character.metaInformation.size ]
-                            , Html.td [] [ Html.text <| toString character.metaInformation.age ]
-                            , Html.td []
-                                [ Html.text <|
+                            [ Html.td [] <| Elements.labelDefault <| character.metaInformation.name
+                            , Html.td [] <| Elements.labelDefault <| character.metaInformation.playerName
+                            , Html.td [] <| Elements.labelDefault <| capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality
+                            , Html.td [] <| Elements.labelDefault <| capitalize character.metaInformation.race
+                            , Html.td [] <| Elements.labelDefault <| capitalize character.metaInformation.class
+                            , Html.td [] <| Elements.labelDefault <| toString character.level
+                            , Html.td [] <| Elements.labelDefault <| toString character.metaInformation.size
+                            , Html.td [] <| Elements.labelDefault <| toString character.metaInformation.age
+                            , Html.td [] <|
+                                Elements.labelDefault <|
                                     capitalize <|
                                         case character.metaInformation.deity of
                                             Just s ->
@@ -48,7 +48,6 @@ displayCharacterSheet character =
 
                                             Nothing ->
                                                 "_"
-                                ]
                             ]
                         ]
                     ]

@@ -44,6 +44,7 @@ pub fn into_canonical_character(character: structs::Character,
             modifier: calc_ability_modifier(abs.cha),
         },
     };
+    let size_mod = creature.size.get_modifier();
     let character_skills = get_character_skills(skills,
                                                 skill_choices,
                                                 sub_skills,
@@ -61,7 +62,6 @@ pub fn into_canonical_character(character: structs::Character,
             Some(ref shield) => shield.ac_bonus,
             None => 0,
         };
-        let size_mod = creature.size.get_modifier();
         let armor_class = models::ArmorClass {
             total: dex_mod + base + armor_ac + shield_ac + size_mod,
             base: base,

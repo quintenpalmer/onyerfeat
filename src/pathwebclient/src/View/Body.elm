@@ -16,12 +16,6 @@ cssStyle =
     Css.asPairs >> Attr.style
 
 
-fullPage =
-    cssStyle
-        [ Css.fontFamilies [ "Inconsolata" ]
-        ]
-
-
 header =
     cssStyle
         [ Css.padding <| Css.px 20
@@ -32,9 +26,7 @@ header =
 
 view : Models.Model -> Html.Html Common.Msg
 view model =
-    Html.div
-        [ fullPage
-        ]
+    Html.div [ Attr.class "font-inc" ]
         [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/bootstrap/css/bootstrap.min.css" ] []
         , Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/css/style.css" ] []
         , Html.div

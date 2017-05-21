@@ -20,6 +20,31 @@ pub struct CombatNumbers {
     pub armor_class: ArmorClass,
     pub base_attack_bonus: i32,
     pub saving_throws: SavingThrows,
+    pub combat_maneuvers: CombatManeuvers,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CombatManeuvers {
+    pub bonus: CombatManeuverBonus,
+    pub defense: CombatManeuverDefense,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CombatManeuverBonus {
+    pub total: i32,
+    pub str: i32,
+    pub base_attack_bonus: i32,
+    pub size_mod: i32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CombatManeuverDefense {
+    pub total: i32,
+    pub base: i32,
+    pub str: i32,
+    pub dex: i32,
+    pub base_attack_bonus: i32,
+    pub size_mod: i32,
 }
 
 #[derive(Serialize, Deserialize)]

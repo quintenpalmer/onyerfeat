@@ -51,6 +51,34 @@ decodeCombatNumbers =
         |> Pipeline.required "armor_class" decodeArmorClass
         |> Pipeline.required "base_attack_bonus" Decode.int
         |> Pipeline.required "saving_throws" decodeSavingThrows
+        |> Pipeline.required "combat_maneuvers" decodeCombatManeuvers
+
+
+decodeCombatManeuvers : Decode.Decoder Models.CombatManeuvers
+decodeCombatManeuvers =
+    Pipeline.decode Models.CombatManeuvers
+        |> Pipeline.required "bonus" decodeCombatManeuverBonus
+        |> Pipeline.required "defense" decodeCombatManeuverDefense
+
+
+decodeCombatManeuverBonus : Decode.Decoder Models.CombatManeuverBonus
+decodeCombatManeuverBonus =
+    Pipeline.decode Models.CombatManeuverBonus
+        |> Pipeline.required "total" Decode.int
+        |> Pipeline.required "str" Decode.int
+        |> Pipeline.required "base_attack_bonus" Decode.int
+        |> Pipeline.required "size_mod" Decode.int
+
+
+decodeCombatManeuverDefense : Decode.Decoder Models.CombatManeuverDefense
+decodeCombatManeuverDefense =
+    Pipeline.decode Models.CombatManeuverDefense
+        |> Pipeline.required "total" Decode.int
+        |> Pipeline.required "base" Decode.int
+        |> Pipeline.required "str" Decode.int
+        |> Pipeline.required "dex" Decode.int
+        |> Pipeline.required "base_attack_bonus" Decode.int
+        |> Pipeline.required "size_mod" Decode.int
 
 
 decodeSavingThrows : Decode.Decoder Models.SavingThrows

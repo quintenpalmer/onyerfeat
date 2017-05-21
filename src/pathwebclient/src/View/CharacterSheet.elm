@@ -205,6 +205,31 @@ displayCharacterSheet character =
                             [ Html.text <| toString character.combatNumbers.baseAttackBonus ]
                         ]
                     ]
+                , Elements.panelled "Combat Maneuvers"
+                    True
+                    [ Html.div []
+                        [ Html.div []
+                            [ Html.h4 [] [ Html.text "Combat Maneuver Bonus" ]
+                            , Elements.table False
+                                [ ( "total", toString character.combatNumbers.combatManeuvers.bonus.total )
+                                , ( "str", toString character.combatNumbers.combatManeuvers.bonus.str )
+                                , ( "base attack", toString character.combatNumbers.combatManeuvers.bonus.baseAttackBonus )
+                                , ( "size modifier", toString character.combatNumbers.combatManeuvers.bonus.sizeMod )
+                                ]
+                            ]
+                        , Html.div []
+                            [ Html.h4 [] [ Html.text "Combat Maneuver Defense" ]
+                            , Elements.table False
+                                [ ( "total", toString character.combatNumbers.combatManeuvers.defense.total )
+                                , ( "base", toString character.combatNumbers.combatManeuvers.defense.base )
+                                , ( "str", toString character.combatNumbers.combatManeuvers.defense.str )
+                                , ( "dex", toString character.combatNumbers.combatManeuvers.defense.dex )
+                                , ( "base attack", toString character.combatNumbers.combatManeuvers.defense.baseAttackBonus )
+                                , ( "size modifier", toString character.combatNumbers.combatManeuvers.defense.sizeMod )
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             , Html.div [ Attr.class "col-md-7" ]
                 [ Elements.panelled "Skills"

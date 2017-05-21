@@ -14,6 +14,9 @@ module Models
         , ArmorClass
         , SavingThrows
         , SavingThrow
+        , CombatManeuvers
+        , CombatManeuverBonus
+        , CombatManeuverDefense
         )
 
 
@@ -45,6 +48,31 @@ type alias CombatNumbers =
     , armorClass : ArmorClass
     , baseAttackBonus : Int
     , savingThrows : SavingThrows
+    , combatManeuvers : CombatManeuvers
+    }
+
+
+type alias CombatManeuvers =
+    { bonus : CombatManeuverBonus
+    , defense : CombatManeuverDefense
+    }
+
+
+type alias CombatManeuverBonus =
+    { total : Int
+    , str : Int
+    , baseAttackBonus : Int
+    , sizeMod : Int
+    }
+
+
+type alias CombatManeuverDefense =
+    { total : Int
+    , base : Int
+    , str : Int
+    , dex : Int
+    , baseAttackBonus : Int
+    , sizeMod : Int
     }
 
 

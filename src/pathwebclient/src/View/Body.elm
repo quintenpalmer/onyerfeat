@@ -1,7 +1,7 @@
 module View.Body exposing (view)
 
 import Css
-import Html exposing (div)
+import Html
 import Html.Attributes as Attr
 import Html.Events as Events
 import Common
@@ -32,16 +32,16 @@ header =
 
 view : Models.Model -> Html.Html Common.Msg
 view model =
-    div
+    Html.div
         [ fullPage
         ]
         [ Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/bootstrap/css/bootstrap.min.css" ] []
         , Html.node "link" [ Attr.rel "stylesheet", Attr.href "/assets/css/style.css" ] []
-        , div
+        , Html.div
             [ header
             ]
             [ Html.text "Pathfinder Character Sheet" ]
-        , div [ Attr.class "container" ]
+        , Html.div [ Attr.class "container" ]
             [ Html.ul [ Attr.class "nav nav-pills" ]
                 [ Html.li
                     (case model of

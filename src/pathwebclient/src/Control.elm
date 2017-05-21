@@ -19,6 +19,9 @@ update msg character =
         Common.LoadCharacter id ->
             ( character, getCharacterSheet id )
 
+        Common.LoadWeapons ->
+            ( character, getWeapons )
+
         Common.LoadShields ->
             ( character, getShields )
 
@@ -35,6 +38,12 @@ update msg character =
             ( Models.MDiceTab <| Just dieRoll, Cmd.none )
 
         Common.DiceLoaded (Err e) ->
+            ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
+
+        Common.WeaponsLoaded (Ok newWeapons) ->
+            ( Models.MWeapons newWeapons, Cmd.none )
+
+        Common.WeaponsLoaded (Err e) ->
             ( Models.MError <| "Error loading sheet: " ++ toString e, Cmd.none )
 
         Common.ArmorPiecesLoaded (Ok newArmorPieces) ->
@@ -63,6 +72,15 @@ getCharacterSheet id =
             "http://localhost:3000/api/characters?id=" ++ (toString id)
     in
         Http.send Common.CharacterLoaded (Http.get url Decoding.decodeCharacterResp)
+
+
+getWeapons : Cmd Common.Msg
+getWeapons =
+    let
+        url =
+            "http://localhost:3000/api/weapons"
+    in
+        Http.send Common.WeaponsLoaded (Http.get url Decoding.decodeWeapons)
 
 
 getShields : Cmd Common.Msg

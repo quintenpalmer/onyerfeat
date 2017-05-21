@@ -11,17 +11,22 @@ module Models
         , Skill
         , ArmorPiece
         , Shield
+        , Weapon
         , ArmorClass
         , SavingThrows
         , SavingThrow
         , CombatManeuvers
         , CombatManeuverBonus
         , CombatManeuverDefense
+        , DiceDamage
+        , CriticalDamage
+        , PhysicalDamageType
         )
 
 
 type Model
     = MCharacter Character
+    | MWeapons (List Weapon)
     | MShields (List Shield)
     | MArmorPieces (List ArmorPiece)
     | MDiceTab (Maybe Int)
@@ -180,4 +185,38 @@ type alias Shield =
     , skillPenalty : Int
     , arcaneSpellFailureChance : Int
     , weight : Int
+    }
+
+
+type alias Weapon =
+    { name : String
+    , trainingType : String
+    , sizeStyle : String
+    , cost : Int
+    , smallDamage : DiceDamage
+    , mediumDamage : DiceDamage
+    , critical : CriticalDamage
+    , range : Maybe Int
+    , weight : Int
+    , damageType : PhysicalDamageType
+    }
+
+
+type alias DiceDamage =
+    { numDice : Int
+    , dieSize : Int
+    }
+
+
+type alias CriticalDamage =
+    { requiredRoll : Int
+    , multiplier : Int
+    }
+
+
+type alias PhysicalDamageType =
+    { bludgeoning : Bool
+    , piercing : Bool
+    , slashing : Bool
+    , andTogether : Bool
     }

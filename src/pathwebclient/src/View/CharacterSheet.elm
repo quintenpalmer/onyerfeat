@@ -15,41 +15,24 @@ displayCharacterSheet character =
         , Html.div [ Attr.class "row" ]
             [ Elements.panelled "Meta Information"
                 True
-                [ Html.table [ Attr.class "table table-striped table-bordered" ]
-                    [ Html.thead []
-                        [ Html.tr []
-                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Character Name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Player name" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Alignment" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Level" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Race" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Size" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Age" ]
-                            , Html.th [ Attr.class "text-center" ] [ Html.text "Deity" ]
-                            ]
-                        ]
-                    , Html.tbody [ Attr.class "text-center" ]
-                        [ Html.tr []
-                            [ Html.td [] <| Elements.labelDefault <| character.metaInformation.name
-                            , Html.td [] <| Elements.labelDefault <| character.metaInformation.playerName
-                            , Html.td [] <| Elements.labelDefault <| capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality
-                            , Html.td [] <| Elements.labelDefault <| capitalize character.metaInformation.race
-                            , Html.td [] <| Elements.labelDefault <| capitalize character.metaInformation.class
-                            , Html.td [] <| Elements.labelDefault <| toString character.level
-                            , Html.td [] <| Elements.labelDefault <| toString character.metaInformation.size
-                            , Html.td [] <| Elements.labelDefault <| toString character.metaInformation.age
-                            , Html.td [] <|
-                                Elements.labelDefault <|
-                                    capitalize <|
-                                        case character.metaInformation.deity of
-                                            Just s ->
-                                                s
+                [ Elements.table True
+                    [ ( "Character Name", character.metaInformation.name )
+                    , ( "Player name", character.metaInformation.playerName )
+                    , ( "Alignment", capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality )
+                    , ( "Race", capitalize character.metaInformation.race )
+                    , ( "Class", capitalize character.metaInformation.class )
+                    , ( "Class Level", toString character.level )
+                    , ( "Size", toString character.metaInformation.size )
+                    , ( "Age", toString character.metaInformation.age )
+                    , ( "Deity"
+                      , capitalize <|
+                            case character.metaInformation.deity of
+                                Just s ->
+                                    s
 
-                                            Nothing ->
-                                                "_"
-                            ]
-                        ]
+                                Nothing ->
+                                    "_"
+                      )
                     ]
                 ]
             ]

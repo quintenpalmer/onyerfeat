@@ -2,8 +2,10 @@ module View.Elements
     exposing
         ( panelled
         , labelDefault
+        , table
         )
 
+import Tuple
 import Html
 import Html.Attributes as Attr
 import Common
@@ -32,3 +34,29 @@ labelDefault text =
     [ Html.span [ Attr.class "label label-default label-large" ]
         [ Html.text text ]
     ]
+
+
+table : Bool -> List ( String, String ) -> Html.Html Common.Msg
+table bordered pairs =
+    Html.table
+        [ Attr.class
+            ("table table-striped"
+                ++ if bordered then
+                    " table-bordered"
+                   else
+                    ""
+            )
+        ]
+        [ Html.thead []
+            [ Html.tr [] <|
+                List.map
+                    (\x -> Html.th [ Attr.class "text-center" ] [ Html.text x ])
+                    (List.map Tuple.first pairs)
+            ]
+        , Html.tbody [ Attr.class "text-center" ]
+            [ Html.tr [] <|
+                List.map
+                    (\x -> Html.td [] <| labelDefault x)
+                    (List.map Tuple.second pairs)
+            ]
+        ]

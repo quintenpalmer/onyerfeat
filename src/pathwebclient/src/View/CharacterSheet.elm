@@ -270,7 +270,7 @@ displayCharacterSheet character =
             ]
         , Html.div
             [ Attr.class "row" ]
-            [ WeaponTable.weaponsPanel character.weapons ]
+            [ WeaponTable.weaponsPanel character.fullWeapons ]
         , Html.div
             [ Attr.class "row" ]
             [ Elements.panelled "Armor Piece"

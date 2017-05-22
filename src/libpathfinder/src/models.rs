@@ -8,7 +8,7 @@ pub struct Character {
     pub combat_numbers: CombatNumbers,
     pub armor_piece: ArmorPiece,
     pub shield: Option<Shield>,
-    pub weapons: Vec<Weapon>,
+    pub full_weapons: Vec<Weapon>,
     pub skills: Vec<CharacterSkill>,
 }
 

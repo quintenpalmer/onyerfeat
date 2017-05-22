@@ -42,7 +42,7 @@ type alias Character =
     , combatNumbers : CombatNumbers
     , armorPiece : ArmorPiece
     , shield : Maybe Shield
-    , weapons : List Weapon
+    , fullWeapons : List Weapon
     , skills : List Skill
     }
 

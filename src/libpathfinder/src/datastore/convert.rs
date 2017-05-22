@@ -116,7 +116,7 @@ pub fn into_canonical_character(character: structs::Character,
             Some(x) => Some(x.into_canonical()),
             None => None,
         },
-        weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
+        full_weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
         skills: character_skills,
         ability_score_info: ability_score_model,
     };

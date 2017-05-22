@@ -341,6 +341,22 @@ SELECT pg_catalog.setval('creature_shields_id_seq', 1, true);
 
 
 --
+-- Data for Name: creature_weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
+1	1	1
+\.
+
+
+--
+-- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('creature_weapons_id_seq', 1, true);
+
+
+--
 -- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 

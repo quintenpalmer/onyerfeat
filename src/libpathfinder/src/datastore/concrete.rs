@@ -57,6 +57,11 @@ impl Datastore {
             try!(selects::exec_and_select_optional_one_by_field(&self.conn,
                                                                 queries::CHARACTER_SHIELD_QUERY,
                                                                 creature.id));
+
+        let weapons: Vec<structs::Weapon> = try!(selects::exec_and_select_by_field(&self.conn,
+                                                   queries::CREATURE_WEAPON_QUERY,
+                                                   creature.id));
+
         let base_saving_throws: structs::ClassSavingThrows =
             try!(selects::exec_and_select_one_by_two_fields(&self.conn,
                                                             queries::BASE_SAVING_THROWS,
@@ -75,6 +80,7 @@ impl Datastore {
                                                     class_skill_constructors,
                                                     armor_piece,
                                                     option_shield,
+                                                    weapons,
                                                     base_saving_throws));
     }
 

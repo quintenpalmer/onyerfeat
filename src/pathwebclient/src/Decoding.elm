@@ -27,6 +27,7 @@ decodeCharacter =
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
         |> Pipeline.required "armor_piece" decodeArmorPiece
         |> Pipeline.required "shield" (Decode.nullable decodeShield)
+        |> Pipeline.required "weapons" (Decode.list decodeWeapon)
         |> Pipeline.required "skills" decodeSkills
 
 

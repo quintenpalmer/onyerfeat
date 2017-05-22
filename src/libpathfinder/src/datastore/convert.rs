@@ -16,6 +16,7 @@ pub fn into_canonical_character(character: structs::Character,
                                 class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                                 armor_piece: structs::ArmorPiece,
                                 optional_shield: Option<structs::Shield>,
+                                weapons: Vec<structs::Weapon>,
                                 base_saving_throws: structs::ClassSavingThrows)
                                 -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
@@ -115,6 +116,7 @@ pub fn into_canonical_character(character: structs::Character,
             Some(x) => Some(x.into_canonical()),
             None => None,
         },
+        weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
         skills: character_skills,
         ability_score_info: ability_score_model,
     };

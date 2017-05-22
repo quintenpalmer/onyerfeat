@@ -29,9 +29,16 @@ panelled title center children =
         ]
 
 
-labelDefault : String -> Html.Html Common.Msg
-labelDefault text =
-    Html.span [ Attr.class "label label-default label-large" ]
+labelDefault : Bool -> String -> Html.Html Common.Msg
+labelDefault cap text =
+    Html.span
+        ([ Attr.class "label label-default label-large" ]
+            ++ (if cap then
+                    [ Attr.class "text-capitalize" ]
+                else
+                    []
+               )
+        )
         [ Html.text text ]
 
 
@@ -58,7 +65,7 @@ table bordered pairs =
                     (\( labelled, x ) ->
                         Html.td []
                             [ if labelled then
-                                labelDefault x
+                                labelDefault False x
                               else
                                 Html.text x
                             ]

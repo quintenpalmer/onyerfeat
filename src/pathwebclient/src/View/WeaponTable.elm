@@ -42,16 +42,16 @@ weaponsPanel weapons =
                 (List.map
                     (\weapon ->
                         Html.tr []
-                            [ Html.td [] [ Html.b [] [ Html.text weapon.name ] ]
-                            , Html.td [] [ Html.b [ Attr.class "text-capitalize" ] [ Html.text weapon.trainingType ] ]
-                            , Html.td [] [ Html.b [ Attr.class "text-capitalize" ] [ Html.text <| (String.join " " (String.split "_" weapon.sizeStyle)) ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| (toString weapon.cost) ++ "gp" ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| displayDice weapon.smallDamage ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| displayDice weapon.mediumDamage ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| displayCriticalDamage weapon.critical ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| (toString weapon.range) ++ "ft" ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| (toString weapon.weight) ++ "lbs" ] ]
-                            , Html.td [] [ Html.b [] [ Html.text <| displayPhysicalDamage weapon.damageType ] ]
+                            [ Html.td [] [ Elements.labelDefault False weapon.name ]
+                            , Html.td [] [ Elements.labelDefault True weapon.trainingType ]
+                            , Html.td [] [ Elements.labelDefault True <| (String.join " " (String.split "_" weapon.sizeStyle)) ]
+                            , Html.td [] [ Elements.labelDefault True <| (toString weapon.cost) ++ "gp" ]
+                            , Html.td [] [ Elements.labelDefault True <| displayDice weapon.smallDamage ]
+                            , Html.td [] [ Elements.labelDefault True <| displayDice weapon.mediumDamage ]
+                            , Html.td [] [ Elements.labelDefault True <| displayCriticalDamage weapon.critical ]
+                            , Html.td [] [ Elements.labelDefault True <| (toString weapon.range) ++ "ft" ]
+                            , Html.td [] [ Elements.labelDefault True <| (toString weapon.weight) ++ "lbs" ]
+                            , Html.td [] [ Elements.labelDefault True <| displayPhysicalDamage weapon.damageType ]
                             ]
                     )
                     weapons

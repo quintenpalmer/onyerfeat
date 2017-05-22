@@ -359,6 +359,8 @@ COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_da
 
 COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
 1	1	1
+2	1	2
+3	1	3
 \.
 
 
@@ -366,7 +368,7 @@ COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_weapons_id_seq', 1, true);
+SELECT pg_catalog.setval('creature_weapons_id_seq', 3, true);
 
 
 --

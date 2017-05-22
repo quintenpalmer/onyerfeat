@@ -15,3 +15,8 @@ How to run this project
 
 * [Backend](src/pathserver/README.md)
 * [Frontend](src/pathwebclient/README.md)
+
+Screenshot
+----------
+
+![Character Sheet Screenshot](assets/character-sheet-screenshot.png)

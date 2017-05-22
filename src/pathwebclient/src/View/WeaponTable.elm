@@ -42,7 +42,7 @@ weaponsPanel weapons =
                 (List.map
                     (\weapon ->
                         Html.tr []
-                            [ Html.td [] [ Elements.labelDefault False weapon.name ]
+                            [ Html.td [ Attr.class "text-left" ] [ Elements.labelDefault False weapon.name ]
                             , Html.td [] [ Elements.labelDefault True weapon.trainingType ]
                             , Html.td [] [ Elements.labelDefault True <| (String.join " " (String.split "_" weapon.sizeStyle)) ]
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.cost) ++ "gp" ]

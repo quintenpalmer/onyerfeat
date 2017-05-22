@@ -48,10 +48,10 @@ weaponsPanel weapons =
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.cost) ++ "gp" ]
                             , Html.td [] [ Elements.labelDefault True <| displayDice weapon.smallDamage ]
                             , Html.td [] [ Elements.labelDefault True <| displayDice weapon.mediumDamage ]
-                            , Html.td [] [ Elements.labelDefault True <| displayCriticalDamage weapon.critical ]
+                            , Html.td [] [ Elements.labelDefault False <| displayCriticalDamage weapon.critical ]
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.range) ++ "ft" ]
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.weight) ++ "lbs" ]
-                            , Html.td [] [ Elements.labelDefault True <| displayPhysicalDamage weapon.damageType ]
+                            , Html.td [] [ Elements.labelDefault False <| displayPhysicalDamage weapon.damageType ]
                             ]
                     )
                     weapons

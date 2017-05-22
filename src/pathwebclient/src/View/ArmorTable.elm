@@ -34,15 +34,15 @@ displayArmorPieces armorPieces =
                             (List.map
                                 (\piece ->
                                     Html.tr []
-                                        [ Html.td [] [ Html.b [] [ Html.text piece.armorClass ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text piece.name ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.armorBonus ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.maxDexBonus ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.armorCheckPenalty ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.arcaneSpellFailureChance ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.fastSpeed ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.slowSpeed ] ]
-                                        , Html.td [] [ Html.b [] [ Html.text <| toString piece.mediumWeight ] ]
+                                        [ Html.td [ Attr.class "text-left" ] [ Elements.labelDefault True piece.armorClass ]
+                                        , Html.td [ Attr.class "text-left" ] [ Elements.labelDefault False piece.name ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.armorBonus ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.maxDexBonus ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.armorCheckPenalty ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.arcaneSpellFailureChance ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.fastSpeed ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.slowSpeed ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString piece.mediumWeight ]
                                         ]
                                 )
                                 armorPieces

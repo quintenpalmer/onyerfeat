@@ -29,11 +29,17 @@ panelled title center children =
         ]
 
 
-labelDefault : String -> List (Html.Html Common.Msg)
-labelDefault text =
-    [ Html.span [ Attr.class "label label-default label-large" ]
+labelDefault : Bool -> String -> Html.Html Common.Msg
+labelDefault cap text =
+    Html.span
+        ([ Attr.class "label label-default label-large" ]
+            ++ (if cap then
+                    [ Attr.class "text-capitalize" ]
+                else
+                    []
+               )
+        )
         [ Html.text text ]
-    ]
 
 
 table : Bool -> List ( String, ( Bool, String ) ) -> Html.Html Common.Msg
@@ -57,11 +63,12 @@ table bordered pairs =
             [ Html.tr [] <|
                 List.map
                     (\( labelled, x ) ->
-                        Html.td [] <|
-                            if labelled then
-                                labelDefault x
-                            else
-                                [ (Html.text x) ]
+                        Html.td []
+                            [ if labelled then
+                                labelDefault False x
+                              else
+                                Html.text x
+                            ]
                     )
                     (List.map Tuple.second pairs)
             ]

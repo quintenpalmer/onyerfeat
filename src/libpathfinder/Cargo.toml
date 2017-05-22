@@ -11,5 +11,6 @@ serde = "1.0.0"
 serde_json = "1.0.0"
 serde_derive = "1.0.0"
 postgres = "0.14"
+postgres-derive = "0.3.*"
 libpathfinder_common = {path = "../libpathfinder_common"}
 libpathfinder_derive = {path = "../libpathfinder_derive"}

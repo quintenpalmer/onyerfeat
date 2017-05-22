@@ -1,4 +1,11 @@
-module Decoding exposing (decodeCharacterResp, decodeArmorPieces, decodeShields, decodeDie)
+module Decoding
+    exposing
+        ( decodeCharacterResp
+        , decodeArmorPieces
+        , decodeShields
+        , decodeWeapons
+        , decodeDie
+        )
 
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Pipeline
@@ -20,6 +27,7 @@ decodeCharacter =
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
         |> Pipeline.required "armor_piece" decodeArmorPiece
         |> Pipeline.required "shield" (Decode.nullable decodeShield)
+        |> Pipeline.required "weapons" (Decode.list decodeWeapon)
         |> Pipeline.required "skills" decodeSkills
 
 
@@ -214,6 +222,49 @@ decodeShield =
         |> Pipeline.required "skill_penalty" Decode.int
         |> Pipeline.required "arcane_spell_failure_chance" Decode.int
         |> Pipeline.required "weight" Decode.int
+
+
+decodeWeapons : Decode.Decoder (List Models.Weapon)
+decodeWeapons =
+    Decode.field "data" (Decode.list decodeWeapon)
+
+
+decodeWeapon : Decode.Decoder Models.Weapon
+decodeWeapon =
+    Pipeline.decode Models.Weapon
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "training_type" Decode.string
+        |> Pipeline.required "size_style" Decode.string
+        |> Pipeline.required "cost" Decode.int
+        |> Pipeline.required "small_damage" decodeDiceDamage
+        |> Pipeline.required "medium_damage" decodeDiceDamage
+        |> Pipeline.required "critical" decodeCriticalDamage
+        |> Pipeline.required "range" Decode.int
+        |> Pipeline.required "weight" Decode.int
+        |> Pipeline.required "damage_type" decodePhysicalDamageType
+
+
+decodePhysicalDamageType : Decode.Decoder Models.PhysicalDamageType
+decodePhysicalDamageType =
+    Pipeline.decode Models.PhysicalDamageType
+        |> Pipeline.required "bludgeoning" Decode.bool
+        |> Pipeline.required "piercing" Decode.bool
+        |> Pipeline.required "slashing" Decode.bool
+        |> Pipeline.required "and_together" Decode.bool
+
+
+decodeCriticalDamage : Decode.Decoder Models.CriticalDamage
+decodeCriticalDamage =
+    Pipeline.decode Models.CriticalDamage
+        |> Pipeline.required "required_roll" Decode.int
+        |> Pipeline.required "multiplier" Decode.int
+
+
+decodeDiceDamage : Decode.Decoder Models.DiceDamage
+decodeDiceDamage =
+    Pipeline.decode Models.DiceDamage
+        |> Pipeline.required "num_dice" Decode.int
+        |> Pipeline.required "die_size" Decode.int
 
 
 decodeDie : Decode.Decoder Int

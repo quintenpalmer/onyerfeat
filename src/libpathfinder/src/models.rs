@@ -8,6 +8,7 @@ pub struct Character {
     pub combat_numbers: CombatNumbers,
     pub armor_piece: ArmorPiece,
     pub shield: Option<Shield>,
+    pub weapons: Vec<Weapon>,
     pub skills: Vec<CharacterSkill>,
 }
 
@@ -248,4 +249,59 @@ pub struct Shield {
     pub skill_penalty: i32,
     pub arcane_spell_failure_chance: i32,
     pub weight: i32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Weapon {
+    pub name: String,
+    pub training_type: WeaponTrainingType,
+    pub size_style: WeaponSizeStyle,
+    pub cost: i32,
+    pub small_damage: DiceDamage,
+    pub medium_damage: DiceDamage,
+    pub critical: CriticalDamage,
+    pub range: i32,
+    pub weight: i32,
+    pub damage_type: PhysicalDamageType,
+}
+
+#[derive(Clone, Copy, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum WeaponTrainingType {
+    Simple,
+    Martial,
+    Exotic,
+}
+
+#[derive(Clone, Copy, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WeaponSizeStyle {
+    UnarmedMelee,
+    LightMelee,
+    OneHandedMelee,
+    TwoHandedMelee,
+    Ranged,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, FromSql, ToSql)]
+#[postgres(name = "dice_damage")]
+pub struct DiceDamage {
+    pub num_dice: i32,
+    pub die_size: i32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, FromSql, ToSql)]
+#[postgres(name = "critical_damage")]
+pub struct CriticalDamage {
+    pub required_roll: i32,
+    pub multiplier: i32,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, FromSql, ToSql)]
+#[postgres(name = "physical_damage_type")]
+pub struct PhysicalDamageType {
+    pub bludgeoning: bool,
+    pub piercing: bool,
+    pub slashing: bool,
+    pub and_together: bool,
 }

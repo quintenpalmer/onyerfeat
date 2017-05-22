@@ -30,6 +30,44 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: critical_damage; Type: TYPE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TYPE critical_damage AS (
+	required_roll integer,
+	multiplier integer
+);
+
+
+ALTER TYPE critical_damage OWNER TO pathfinder_user;
+
+--
+-- Name: dice_damage; Type: TYPE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TYPE dice_damage AS (
+	num_dice integer,
+	die_size integer
+);
+
+
+ALTER TYPE dice_damage OWNER TO pathfinder_user;
+
+--
+-- Name: physical_damage_type; Type: TYPE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TYPE physical_damage_type AS (
+	bludgeoning boolean,
+	piercing boolean,
+	slashing boolean,
+	and_together boolean
+);
+
+
+ALTER TYPE physical_damage_type OWNER TO pathfinder_user;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -459,6 +497,40 @@ ALTER SEQUENCE creature_shields_id_seq OWNED BY creature_shields.id;
 
 
 --
+-- Name: creature_weapons; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE creature_weapons (
+    id integer NOT NULL,
+    creature_id integer NOT NULL,
+    weapon_id integer NOT NULL
+);
+
+
+ALTER TABLE creature_weapons OWNER TO pathfinder_user;
+
+--
+-- Name: creature_weapons_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE creature_weapons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE creature_weapons_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: creature_weapons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE creature_weapons_id_seq OWNED BY creature_weapons.id;
+
+
+--
 -- Name: creatures; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -646,6 +718,48 @@ ALTER SEQUENCE sub_skills_id_seq OWNED BY sub_skills.id;
 
 
 --
+-- Name: weapons; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE weapons (
+    id integer NOT NULL,
+    name text NOT NULL,
+    training_type text NOT NULL,
+    size_style text NOT NULL,
+    cost integer NOT NULL,
+    small_damage dice_damage NOT NULL,
+    medium_damage dice_damage NOT NULL,
+    critical critical_damage NOT NULL,
+    range integer,
+    weight integer NOT NULL,
+    damage_type physical_damage_type NOT NULL
+);
+
+
+ALTER TABLE weapons OWNER TO pathfinder_user;
+
+--
+-- Name: weapons_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE weapons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weapons_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: weapons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE weapons_id_seq OWNED BY weapons.id;
+
+
+--
 -- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -730,6 +844,13 @@ ALTER TABLE ONLY creature_shields ALTER COLUMN id SET DEFAULT nextval('creature_
 
 
 --
+-- Name: creature_weapons id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_weapons ALTER COLUMN id SET DEFAULT nextval('creature_weapons_id_seq'::regclass);
+
+
+--
 -- Name: creatures id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -762,6 +883,13 @@ ALTER TABLE ONLY skills ALTER COLUMN id SET DEFAULT nextval('skills_id_seq'::reg
 --
 
 ALTER TABLE ONLY sub_skills ALTER COLUMN id SET DEFAULT nextval('sub_skills_id_seq'::regclass);
+
+
+--
+-- Name: weapons id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY weapons ALTER COLUMN id SET DEFAULT nextval('weapons_id_seq'::regclass);
 
 
 --
@@ -917,6 +1045,14 @@ ALTER TABLE ONLY creature_shields
 
 
 --
+-- Name: creature_weapons creature_weapons_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_weapons
+    ADD CONSTRAINT creature_weapons_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: creatures creatures_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -954,6 +1090,14 @@ ALTER TABLE ONLY skills
 
 ALTER TABLE ONLY sub_skills
     ADD CONSTRAINT sub_skills_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: weapons weapons_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY weapons
+    ADD CONSTRAINT weapons_pkey PRIMARY KEY (id);
 
 
 --
@@ -1090,6 +1234,22 @@ ALTER TABLE ONLY creature_shields
 
 ALTER TABLE ONLY creature_shields
     ADD CONSTRAINT creature_shields_shield_id_fkey FOREIGN KEY (shield_id) REFERENCES shields(id);
+
+
+--
+-- Name: creature_weapons creature_weapons_creature_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_weapons
+    ADD CONSTRAINT creature_weapons_creature_id_fkey FOREIGN KEY (creature_id) REFERENCES creatures(id);
+
+
+--
+-- Name: creature_weapons creature_weapons_weapon_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_weapons
+    ADD CONSTRAINT creature_weapons_weapon_id_fkey FOREIGN KEY (weapon_id) REFERENCES weapons(id);
 
 
 --

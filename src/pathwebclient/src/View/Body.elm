@@ -6,6 +6,7 @@ import Html.Events as Events
 import Common
 import Models
 import View.CharacterSheet as CharacterSheet
+import View.WeaponTable as WeaponTable
 import View.ShieldTable as ShieldTable
 import View.ArmorTable as ArmorTable
 import View.DiceTab as DiceTab
@@ -29,6 +30,15 @@ view model =
                             [ Attr.style [ ( "role", "presentation" ) ] ]
                     )
                     [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 1 ] [ Html.text "Load Idrigoth" ] ]
+                , Html.li
+                    (case model of
+                        Models.MWeapons _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick Common.LoadWeapons ] [ Html.text "Load Weapons" ] ]
                 , Html.li
                     (case model of
                         Models.MShields _ ->
@@ -66,6 +76,9 @@ view model =
 
                 Models.MNotLoaded ->
                     Html.h1 [] [ Html.text "Loading" ]
+
+                Models.MWeapons weapons ->
+                    WeaponTable.displayWeapons weapons
 
                 Models.MShields ss ->
                     ShieldTable.displayShields ss

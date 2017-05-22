@@ -6,6 +6,7 @@ import Html.Attributes as Attr
 import Common
 import Models
 import View.Elements as Elements
+import View.WeaponTable as WeaponTable
 
 
 displayCharacterSheet : Models.Character -> Html.Html Common.Msg
@@ -267,6 +268,9 @@ displayCharacterSheet character =
                     ]
                 ]
             ]
+        , Html.div
+            [ Attr.class "row" ]
+            [ WeaponTable.weaponsPanel character.weapons ]
         , Html.div
             [ Attr.class "row" ]
             [ Elements.panelled "Armor Piece"

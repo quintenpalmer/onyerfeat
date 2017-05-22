@@ -16,6 +16,7 @@ pub fn into_canonical_character(character: structs::Character,
                                 class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                                 armor_piece: structs::ArmorPiece,
                                 optional_shield: Option<structs::Shield>,
+                                weapons: Vec<structs::Weapon>,
                                 base_saving_throws: structs::ClassSavingThrows)
                                 -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
@@ -115,6 +116,7 @@ pub fn into_canonical_character(character: structs::Character,
             Some(x) => Some(x.into_canonical()),
             None => None,
         },
+        weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
         skills: character_skills,
         ability_score_info: ability_score_model,
     };
@@ -250,6 +252,23 @@ impl structs::Shield {
             skill_penalty: self.skill_penalty,
             arcane_spell_failure_chance: self.arcane_spell_failure_chance,
             weight: self.weight,
+        }
+    }
+}
+
+impl structs::Weapon {
+    pub fn into_canonical(&self) -> models::Weapon {
+        models::Weapon {
+            name: self.name.clone(),
+            training_type: self.training_type.clone(),
+            size_style: self.size_style.clone(),
+            cost: self.cost,
+            small_damage: self.small_damage.clone(),
+            medium_damage: self.medium_damage.clone(),
+            critical: self.critical.clone(),
+            range: self.range.unwrap_or(5),
+            weight: self.weight,
+            damage_type: self.damage_type.clone(),
         }
     }
 }

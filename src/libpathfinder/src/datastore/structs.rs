@@ -185,3 +185,19 @@ pub struct ClassSavingThrows {
     pub reflex: i32,
     pub will: i32,
 }
+
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "weapons")]
+pub struct Weapon {
+    pub id: i32,
+    pub name: String,
+    pub training_type: models::WeaponTrainingType,
+    pub size_style: models::WeaponSizeStyle,
+    pub cost: i32,
+    pub small_damage: models::DiceDamage,
+    pub medium_damage: models::DiceDamage,
+    pub critical: models::CriticalDamage,
+    pub range: Option<i32>,
+    pub weight: i32,
+    pub damage_type: models::PhysicalDamageType,
+}

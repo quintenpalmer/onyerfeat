@@ -57,6 +57,11 @@ impl Datastore {
             try!(selects::exec_and_select_optional_one_by_field(&self.conn,
                                                                 queries::CHARACTER_SHIELD_QUERY,
                                                                 creature.id));
+
+        let weapons: Vec<structs::Weapon> = try!(selects::exec_and_select_by_field(&self.conn,
+                                                   queries::CREATURE_WEAPON_QUERY,
+                                                   creature.id));
+
         let base_saving_throws: structs::ClassSavingThrows =
             try!(selects::exec_and_select_one_by_two_fields(&self.conn,
                                                             queries::BASE_SAVING_THROWS,
@@ -75,6 +80,7 @@ impl Datastore {
                                                     class_skill_constructors,
                                                     armor_piece,
                                                     option_shield,
+                                                    weapons,
                                                     base_saving_throws));
     }
 
@@ -111,6 +117,11 @@ impl Datastore {
 
     pub fn get_shields(&self) -> Result<Vec<models::Shield>, error::Error> {
         let shields: Vec<structs::Shield> = try!(selects::select_all(&self.conn));
+        return Ok(shields.iter().map(|x| x.into_canonical()).collect());
+    }
+
+    pub fn get_weapons(&self) -> Result<Vec<models::Weapon>, error::Error> {
+        let shields: Vec<structs::Weapon> = try!(selects::select_all(&self.conn));
         return Ok(shields.iter().map(|x| x.into_canonical()).collect());
     }
 }

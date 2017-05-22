@@ -32,6 +32,7 @@ impl iron::middleware::Handler for Handler {
             "api/skills" => skills_handler(conn),
             "api/armor_pieces" => armor_pieces_handler(conn),
             "api/shields" => shields_handler(conn),
+            "api/weapons" => weapons_handler(conn),
             "api/roll" => dice_roll_handler(req),
             _ => path_not_found(full_path),
         };
@@ -81,6 +82,13 @@ fn armor_pieces_handler(ds: datastore::Datastore) -> IronResult<iron::Response> 
 fn shields_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
     println!("handling request for shields");
     let a = itry!(ds.get_shields(), webshared::simple_server_error());
+
+    return webshared::Response { data: a }.encode();
+}
+
+fn weapons_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
+    println!("handling request for weapons");
+    let a = itry!(ds.get_weapons(), webshared::simple_server_error());
 
     return webshared::Response { data: a }.encode();
 }

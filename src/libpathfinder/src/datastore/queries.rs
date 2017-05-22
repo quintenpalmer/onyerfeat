@@ -60,3 +60,16 @@ WHERE
 AND
     level = $2
 "#;
+
+pub static CREATURE_WEAPON_QUERY: &'static str = r#"
+SELECT
+    weapons.*
+FROM
+    creature_weapons cws
+INNER JOIN
+    weapons
+ON
+    cws.weapon_id = weapons.id
+WHERE
+    cws.creature_id = $1
+"#;

@@ -31,10 +31,10 @@ displayShields shields =
                             (List.map
                                 (\shield ->
                                     Html.tr []
-                                        [ Html.td [ Attr.class "text-left" ] [ Html.text shield.name ]
-                                        , Html.td [] [ Html.text <| toString shield.acBonus ]
+                                        [ Html.td [ Attr.class "text-left" ] [ Elements.labelDefault False shield.name ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString shield.acBonus ]
                                         , Html.td []
-                                            [ Html.text <|
+                                            [ Elements.labelDefault True <|
                                                 case shield.maxDex of
                                                     Nothing ->
                                                         "_"
@@ -42,9 +42,9 @@ displayShields shields =
                                                     Just maxDex ->
                                                         toString maxDex
                                             ]
-                                        , Html.td [] [ Html.text <| toString shield.skillPenalty ]
-                                        , Html.td [] [ Html.text <| toString shield.arcaneSpellFailureChance ]
-                                        , Html.td [] [ Html.text <| toString shield.weight ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString shield.skillPenalty ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString shield.arcaneSpellFailureChance ]
+                                        , Html.td [] [ Elements.labelDefault True <| toString shield.weight ]
                                         ]
                                 )
                                 shields

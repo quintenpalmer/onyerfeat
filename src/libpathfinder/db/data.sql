@@ -341,6 +341,19 @@ SELECT pg_catalog.setval('creature_shields_id_seq', 1, true);
 
 
 --
+-- Data for Name: weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_damage, critical, range, weight, damage_type) FROM stdin;
+1	Waraxe, dwarven	exotic	one_handed_melee	30	(1,8)	(1,10)	(20,3)	\N	8	(f,f,t,f)
+2	Crossbow, heavy	simple	ranged	50	(1,8)	(1,10)	(19,2)	120	8	(f,t,f,f)
+3	Crossbow, light	simple	ranged	35	(1,6)	(1,8)	(19,2)	80	4	(f,t,f,f)
+4	Morningstar	simple	one_handed_melee	35	(1,6)	(1,8)	(20,2)	\N	6	(t,t,f,t)
+5	Dagger	simple	light_melee	2	(1,3)	(1,4)	(19,2)	10	1	(f,t,t,f)
+\.
+
+
+--
 -- Data for Name: creature_weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -392,19 +405,10 @@ SELECT pg_catalog.setval('sub_skills_id_seq', 12, true);
 
 
 --
--- Data for Name: weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_damage, critical, range, weight, damage_type) FROM stdin;
-1	Waraxe, dwarven	exotic	one_handed_melee	30	(1,8)	(1,10)	(20,3)	\N	8	(f,f,t,f)
-\.
-
-
---
 -- Name: weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('weapons_id_seq', 1, true);
+SELECT pg_catalog.setval('weapons_id_seq', 5, true);
 
 
 --

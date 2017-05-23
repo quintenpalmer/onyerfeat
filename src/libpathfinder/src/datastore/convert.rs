@@ -87,19 +87,6 @@ pub fn into_canonical_character(character: structs::Character,
             wis: abs.wis,
             cha: abs.cha,
         },
-        meta_information: models::MetaInformation {
-            name: creature.name,
-            player_name: character.player_name.clone(),
-            alignment: models::Alignment {
-                morality: creature.alignment_morality,
-                order: creature.alignment_order,
-            },
-            class: class.name,
-            race: creature.race,
-            age: creature.age,
-            deity: creature.deity,
-            size: creature.size,
-        },
         combat_numbers: models::CombatNumbers {
             max_hit_points: creature.max_hit_points,
             current_hit_points: creature.current_hit_points,
@@ -119,6 +106,19 @@ pub fn into_canonical_character(character: structs::Character,
         full_weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
         skills: character_skills,
         ability_score_info: ability_score_model,
+        meta_information: models::MetaInformation {
+            name: creature.name,
+            player_name: character.player_name.clone(),
+            alignment: models::Alignment {
+                morality: creature.alignment_morality,
+                order: creature.alignment_order,
+            },
+            class: class.name,
+            race: creature.race,
+            age: creature.age,
+            deity: creature.deity,
+            size: creature.size,
+        },
     };
 }
 

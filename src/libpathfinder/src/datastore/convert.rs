@@ -303,7 +303,7 @@ fn build_combat_weapon_stats(weapons: &Vec<structs::Weapon>,
                 range: weapon.range.unwrap_or(5),
                 damage_type: weapon.damage_type.clone(),
                 attack_bonus: base_attack_bonus + ab_ability_mod,
-                damage: base_attack_bonus + damage_ability_mod,
+                damage: damage_ability_mod,
             }
         })
         .collect()

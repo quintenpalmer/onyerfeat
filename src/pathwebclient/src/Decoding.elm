@@ -27,7 +27,8 @@ decodeCharacter =
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
         |> Pipeline.required "armor_piece" decodeArmorPiece
         |> Pipeline.required "shield" (Decode.nullable decodeShield)
-        |> Pipeline.required "weapons" (Decode.list decodeWeapon)
+        |> Pipeline.required "full_weapons" (Decode.list decodeWeapon)
+        |> Pipeline.required "combat_weapon_stats" (Decode.list decodeCombatWeaponStats)
         |> Pipeline.required "skills" decodeSkills
 
 
@@ -242,6 +243,20 @@ decodeWeapon =
         |> Pipeline.required "range" Decode.int
         |> Pipeline.required "weight" Decode.int
         |> Pipeline.required "damage_type" decodePhysicalDamageType
+
+
+decodeCombatWeaponStats : Decode.Decoder Models.CombatWeaponStats
+decodeCombatWeaponStats =
+    Pipeline.decode Models.CombatWeaponStats
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "training_type" Decode.string
+        |> Pipeline.required "size_style" Decode.string
+        |> Pipeline.required "dice_damage" decodeDiceDamage
+        |> Pipeline.required "critical" decodeCriticalDamage
+        |> Pipeline.required "range" Decode.int
+        |> Pipeline.required "damage_type" decodePhysicalDamageType
+        |> Pipeline.required "attack_bonus" Decode.int
+        |> Pipeline.required "damage" Decode.int
 
 
 decodePhysicalDamageType : Decode.Decoder Models.PhysicalDamageType

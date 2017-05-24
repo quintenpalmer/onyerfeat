@@ -87,19 +87,6 @@ pub fn into_canonical_character(character: structs::Character,
             wis: abs.wis,
             cha: abs.cha,
         },
-        meta_information: models::MetaInformation {
-            name: creature.name,
-            player_name: character.player_name.clone(),
-            alignment: models::Alignment {
-                morality: creature.alignment_morality,
-                order: creature.alignment_order,
-            },
-            class: class.name,
-            race: creature.race,
-            age: creature.age,
-            deity: creature.deity,
-            size: creature.size,
-        },
         combat_numbers: models::CombatNumbers {
             max_hit_points: creature.max_hit_points,
             current_hit_points: creature.current_hit_points,
@@ -116,9 +103,26 @@ pub fn into_canonical_character(character: structs::Character,
             Some(x) => Some(x.into_canonical()),
             None => None,
         },
-        weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
+        combat_weapon_stats: build_combat_weapon_stats(&weapons,
+                                                       &creature.size,
+                                                       creature.base_attack_bonus,
+                                                       &ability_score_model),
+        full_weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
         skills: character_skills,
         ability_score_info: ability_score_model,
+        meta_information: models::MetaInformation {
+            name: creature.name,
+            player_name: character.player_name.clone(),
+            alignment: models::Alignment {
+                morality: creature.alignment_morality,
+                order: creature.alignment_order,
+            },
+            class: class.name,
+            race: creature.race,
+            age: creature.age,
+            deity: creature.deity,
+            size: creature.size,
+        },
     };
 }
 
@@ -271,6 +275,38 @@ impl structs::Weapon {
             damage_type: self.damage_type.clone(),
         }
     }
+}
+
+fn build_combat_weapon_stats(weapons: &Vec<structs::Weapon>,
+                             size: &models::Size,
+                             base_attack_bonus: i32,
+                             abs: &models::AbilityScoreInfo)
+                             -> Vec<models::CombatWeaponStat> {
+    weapons.iter()
+        .map(|weapon| {
+            let (ab_ability_mod, damage_ability_mod) = if weapon.size_style ==
+                                                          models::WeaponSizeStyle::Ranged {
+                (abs.dex.modifier, 0)
+            } else {
+                (abs.str.modifier, abs.str.modifier)
+            };
+            models::CombatWeaponStat {
+                name: weapon.name.clone(),
+                training_type: weapon.training_type.clone(),
+                size_style: weapon.size_style.clone(),
+                dice_damage: if size >= &models::Size::Medium {
+                    weapon.medium_damage.clone()
+                } else {
+                    weapon.small_damage.clone()
+                },
+                critical: weapon.critical.clone(),
+                range: weapon.range.unwrap_or(5),
+                damage_type: weapon.damage_type.clone(),
+                attack_bonus: base_attack_bonus + ab_ability_mod,
+                damage: damage_ability_mod,
+            }
+        })
+        .collect()
 }
 
 impl structs::ClassSavingThrows {

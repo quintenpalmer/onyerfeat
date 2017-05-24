@@ -5,6 +5,7 @@ import Html.Attributes as Attr
 import Common
 import Models
 import View.Elements as Elements
+import View.Displays as Displays
 
 
 displayWeapons : List Models.Weapon -> Html.Html Common.Msg
@@ -46,69 +47,15 @@ weaponsPanel weapons =
                             , Html.td [] [ Elements.labelDefault True weapon.trainingType ]
                             , Html.td [] [ Elements.labelDefault True <| (String.join " " (String.split "_" weapon.sizeStyle)) ]
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.cost) ++ "gp" ]
-                            , Html.td [] [ Elements.labelDefault True <| displayDice weapon.smallDamage ]
-                            , Html.td [] [ Elements.labelDefault True <| displayDice weapon.mediumDamage ]
-                            , Html.td [] [ Elements.labelDefault False <| displayCriticalDamage weapon.critical ]
+                            , Html.td [] [ Elements.labelDefault True <| Displays.displayDice weapon.smallDamage ]
+                            , Html.td [] [ Elements.labelDefault True <| Displays.displayDice weapon.mediumDamage ]
+                            , Html.td [] [ Elements.labelDefault False <| Displays.displayCriticalDamage weapon.critical ]
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.range) ++ "ft" ]
                             , Html.td [] [ Elements.labelDefault True <| (toString weapon.weight) ++ "lbs" ]
-                            , Html.td [] [ Elements.labelDefault False <| displayPhysicalDamage weapon.damageType ]
+                            , Html.td [] [ Elements.labelDefault False <| Displays.displayPhysicalDamage weapon.damageType ]
                             ]
                     )
                     weapons
                 )
             ]
         ]
-
-
-displayDice : Models.DiceDamage -> String
-displayDice dice =
-    (toString dice.numDice) ++ "d" ++ (toString dice.dieSize)
-
-
-displayCriticalDamage : Models.CriticalDamage -> String
-displayCriticalDamage crit =
-    (if crit.requiredRoll == 20 then
-        "20"
-     else
-        (toString crit.requiredRoll) ++ "-20"
-    )
-        ++ "/x"
-        ++ (toString crit.multiplier)
-
-
-displayPhysicalDamage : Models.PhysicalDamageType -> String
-displayPhysicalDamage phys =
-    let
-        all =
-            []
-                ++ (if phys.bludgeoning then
-                        [ "B" ]
-                    else
-                        []
-                   )
-                ++ (if phys.piercing then
-                        [ "P" ]
-                    else
-                        []
-                   )
-                ++ (if phys.slashing then
-                        [ "S" ]
-                    else
-                        []
-                   )
-
-        join =
-            if phys.andTogether then
-                " and "
-            else
-                " or "
-    in
-        case all of
-            [] ->
-                "?"
-
-            [ x ] ->
-                x
-
-            _ ->
-                String.join join all

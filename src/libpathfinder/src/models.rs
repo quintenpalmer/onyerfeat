@@ -8,7 +8,8 @@ pub struct Character {
     pub combat_numbers: CombatNumbers,
     pub armor_piece: ArmorPiece,
     pub shield: Option<Shield>,
-    pub weapons: Vec<Weapon>,
+    pub full_weapons: Vec<Weapon>,
+    pub combat_weapon_stats: Vec<CombatWeaponStat>,
     pub skills: Vec<CharacterSkill>,
 }
 
@@ -101,7 +102,7 @@ pub enum AlignmentMorality {
     Good,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd)]
 #[serde(rename_all = "lowercase")]
 pub enum Size {
     Colossal,
@@ -252,6 +253,19 @@ pub struct Shield {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct CombatWeaponStat {
+    pub name: String,
+    pub training_type: WeaponTrainingType,
+    pub size_style: WeaponSizeStyle,
+    pub dice_damage: DiceDamage,
+    pub critical: CriticalDamage,
+    pub range: i32,
+    pub damage_type: PhysicalDamageType,
+    pub attack_bonus: i32,
+    pub damage: i32,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct Weapon {
     pub name: String,
     pub training_type: WeaponTrainingType,
@@ -273,7 +287,7 @@ pub enum WeaponTrainingType {
     Exotic,
 }
 
-#[derive(Clone, Copy, Serialize, Deserialize)]
+#[derive(Clone, Copy, Eq, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum WeaponSizeStyle {
     UnarmedMelee,

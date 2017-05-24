@@ -7,6 +7,7 @@ import Common
 import Models
 import View.Elements as Elements
 import View.WeaponTable as WeaponTable
+import View.Displays as Displays
 
 
 displayCharacterSheet : Models.Character -> Html.Html Common.Msg
@@ -268,9 +269,41 @@ displayCharacterSheet character =
                     ]
                 ]
             ]
-        , Html.div
-            [ Attr.class "row" ]
-            [ WeaponTable.weaponsPanel character.weapons ]
+        , Elements.panelled "Combat Weapon Stats"
+            True
+            [ Html.table [ Attr.class "table table-striped" ]
+                [ Html.thead []
+                    [ Html.tr []
+                        [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Dice Damage" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Attack Bonus" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus Damage" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Critical Damage" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Damage Type" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Training Type" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Size/Style" ]
+                        , Html.th [ Attr.class "text-center" ] [ Html.text "Range" ]
+                        ]
+                    ]
+                , Html.tbody [ Attr.class "text-center" ]
+                    (List.map
+                        (\weaponStat ->
+                            Html.tr []
+                                [ Html.td [] [ Elements.labelDefault False weaponStat.name ]
+                                , Html.td [] [ Elements.labelDefault False <| Displays.displayDice weaponStat.diceDamage ]
+                                , Html.td [] [ Elements.labelDefault False <| toString weaponStat.attackBonus ]
+                                , Html.td [] [ Elements.labelDefault False <| toString weaponStat.damage ]
+                                , Html.td [] [ Elements.labelDefault False <| Displays.displayCriticalDamage weaponStat.critical ]
+                                , Html.td [] [ Elements.labelDefault False <| Displays.displayPhysicalDamage weaponStat.damageType ]
+                                , Html.td [] [ Elements.labelDefault True <| weaponStat.trainingType ]
+                                , Html.td [] [ Elements.labelDefault True <| String.join " " <| String.split "_" weaponStat.sizeStyle ]
+                                , Html.td [] [ Elements.labelDefault False <| (toString weaponStat.range) ++ "ft" ]
+                                ]
+                        )
+                        character.combatWeaponStats
+                    )
+                ]
+            ]
         , Html.div
             [ Attr.class "row" ]
             [ Elements.panelled "Armor Piece"
@@ -313,6 +346,9 @@ displayCharacterSheet character =
                             ]
                 ]
             ]
+        , Html.div
+            [ Attr.class "row" ]
+            [ WeaponTable.weaponsPanel character.fullWeapons ]
         ]
 
 

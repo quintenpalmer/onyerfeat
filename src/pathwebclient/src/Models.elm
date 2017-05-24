@@ -12,6 +12,7 @@ module Models
         , ArmorPiece
         , Shield
         , Weapon
+        , CombatWeaponStats
         , ArmorClass
         , SavingThrows
         , SavingThrow
@@ -43,6 +44,7 @@ type alias Character =
     , armorPiece : ArmorPiece
     , shield : Maybe Shield
     , fullWeapons : List Weapon
+    , combatWeaponStats : List CombatWeaponStats
     , skills : List Skill
     }
 
@@ -200,6 +202,19 @@ type alias Weapon =
     , range : Int
     , weight : Int
     , damageType : PhysicalDamageType
+    }
+
+
+type alias CombatWeaponStats =
+    { name : String
+    , trainingType : String
+    , sizeStyle : String
+    , diceDamage : DiceDamage
+    , critical : CriticalDamage
+    , range : Int
+    , damageType : PhysicalDamageType
+    , attackBonus : Int
+    , damage : Int
     }
 
 

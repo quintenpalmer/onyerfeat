@@ -269,9 +269,6 @@ displayCharacterSheet character =
                     ]
                 ]
             ]
-        , Html.div
-            [ Attr.class "row" ]
-            [ WeaponTable.weaponsPanel character.fullWeapons ]
         , Elements.panelled "Combat Weapon Stats"
             True
             [ Html.table [ Attr.class "table table-striped" ]
@@ -349,6 +346,9 @@ displayCharacterSheet character =
                             ]
                 ]
             ]
+        , Html.div
+            [ Attr.class "row" ]
+            [ WeaponTable.weaponsPanel character.fullWeapons ]
         ]
 
 

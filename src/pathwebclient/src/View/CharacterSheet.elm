@@ -8,6 +8,7 @@ import Models
 import View.Elements as Elements
 import View.WeaponTable as WeaponTable
 import View.Displays as Displays
+import View.Spectrum as Spectrum
 
 
 displayCharacterSheet : Models.Character -> Html.Html Common.Msg
@@ -203,71 +204,7 @@ displayCharacterSheet character =
                         ]
                     ]
                 ]
-            , Html.div [ Attr.class "col-md-7" ]
-                [ Elements.panelled "Skills"
-                    True
-                    [ Html.table [ Attr.class "table table-striped" ]
-                        [ Html.thead []
-                            [ Html.tr []
-                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
-                                , Html.th [ Attr.class "text-center" ] [ Html.text "Armor Check Penalty" ]
-                                ]
-                            ]
-                        , Html.tbody [ Attr.class "text-center" ]
-                            (List.map
-                                (\skill ->
-                                    Html.tr []
-                                        [ Html.td [ Attr.class "text-left" ]
-                                            [ Html.b []
-                                                [ Html.text <| buildSkillName skill ]
-                                            ]
-                                        , Html.td []
-                                            [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text <| toString skill.total ]
-                                            ]
-                                        , Html.td []
-                                            [ Html.span [ Attr.class "label label-default" ]
-                                                [ Html.text <| toString skill.abilityMod ]
-                                            ]
-                                        , Html.td []
-                                            [ Html.b [ Attr.class "text-uppercase" ]
-                                                [ Html.text skill.ability ]
-                                            ]
-                                        , Html.td []
-                                            [ Html.text <|
-                                                if skill.isClassSkill then
-                                                    "⬛"
-                                                else
-                                                    "⬜"
-                                            ]
-                                        , Html.td []
-                                            [ if skill.count > 0 then
-                                                Html.span [ Attr.class "label label-default" ]
-                                                    [ Html.text <| toString skill.count ]
-                                              else
-                                                Html.u [] [ Html.text "_" ]
-                                            ]
-                                        , Html.td []
-                                            [ case skill.armorCheckPenalty of
-                                                Just pen ->
-                                                    Html.span [ Attr.class "label label-default" ]
-                                                        [ Html.text <| toString pen ]
-
-                                                Nothing ->
-                                                    Html.u [] [ Html.text "_" ]
-                                            ]
-                                        ]
-                                )
-                                character.skills
-                            )
-                        ]
-                    ]
-                ]
+            , buildSkillsPanel character.skills
             ]
         , Elements.panelled "Combat Weapon Stats"
             True
@@ -399,3 +336,89 @@ scoreTableRow name ability emoji =
                     ""
             ]
         ]
+
+
+buildSkillsPanel : List Models.Skill -> Html.Html Common.Msg
+buildSkillsPanel skills =
+    let
+        spectrum =
+            Spectrum.getSpectrum (List.map (\x -> x.total) skills)
+    in
+        Html.div [ Attr.class "col-md-7" ]
+            [ Elements.panelled "Skills"
+                True
+                [ Html.table [ Attr.class "table table-striped" ]
+                    [ Html.thead []
+                        [ Html.tr []
+                            [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Bonus" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Mod" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ability Name" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Class Skill (+3)" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Ranks" ]
+                            , Html.th [ Attr.class "text-center" ] [ Html.text "Armor Check Penalty" ]
+                            ]
+                        ]
+                    , Html.tbody [ Attr.class "text-center" ]
+                        (List.map
+                            (\skill ->
+                                Html.tr []
+                                    [ Html.td [ Attr.class "text-left" ]
+                                        [ Html.b []
+                                            [ Html.text <| buildSkillName skill ]
+                                        ]
+                                    , Html.td []
+                                        [ Html.span [ Attr.class "label", getLabelFromThird <| Spectrum.findThird spectrum skill.total ]
+                                            [ Html.text <| toString skill.total ]
+                                        ]
+                                    , Html.td []
+                                        [ Html.span [ Attr.class "label label-default" ]
+                                            [ Html.text <| toString skill.abilityMod ]
+                                        ]
+                                    , Html.td []
+                                        [ Html.b [ Attr.class "text-uppercase" ]
+                                            [ Html.text skill.ability ]
+                                        ]
+                                    , Html.td []
+                                        [ Html.text <|
+                                            if skill.isClassSkill then
+                                                "⬛"
+                                            else
+                                                "⬜"
+                                        ]
+                                    , Html.td []
+                                        [ if skill.count > 0 then
+                                            Html.span [ Attr.class "label label-default" ]
+                                                [ Html.text <| toString skill.count ]
+                                          else
+                                            Html.u [] [ Html.text "_" ]
+                                        ]
+                                    , Html.td []
+                                        [ case skill.armorCheckPenalty of
+                                            Just pen ->
+                                                Html.span [ Attr.class "label label-default" ]
+                                                    [ Html.text <| toString pen ]
+
+                                            Nothing ->
+                                                Html.u [] [ Html.text "_" ]
+                                        ]
+                                    ]
+                            )
+                            skills
+                        )
+                    ]
+                ]
+            ]
+
+
+getLabelFromThird : Spectrum.Thirds -> Html.Attribute Common.Msg
+getLabelFromThird third =
+    case third of
+        Spectrum.Bottom ->
+            Attr.class "label-danger"
+
+        Spectrum.Middle ->
+            Attr.class "label-warning"
+
+        Spectrum.Top ->
+            Attr.class "label-success"

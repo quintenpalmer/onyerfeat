@@ -36,7 +36,7 @@ impl Datastore {
 
         let sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice> =
             try!(selects::exec_and_select_by_field(&self.conn,
-                                                   queries::CHARACTER_SUB_SKILLS_QUERY,
+                                                   queries::CHARACTER_SUB_SKILLS_SQL,
                                                    character.id));
 
         let class_skills: Vec<structs::ClassSkill> =
@@ -50,21 +50,21 @@ impl Datastore {
 
         let armor_piece: structs::ArmorPiece =
             try!(selects::exec_and_select_one_by_field(&self.conn,
-                                                       queries::CHARACTER_ARMOR_PIECE_QUERY,
+                                                       queries::CHARACTER_ARMOR_PIECE_SQL,
                                                        creature.id));
 
         let option_shield: Option<structs::Shield> =
             try!(selects::exec_and_select_optional_one_by_field(&self.conn,
-                                                                queries::CHARACTER_SHIELD_QUERY,
+                                                                queries::CHARACTER_SHIELD_SQL,
                                                                 creature.id));
 
         let weapons: Vec<structs::Weapon> = try!(selects::exec_and_select_by_field(&self.conn,
-                                                   queries::CREATURE_WEAPON_QUERY,
+                                                   queries::CREATURE_WEAPON_SQL,
                                                    creature.id));
 
         let base_saving_throws: structs::ClassSavingThrows =
             try!(selects::exec_and_select_one_by_two_fields(&self.conn,
-                                                            queries::BASE_SAVING_THROWS,
+                                                            queries::BASE_SAVING_THROWS_SQL,
                                                             class.id,
                                                             creature.level));
 

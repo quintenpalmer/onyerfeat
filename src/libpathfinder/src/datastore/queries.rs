@@ -1,5 +1,5 @@
 
-pub static CHARACTER_SUB_SKILLS_QUERY: &'static str = r#"
+pub static CHARACTER_SUB_SKILLS_SQL: &'static str = r#"
 SELECT
     cssc.id,
     cssc.count,
@@ -24,7 +24,7 @@ WHERE
 GROUP BY cssc.id, scons.trained_only, scons.name, scons.ability, scons.id, sub_skills.id, sub_name
 "#;
 
-pub static CHARACTER_ARMOR_PIECE_QUERY: &'static str = r#"
+pub static CHARACTER_ARMOR_PIECE_SQL: &'static str = r#"
 SELECT
     a.*
 FROM
@@ -37,7 +37,7 @@ WHERE
     cap.creature_id = $1
 "#;
 
-pub static CHARACTER_SHIELD_QUERY: &'static str = r#"
+pub static CHARACTER_SHIELD_SQL: &'static str = r#"
 SELECT
     shields.*
 FROM
@@ -50,7 +50,7 @@ WHERE
     cs.creature_id = $1
 "#;
 
-pub static BASE_SAVING_THROWS: &'static str = r#"
+pub static BASE_SAVING_THROWS_SQL: &'static str = r#"
 SELECT
     *
 FROM
@@ -61,7 +61,7 @@ AND
     level = $2
 "#;
 
-pub static CREATURE_WEAPON_QUERY: &'static str = r#"
+pub static CREATURE_WEAPON_SQL: &'static str = r#"
 SELECT
     weapons.*
 FROM

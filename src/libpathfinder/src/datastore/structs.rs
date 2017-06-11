@@ -201,3 +201,13 @@ pub struct Weapon {
     pub weight: i32,
     pub damage_type: models::PhysicalDamageType,
 }
+
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "class_armor_proficiencies")]
+pub struct ClassArmorProficiency {
+    pub id: i32,
+    pub class_id: i32,
+    pub level: i32,
+    pub armor_check_penalty_reduction: i32,
+    pub max_dex_bonus: i32,
+}

@@ -17,7 +17,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 armor_piece: structs::ArmorPiece,
                                 optional_shield: Option<structs::Shield>,
                                 weapons: Vec<structs::Weapon>,
-                                base_saving_throws: structs::ClassSavingThrows)
+                                base_saving_throws: structs::ClassSavingThrows,
+                                armor_proficiency: structs::ClassArmorProficiency)
                                 -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
@@ -53,6 +54,7 @@ pub fn into_canonical_character(character: structs::Character,
                                                 class_sub_skills,
                                                 class_skill_constructors,
                                                 &ability_score_model,
+                                                &armor_proficiency,
                                                 &armor_piece,
                                                 &optional_shield);
     let armor_class = {
@@ -133,6 +135,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
                         class_sub_skills: Vec<structs::ClassSubSkill>,
                         class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                         abs: &models::AbilityScoreInfo,
+                        armor_proficiency: &structs::ClassArmorProficiency,
                         armor_piece: &structs::ArmorPiece,
                         optional_shield: &Option<structs::Shield>)
                         -> Vec<models::CharacterSkill> {
@@ -145,9 +148,11 @@ fn get_character_skills(skills: Vec<structs::Skill>,
         Some(ref s) => s.skill_penalty,
         None => 0,
     };
+    let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty -
+                              armor_proficiency.armor_check_penalty_reduction;
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
-            Some(armor_piece.armor_check_penalty + shield_penalty)
+            Some(armor_penalty_value)
         } else {
             None
         };
@@ -173,7 +178,7 @@ fn get_character_skills(skills: Vec<structs::Skill>,
     }
     for sub_skill in sub_skills.iter() {
         let armor_penalty = if is_armor_penalized(sub_skill.ability.clone()) {
-            Some(armor_piece.armor_check_penalty + shield_penalty)
+            Some(armor_penalty_value)
         } else {
             None
         };

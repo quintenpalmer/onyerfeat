@@ -173,6 +173,7 @@ pub struct CreatureShield {
     pub id: i32,
     pub creature_id: i32,
     pub shield_id: i32,
+    pub has_spikes: bool,
 }
 
 #[derive(TableNamer, FromRow)]

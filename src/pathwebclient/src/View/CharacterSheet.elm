@@ -263,24 +263,29 @@ displayCharacterSheet character =
                     Nothing ->
                         Html.div [] [ Html.text "no shield" ]
 
-                    Just shield ->
-                        Elements.table True
-                            [ ( "name", ( True, shield.name ) )
-                            , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
-                            , ( "max dex"
-                              , ( True
-                                , case shield.maxDex of
-                                    Just maxDex ->
-                                        "+" ++ (toString shield.maxDex)
+                    Just personalShield ->
+                        let
+                            shield =
+                                personalShield.shield
+                        in
+                            Elements.table True
+                                [ ( "name", ( True, shield.name ) )
+                                , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
+                                , ( "max dex"
+                                  , ( True
+                                    , case shield.maxDex of
+                                        Just maxDex ->
+                                            "+" ++ (toString shield.maxDex)
 
-                                    Nothing ->
-                                        "_"
-                                )
-                              )
-                            , ( "skill penalty", ( True, toString shield.skillPenalty ) )
-                            , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
-                            , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
-                            ]
+                                        Nothing ->
+                                            "_"
+                                    )
+                                  )
+                                , ( "skill penalty", ( True, toString shield.skillPenalty ) )
+                                , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
+                                , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
+                                , ( "has spikes", ( True, toString personalShield.hasSpikes ) )
+                                ]
                 ]
             ]
         , Html.div

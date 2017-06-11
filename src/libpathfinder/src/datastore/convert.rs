@@ -16,6 +16,7 @@ pub fn into_canonical_character(character: structs::Character,
                                 class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                                 armor_piece: structs::ArmorPiece,
                                 optional_shield: Option<structs::Shield>,
+                                optional_creature_shield: Option<structs::CreatureShield>,
                                 weapons: Vec<structs::Weapon>,
                                 base_saving_throws: structs::ClassSavingThrows,
                                 armor_proficiency: structs::ClassArmorProficiency)
@@ -101,9 +102,9 @@ pub fn into_canonical_character(character: structs::Character,
                                                      size_mod),
         },
         armor_piece: armor_piece.into_canonical(),
-        shield: match optional_shield {
-            Some(x) => Some(x.into_canonical()),
-            None => None,
+        shield: match (optional_shield, optional_creature_shield) {
+            (Some(shield), Some(c_shield)) => Some(shield.into_personal_canonical(&c_shield)),
+            (_, _) => None,
         },
         combat_weapon_stats: build_combat_weapon_stats(&weapons,
                                                        &creature.size,
@@ -253,6 +254,22 @@ impl structs::ArmorPiece {
 }
 
 impl structs::Shield {
+    pub fn into_personal_canonical(&self,
+                                   c_shield: &structs::CreatureShield)
+                                   -> models::PersonalShield {
+        models::PersonalShield {
+            shield: models::Shield {
+                name: self.name.clone(),
+                ac_bonus: self.ac_bonus,
+                max_dex: self.max_dex,
+                skill_penalty: self.skill_penalty,
+                arcane_spell_failure_chance: self.arcane_spell_failure_chance,
+                weight: self.weight,
+            },
+            has_spikes: c_shield.has_spikes,
+        }
+    }
+
     pub fn into_canonical(&self) -> models::Shield {
         models::Shield {
             name: self.name.clone(),

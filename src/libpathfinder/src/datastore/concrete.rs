@@ -53,6 +53,9 @@ impl Datastore {
                                                        queries::CHARACTER_ARMOR_PIECE_SQL,
                                                        creature.id));
 
+        let option_creature_shield: Option<structs::CreatureShield> =
+            try!(selects::select_optional_one_by_field(&self.conn, "creature_id", creature.id));
+
         let option_shield: Option<structs::Shield> =
             try!(selects::exec_and_select_optional_one_by_field(&self.conn,
                                                                 queries::CHARACTER_SHIELD_SQL,
@@ -86,6 +89,7 @@ impl Datastore {
                                                     class_skill_constructors,
                                                     armor_piece,
                                                     option_shield,
+                                                    option_creature_shield,
                                                     weapons,
                                                     base_saving_throws,
                                                     armor_proficiency));

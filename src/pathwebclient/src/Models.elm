@@ -11,6 +11,7 @@ module Models
         , Skill
         , ArmorPiece
         , Shield
+        , PersonalShield
         , Weapon
         , CombatWeaponStats
         , ArmorClass
@@ -42,7 +43,7 @@ type alias Character =
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
     , armorPiece : ArmorPiece
-    , shield : Maybe Shield
+    , shield : Maybe PersonalShield
     , fullWeapons : List Weapon
     , combatWeaponStats : List CombatWeaponStats
     , skills : List Skill
@@ -178,6 +179,12 @@ type alias ArmorPiece =
     , fastSpeed : Int
     , slowSpeed : Int
     , mediumWeight : Int
+    }
+
+
+type alias PersonalShield =
+    { shield : Shield
+    , hasSpikes : Bool
     }
 
 

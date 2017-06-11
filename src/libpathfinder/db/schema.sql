@@ -505,7 +505,8 @@ ALTER SEQUENCE creature_armor_pieces_id_seq OWNED BY creature_armor_pieces.id;
 CREATE TABLE creature_shields (
     id integer NOT NULL,
     creature_id integer NOT NULL,
-    shield_id integer NOT NULL
+    shield_id integer NOT NULL,
+    has_spikes boolean NOT NULL
 );
 
 

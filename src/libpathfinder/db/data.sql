@@ -363,8 +363,8 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 -- Data for Name: creature_shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_shields (id, creature_id, shield_id) FROM stdin;
-1	1	3
+COPY creature_shields (id, creature_id, shield_id, has_spikes) FROM stdin;
+1	1	3	t
 \.
 
 

@@ -198,6 +198,41 @@ SELECT pg_catalog.setval('characters_id_seq', 3, true);
 
 
 --
+-- Data for Name: class_armor_proficiencies; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY class_armor_proficiencies (id, class_id, level, armor_check_penalty_reduction, max_dex_bonus) FROM stdin;
+1	1	1	0	0
+2	1	2	0	0
+3	1	3	-1	1
+4	1	4	-1	1
+5	1	5	-1	1
+6	1	6	-1	1
+7	1	7	-2	2
+8	1	8	-2	2
+9	1	9	-2	2
+10	1	10	-2	2
+11	1	11	-3	3
+12	1	12	-3	3
+13	1	13	-3	3
+14	1	14	-3	3
+15	1	15	-4	4
+16	1	16	-4	4
+17	1	17	-4	4
+18	1	18	-4	4
+19	1	19	-4	4
+20	1	20	-4	4
+\.
+
+
+--
+-- Name: class_armor_proficiencies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('class_armor_proficiencies_id_seq', 20, true);
+
+
+--
 -- Data for Name: class_saving_throws; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 

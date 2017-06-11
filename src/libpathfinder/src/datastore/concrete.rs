@@ -68,6 +68,12 @@ impl Datastore {
                                                             class.id,
                                                             creature.level));
 
+        let armor_proficiency: structs::ClassArmorProficiency =
+            try!(selects::exec_and_select_one_by_two_fields(&self.conn,
+                                                            queries::CLASS_ARMOR_PROFICIENCY_SQL,
+                                                            class.id,
+                                                            creature.level));
+
         return Ok(convert::into_canonical_character(character,
                                                     creature,
                                                     abs,
@@ -81,7 +87,8 @@ impl Datastore {
                                                     armor_piece,
                                                     option_shield,
                                                     weapons,
-                                                    base_saving_throws));
+                                                    base_saving_throws,
+                                                    armor_proficiency));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {

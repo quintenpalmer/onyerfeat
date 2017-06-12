@@ -623,7 +623,8 @@ CREATE TABLE shields (
     max_dex integer,
     skill_penalty integer NOT NULL,
     arcane_spell_failure_chance integer NOT NULL,
-    weight integer NOT NULL
+    weight integer NOT NULL,
+    size_style text
 );
 
 

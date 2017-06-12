@@ -195,6 +195,7 @@ type alias Shield =
     , skillPenalty : Int
     , arcaneSpellFailureChance : Int
     , weight : Int
+    , sizeStyle : Maybe String
     }
 
 

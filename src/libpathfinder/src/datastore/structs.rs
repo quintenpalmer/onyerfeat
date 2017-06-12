@@ -157,6 +157,7 @@ pub struct Shield {
     pub skill_penalty: i32,
     pub arcane_spell_failure_chance: i32,
     pub weight: i32,
+    pub size_style: Option<models::WeaponSizeStyle>,
 }
 
 #[derive(TableNamer, FromRow)]

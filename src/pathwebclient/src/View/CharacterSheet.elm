@@ -271,6 +271,17 @@ displayCharacterSheet character =
                         in
                             Elements.table True
                                 [ ( "name", ( True, shield.name ) )
+                                , ( "style"
+                                  , ( True
+                                    , (case shield.sizeStyle of
+                                        Just sizeStyle ->
+                                            (String.join " " (List.map Formatting.capitalize (String.split "_" sizeStyle)))
+
+                                        Nothing ->
+                                            "-"
+                                      )
+                                    )
+                                  )
                                 , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
                                 , ( "max dex"
                                   , ( True

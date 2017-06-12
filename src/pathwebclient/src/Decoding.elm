@@ -223,6 +223,7 @@ decodeShield =
         |> Pipeline.required "skill_penalty" Decode.int
         |> Pipeline.required "arcane_spell_failure_chance" Decode.int
         |> Pipeline.required "weight" Decode.int
+        |> Pipeline.required "size_style" (Decode.nullable Decode.string)
 
 
 decodePersonalShield : Decode.Decoder Models.PersonalShield

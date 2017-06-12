@@ -265,6 +265,7 @@ impl structs::Shield {
                 skill_penalty: self.skill_penalty,
                 arcane_spell_failure_chance: self.arcane_spell_failure_chance,
                 weight: self.weight,
+                size_style: self.size_style,
             },
             has_spikes: c_shield.has_spikes,
         }
@@ -278,6 +279,7 @@ impl structs::Shield {
             skill_penalty: self.skill_penalty,
             arcane_spell_failure_chance: self.arcane_spell_failure_chance,
             weight: self.weight,
+            size_style: self.size_style,
         }
     }
 }

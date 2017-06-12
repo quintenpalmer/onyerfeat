@@ -5,6 +5,7 @@ import Html.Attributes as Attr
 import Common
 import Models
 import View.Elements as Elements
+import View.Formatting as Formatting
 
 
 displayShields : List Models.Shield -> Html.Html Common.Msg
@@ -20,6 +21,7 @@ displayShields shields =
                         [ Html.thead []
                             [ Html.tr []
                                 [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Style" ]
                                 , Html.th [ Attr.class "text-center" ] [ Html.text "AC Bonus" ]
                                 , Html.th [ Attr.class "text-center" ] [ Html.text "Max Dex" ]
                                 , Html.th [ Attr.class "text-center" ] [ Html.text "Skill Penalty" ]
@@ -32,6 +34,16 @@ displayShields shields =
                                 (\shield ->
                                     Html.tr []
                                         [ Html.td [ Attr.class "text-left" ] [ Elements.labelDefault False shield.name ]
+                                        , Html.td []
+                                            [ Elements.labelDefault False
+                                                (case shield.sizeStyle of
+                                                    Just sizeStyle ->
+                                                        (String.join " " (List.map Formatting.capitalize (String.split "_" sizeStyle)))
+
+                                                    Nothing ->
+                                                        "-"
+                                                )
+                                            ]
                                         , Html.td [] [ Elements.labelDefault True <| toString shield.acBonus ]
                                         , Html.td []
                                             [ Elements.labelDefault True <|

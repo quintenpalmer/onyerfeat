@@ -505,7 +505,8 @@ ALTER SEQUENCE creature_armor_pieces_id_seq OWNED BY creature_armor_pieces.id;
 CREATE TABLE creature_shields (
     id integer NOT NULL,
     creature_id integer NOT NULL,
-    shield_id integer NOT NULL
+    shield_id integer NOT NULL,
+    has_spikes boolean NOT NULL
 );
 
 
@@ -612,6 +613,45 @@ ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
 
 
 --
+-- Name: shield_damage; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE shield_damage (
+    id integer NOT NULL,
+    size_style text NOT NULL,
+    spiked boolean NOT NULL,
+    small_damage dice_damage NOT NULL,
+    medium_damage dice_damage NOT NULL,
+    critical critical_damage NOT NULL,
+    range integer,
+    damage_type physical_damage_type NOT NULL
+);
+
+
+ALTER TABLE shield_damage OWNER TO pathfinder_user;
+
+--
+-- Name: shield_damage_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE shield_damage_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shield_damage_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: shield_damage_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE shield_damage_id_seq OWNED BY shield_damage.id;
+
+
+--
 -- Name: shields; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -622,7 +662,8 @@ CREATE TABLE shields (
     max_dex integer,
     skill_penalty integer NOT NULL,
     arcane_spell_failure_chance integer NOT NULL,
-    weight integer NOT NULL
+    weight integer NOT NULL,
+    size_style text
 );
 
 
@@ -901,6 +942,13 @@ ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq
 
 
 --
+-- Name: shield_damage id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY shield_damage ALTER COLUMN id SET DEFAULT nextval('shield_damage_id_seq'::regclass);
+
+
+--
 -- Name: shields id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1109,6 +1157,14 @@ ALTER TABLE ONLY creature_weapons
 
 ALTER TABLE ONLY creatures
     ADD CONSTRAINT creatures_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shield_damage shield_damage_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY shield_damage
+    ADD CONSTRAINT shield_damage_pkey PRIMARY KEY (id);
 
 
 --

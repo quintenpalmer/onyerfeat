@@ -84,3 +84,24 @@ WHERE
 AND
     cap.level = $2
 "#;
+
+pub static SHIELD_DAMAGE_SQL: &'static str = r#"
+SELECT
+    shields.name as shield_name,
+    shields.weight,
+    shield_damage.*
+FROM
+    creature_shields
+INNER JOIN
+    shields
+ON
+    creature_shields.shield_id = shields.id
+INNER JOIN
+    shield_damage
+ON
+    shield_damage.size_style = shields.size_style
+WHERE
+    creature_shields.creature_id = $1
+AND
+    creature_shields.has_spikes = shield_damage.spiked
+"#;

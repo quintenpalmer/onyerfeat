@@ -11,6 +11,7 @@ module Models
         , Skill
         , ArmorPiece
         , Shield
+        , PersonalShield
         , Weapon
         , CombatWeaponStats
         , ArmorClass
@@ -42,7 +43,7 @@ type alias Character =
     , metaInformation : MetaInformation
     , combatNumbers : CombatNumbers
     , armorPiece : ArmorPiece
-    , shield : Maybe Shield
+    , shield : Maybe PersonalShield
     , fullWeapons : List Weapon
     , combatWeaponStats : List CombatWeaponStats
     , skills : List Skill
@@ -181,6 +182,12 @@ type alias ArmorPiece =
     }
 
 
+type alias PersonalShield =
+    { shield : Shield
+    , hasSpikes : Bool
+    }
+
+
 type alias Shield =
     { name : String
     , acBonus : Int
@@ -188,6 +195,7 @@ type alias Shield =
     , skillPenalty : Int
     , arcaneSpellFailureChance : Int
     , weight : Int
+    , sizeStyle : Maybe String
     }
 
 

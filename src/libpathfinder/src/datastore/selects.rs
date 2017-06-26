@@ -114,6 +114,32 @@ pub fn select_by_field<T, F>(conn: &postgres::Connection,
     return Ok(ret);
 }
 
+pub fn select_optional_one_by_field<T, F>(conn: &postgres::Connection,
+                                          id_name: &str,
+                                          id: F)
+                                          -> Result<Option<T>, error::Error>
+    where T: FromRow + TableNamer,
+          F: postgres::types::ToSql
+{
+    let query = format!("SELECT * FROM {} WHERE {} = $1",
+                        T::get_table_name(),
+                        id_name);
+    let stmt = try!(conn.prepare(query.as_str()).map_err(error::Error::Postgres));
+
+    let rows = try!(stmt.query(&[&id]).map_err(error::Error::Postgres));
+    return match rows.len() {
+        0 => Ok(None),
+        1 => {
+            let row = rows.get(0);
+            match T::parse_row(row) {
+                Ok(o) => Ok(Some(o)),
+                Err(e) => Err(e),
+            }
+        }
+        _ => Err(error::Error::ManyResultsOnSelectOne("creature armor query".to_string())),
+    };
+}
+
 pub fn select_one_by_field<T, F>(conn: &postgres::Connection,
                                  id_name: &str,
                                  id: F)

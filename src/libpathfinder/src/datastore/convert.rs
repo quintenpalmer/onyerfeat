@@ -16,6 +16,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 class_skill_constructors: Vec<structs::ClassSkillConstructor>,
                                 armor_piece: structs::ArmorPiece,
                                 optional_shield: Option<structs::Shield>,
+                                optional_creature_shield: Option<structs::CreatureShield>,
+                                optional_shield_damage: Option<structs::ShieldDamage>,
                                 weapons: Vec<structs::Weapon>,
                                 base_saving_throws: structs::ClassSavingThrows,
                                 armor_proficiency: structs::ClassArmorProficiency)
@@ -78,6 +80,22 @@ pub fn into_canonical_character(character: structs::Character,
         };
         armor_class
     };
+    let full_weapons = weapons.iter().map(|x| x.into_canonical()).collect();
+    let mut combat_weapons = build_combat_weapon_stats(&full_weapons,
+                                                       &creature.size,
+                                                       creature.base_attack_bonus,
+                                                       &ability_score_model);
+    match optional_shield_damage {
+        Some(shield_damage) => {
+            let mut shield_as_weapon =
+                build_combat_weapon_stats(&vec![shield_damage.into_canonical_weapon()],
+                                          &creature.size,
+                                          creature.base_attack_bonus,
+                                          &ability_score_model);
+            combat_weapons.append(&mut shield_as_weapon)
+        }
+        None => (),
+    };
     return models::Character {
         id: character.id,
         level: creature.level,
@@ -101,15 +119,12 @@ pub fn into_canonical_character(character: structs::Character,
                                                      size_mod),
         },
         armor_piece: armor_piece.into_canonical(),
-        shield: match optional_shield {
-            Some(x) => Some(x.into_canonical()),
-            None => None,
+        shield: match (optional_shield, optional_creature_shield) {
+            (Some(shield), Some(c_shield)) => Some(shield.into_personal_canonical(&c_shield)),
+            (_, _) => None,
         },
-        combat_weapon_stats: build_combat_weapon_stats(&weapons,
-                                                       &creature.size,
-                                                       creature.base_attack_bonus,
-                                                       &ability_score_model),
-        full_weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
+        combat_weapon_stats: combat_weapons,
+        full_weapons: full_weapons,
         skills: character_skills,
         ability_score_info: ability_score_model,
         meta_information: models::MetaInformation {
@@ -253,6 +268,23 @@ impl structs::ArmorPiece {
 }
 
 impl structs::Shield {
+    pub fn into_personal_canonical(&self,
+                                   c_shield: &structs::CreatureShield)
+                                   -> models::PersonalShield {
+        models::PersonalShield {
+            shield: models::Shield {
+                name: self.name.clone(),
+                ac_bonus: self.ac_bonus,
+                max_dex: self.max_dex,
+                skill_penalty: self.skill_penalty,
+                arcane_spell_failure_chance: self.arcane_spell_failure_chance,
+                weight: self.weight,
+                size_style: self.size_style,
+            },
+            has_spikes: c_shield.has_spikes,
+        }
+    }
+
     pub fn into_canonical(&self) -> models::Shield {
         models::Shield {
             name: self.name.clone(),
@@ -261,6 +293,28 @@ impl structs::Shield {
             skill_penalty: self.skill_penalty,
             arcane_spell_failure_chance: self.arcane_spell_failure_chance,
             weight: self.weight,
+            size_style: self.size_style,
+        }
+    }
+}
+
+impl structs::ShieldDamage {
+    pub fn into_canonical_weapon(&self) -> models::Weapon {
+        let mut name = self.shield_name.clone();
+        if self.spiked {
+            name = name + " (spiked)";
+        }
+        models::Weapon {
+            name: name,
+            training_type: models::WeaponTrainingType::Martial,
+            size_style: self.size_style,
+            cost: 1, /* models::CombatWeaponStat doesn't need the cost, which is why we are converting to models::Weapon */
+            small_damage: self.small_damage,
+            medium_damage: self.medium_damage,
+            critical: self.critical,
+            range: self.range.unwrap_or(5),
+            weight: self.weight,
+            damage_type: self.damage_type.clone(),
         }
     }
 }
@@ -282,7 +336,7 @@ impl structs::Weapon {
     }
 }
 
-fn build_combat_weapon_stats(weapons: &Vec<structs::Weapon>,
+fn build_combat_weapon_stats(weapons: &Vec<models::Weapon>,
                              size: &models::Size,
                              base_attack_bonus: i32,
                              abs: &models::AbilityScoreInfo)
@@ -305,7 +359,7 @@ fn build_combat_weapon_stats(weapons: &Vec<structs::Weapon>,
                     weapon.small_damage.clone()
                 },
                 critical: weapon.critical.clone(),
-                range: weapon.range.unwrap_or(5),
+                range: weapon.range,
                 damage_type: weapon.damage_type.clone(),
                 attack_bonus: base_attack_bonus + ab_ability_mod,
                 damage: damage_ability_mod,

@@ -157,6 +157,21 @@ pub struct Shield {
     pub skill_penalty: i32,
     pub arcane_spell_failure_chance: i32,
     pub weight: i32,
+    pub size_style: Option<models::WeaponSizeStyle>,
+}
+
+#[derive(FromRow)]
+pub struct ShieldDamage {
+    pub shield_name: String,
+    pub id: i32,
+    pub size_style: models::WeaponSizeStyle,
+    pub spiked: bool,
+    pub small_damage: models::DiceDamage,
+    pub medium_damage: models::DiceDamage,
+    pub critical: models::CriticalDamage,
+    pub range: Option<i32>,
+    pub weight: i32,
+    pub damage_type: models::PhysicalDamageType,
 }
 
 #[derive(TableNamer, FromRow)]
@@ -173,6 +188,7 @@ pub struct CreatureShield {
     pub id: i32,
     pub creature_id: i32,
     pub shield_id: i32,
+    pub has_spikes: bool,
 }
 
 #[derive(TableNamer, FromRow)]

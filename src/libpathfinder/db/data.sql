@@ -349,13 +349,13 @@ SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 1, true);
 -- Data for Name: shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_chance, weight) FROM stdin;
-1	Buckler	1	\N	-1	5	5
-2	Shield, light wooden	1	\N	-1	5	5
-3	Shield, light steel	1	\N	-1	5	6
-4	Shield, heavy wooden	2	\N	-2	15	10
-5	Shield, heavy steel	2	\N	-2	15	15
-6	Shield, tower	4	2	-10	50	45
+COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_chance, weight, size_style) FROM stdin;
+1	Buckler	1	\N	-1	5	5	\N
+6	Shield, tower	4	2	-10	50	45	\N
+2	Shield, light wooden	1	\N	-1	5	5	light_melee
+3	Shield, light steel	1	\N	-1	5	6	light_melee
+4	Shield, heavy wooden	2	\N	-2	15	10	one_handed_melee
+5	Shield, heavy steel	2	\N	-2	15	15	one_handed_melee
 \.
 
 
@@ -363,8 +363,8 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 -- Data for Name: creature_shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_shields (id, creature_id, shield_id) FROM stdin;
-1	1	3
+COPY creature_shields (id, creature_id, shield_id, has_spikes) FROM stdin;
+1	1	3	t
 \.
 
 
@@ -411,6 +411,25 @@ SELECT pg_catalog.setval('creature_weapons_id_seq', 3, true);
 --
 
 SELECT pg_catalog.setval('creatures_id_seq', 1, true);
+
+
+--
+-- Data for Name: shield_damage; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY shield_damage (id, size_style, spiked, small_damage, medium_damage, critical, range, damage_type) FROM stdin;
+5	light_melee	f	(1,2)	(1,3)	(20,2)	\N	(t,f,f,f)
+6	light_melee	t	(1,3)	(1,4)	(20,2)	\N	(f,t,f,f)
+7	one_handed_melee	f	(1,3)	(1,4)	(20,2)	\N	(t,f,f,f)
+8	one_handed_melee	t	(1,4)	(1,6)	(20,2)	\N	(f,t,f,f)
+\.
+
+
+--
+-- Name: shield_damage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('shield_damage_id_seq', 8, true);
 
 
 --

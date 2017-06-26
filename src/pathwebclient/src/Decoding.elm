@@ -26,7 +26,7 @@ decodeCharacter =
         |> Pipeline.required "meta_information" decodeMetaInformation
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
         |> Pipeline.required "armor_piece" decodeArmorPiece
-        |> Pipeline.required "shield" (Decode.nullable decodeShield)
+        |> Pipeline.required "shield" (Decode.nullable decodePersonalShield)
         |> Pipeline.required "full_weapons" (Decode.list decodeWeapon)
         |> Pipeline.required "combat_weapon_stats" (Decode.list decodeCombatWeaponStats)
         |> Pipeline.required "skills" decodeSkills
@@ -223,6 +223,14 @@ decodeShield =
         |> Pipeline.required "skill_penalty" Decode.int
         |> Pipeline.required "arcane_spell_failure_chance" Decode.int
         |> Pipeline.required "weight" Decode.int
+        |> Pipeline.required "size_style" (Decode.nullable Decode.string)
+
+
+decodePersonalShield : Decode.Decoder Models.PersonalShield
+decodePersonalShield =
+    Pipeline.decode Models.PersonalShield
+        |> Pipeline.required "shield" decodeShield
+        |> Pipeline.required "has_spikes" Decode.bool
 
 
 decodeWeapons : Decode.Decoder (List Models.Weapon)

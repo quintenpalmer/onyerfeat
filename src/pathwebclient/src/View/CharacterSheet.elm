@@ -8,6 +8,7 @@ import Models
 import View.Elements as Elements
 import View.WeaponTable as WeaponTable
 import View.Displays as Displays
+import View.Formatting as Formatting
 import View.Spectrum as Spectrum
 
 
@@ -21,15 +22,15 @@ displayCharacterSheet character =
                 [ Elements.table True
                     [ ( "character name", ( True, character.metaInformation.name ) )
                     , ( "player name", ( True, character.metaInformation.playerName ) )
-                    , ( "alignment", ( True, capitalize character.metaInformation.alignment.order ++ " " ++ capitalize character.metaInformation.alignment.morality ) )
-                    , ( "race", ( True, capitalize character.metaInformation.race ) )
-                    , ( "class", ( True, capitalize character.metaInformation.class ) )
+                    , ( "alignment", ( True, Formatting.capitalize character.metaInformation.alignment.order ++ " " ++ Formatting.capitalize character.metaInformation.alignment.morality ) )
+                    , ( "race", ( True, Formatting.capitalize character.metaInformation.race ) )
+                    , ( "class", ( True, Formatting.capitalize character.metaInformation.class ) )
                     , ( "class level", ( True, toString character.level ) )
                     , ( "size", ( True, toString character.metaInformation.size ) )
                     , ( "age", ( True, toString character.metaInformation.age ) )
                     , ( "deity"
                       , ( True
-                        , capitalize <|
+                        , Formatting.capitalize <|
                             case character.metaInformation.deity of
                                 Just s ->
                                     s
@@ -263,24 +264,40 @@ displayCharacterSheet character =
                     Nothing ->
                         Html.div [] [ Html.text "no shield" ]
 
-                    Just shield ->
-                        Elements.table True
-                            [ ( "name", ( True, shield.name ) )
-                            , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
-                            , ( "max dex"
-                              , ( True
-                                , case shield.maxDex of
-                                    Just maxDex ->
-                                        "+" ++ (toString shield.maxDex)
+                    Just personalShield ->
+                        let
+                            shield =
+                                personalShield.shield
+                        in
+                            Elements.table True
+                                [ ( "name", ( True, shield.name ) )
+                                , ( "style"
+                                  , ( True
+                                    , (case shield.sizeStyle of
+                                        Just sizeStyle ->
+                                            (String.join " " (List.map Formatting.capitalize (String.split "_" sizeStyle)))
 
-                                    Nothing ->
-                                        "_"
-                                )
-                              )
-                            , ( "skill penalty", ( True, toString shield.skillPenalty ) )
-                            , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
-                            , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
-                            ]
+                                        Nothing ->
+                                            "-"
+                                      )
+                                    )
+                                  )
+                                , ( "AC bonus", ( True, "+" ++ (toString shield.acBonus) ) )
+                                , ( "max dex"
+                                  , ( True
+                                    , case shield.maxDex of
+                                        Just maxDex ->
+                                            "+" ++ (toString shield.maxDex)
+
+                                        Nothing ->
+                                            "_"
+                                    )
+                                  )
+                                , ( "skill penalty", ( True, toString shield.skillPenalty ) )
+                                , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
+                                , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
+                                , ( "has spikes", ( True, toString personalShield.hasSpikes ) )
+                                ]
                 ]
             ]
         , Html.div
@@ -289,24 +306,14 @@ displayCharacterSheet character =
         ]
 
 
-capitalize : String -> String
-capitalize string =
-    case String.uncons string of
-        Nothing ->
-            ""
-
-        Just ( head, tail ) ->
-            String.cons (Char.toUpper head) tail
-
-
 buildSkillName : Models.Skill -> String
 buildSkillName skill =
     case skill.sub_name of
         Nothing ->
-            capitalize skill.name
+            Formatting.capitalize skill.name
 
         Just sub_name ->
-            capitalize skill.name ++ " (" ++ capitalize sub_name ++ ")"
+            Formatting.capitalize skill.name ++ " (" ++ Formatting.capitalize sub_name ++ ")"
 
 
 scoreTableRow : String -> Models.Ability -> String -> Html.Html Common.Msg

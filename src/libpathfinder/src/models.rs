@@ -7,7 +7,7 @@ pub struct Character {
     pub meta_information: MetaInformation,
     pub combat_numbers: CombatNumbers,
     pub armor_piece: ArmorPiece,
-    pub shield: Option<Shield>,
+    pub shield: Option<PersonalShield>,
     pub full_weapons: Vec<Weapon>,
     pub combat_weapon_stats: Vec<CombatWeaponStat>,
     pub skills: Vec<CharacterSkill>,
@@ -243,6 +243,12 @@ pub struct ArmorPiece {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct PersonalShield {
+    pub shield: Shield,
+    pub has_spikes: bool,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct Shield {
     pub name: String,
     pub ac_bonus: i32,
@@ -250,6 +256,7 @@ pub struct Shield {
     pub skill_penalty: i32,
     pub arcane_spell_failure_chance: i32,
     pub weight: i32,
+    pub size_style: Option<WeaponSizeStyle>,
 }
 
 #[derive(Serialize, Deserialize)]

@@ -414,6 +414,25 @@ SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 
 
 --
+-- Data for Name: shield_damage; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY shield_damage (id, size_style, spiked, small_damage, medium_damage, critical, range, damage_type) FROM stdin;
+5	light_melee	f	(1,2)	(1,3)	(20,2)	\N	(t,f,f,f)
+6	light_melee	t	(1,3)	(1,4)	(20,2)	\N	(f,t,f,f)
+7	one_handed_melee	f	(1,3)	(1,4)	(20,2)	\N	(t,f,f,f)
+8	one_handed_melee	t	(1,4)	(1,6)	(20,2)	\N	(f,t,f,f)
+\.
+
+
+--
+-- Name: shield_damage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('shield_damage_id_seq', 8, true);
+
+
+--
 -- Name: shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 

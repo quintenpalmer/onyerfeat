@@ -160,6 +160,20 @@ pub struct Shield {
     pub size_style: Option<models::WeaponSizeStyle>,
 }
 
+#[derive(FromRow)]
+pub struct ShieldDamage {
+    pub shield_name: String,
+    pub id: i32,
+    pub size_style: models::WeaponSizeStyle,
+    pub spiked: bool,
+    pub small_damage: models::DiceDamage,
+    pub medium_damage: models::DiceDamage,
+    pub critical: models::CriticalDamage,
+    pub range: Option<i32>,
+    pub weight: i32,
+    pub damage_type: models::PhysicalDamageType,
+}
+
 #[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "creature_armor_pieces")]
 pub struct CreatureArmorPiece {

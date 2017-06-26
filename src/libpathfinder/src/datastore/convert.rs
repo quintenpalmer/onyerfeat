@@ -79,6 +79,11 @@ pub fn into_canonical_character(character: structs::Character,
         };
         armor_class
     };
+    let full_weapons = weapons.iter().map(|x| x.into_canonical()).collect();
+    let combat_weapons = build_combat_weapon_stats(&full_weapons,
+                                                   &creature.size,
+                                                   creature.base_attack_bonus,
+                                                   &ability_score_model);
     return models::Character {
         id: character.id,
         level: creature.level,
@@ -106,11 +111,8 @@ pub fn into_canonical_character(character: structs::Character,
             (Some(shield), Some(c_shield)) => Some(shield.into_personal_canonical(&c_shield)),
             (_, _) => None,
         },
-        combat_weapon_stats: build_combat_weapon_stats(&weapons,
-                                                       &creature.size,
-                                                       creature.base_attack_bonus,
-                                                       &ability_score_model),
-        full_weapons: weapons.iter().map(|x| x.into_canonical()).collect(),
+        combat_weapon_stats: combat_weapons,
+        full_weapons: full_weapons,
         skills: character_skills,
         ability_score_info: ability_score_model,
         meta_information: models::MetaInformation {
@@ -301,7 +303,7 @@ impl structs::Weapon {
     }
 }
 
-fn build_combat_weapon_stats(weapons: &Vec<structs::Weapon>,
+fn build_combat_weapon_stats(weapons: &Vec<models::Weapon>,
                              size: &models::Size,
                              base_attack_bonus: i32,
                              abs: &models::AbilityScoreInfo)
@@ -324,7 +326,7 @@ fn build_combat_weapon_stats(weapons: &Vec<structs::Weapon>,
                     weapon.small_damage.clone()
                 },
                 critical: weapon.critical.clone(),
-                range: weapon.range.unwrap_or(5),
+                range: weapon.range,
                 damage_type: weapon.damage_type.clone(),
                 attack_bonus: base_attack_bonus + ab_ability_mod,
                 damage: damage_ability_mod,

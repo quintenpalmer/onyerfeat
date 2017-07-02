@@ -227,3 +227,12 @@ pub struct ClassArmorProficiency {
     pub armor_check_penalty_reduction: i32,
     pub max_dex_bonus: i32,
 }
+
+#[derive(FromRow)]
+pub struct ExpandedCreatureItem {
+    pub id: i32,
+    pub creature_id: i32,
+    pub name: String,
+    pub description: String,
+    pub count: i32,
+}

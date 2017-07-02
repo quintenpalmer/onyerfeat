@@ -350,6 +350,33 @@ SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 1, true);
 
 
 --
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY items (id, name, description) FROM stdin;
+1	Dwarven Coin	Ancient coin from some dwarven society
+2	Rope (10ft)	10 feet of sturdy rope
+\.
+
+
+--
+-- Data for Name: creature_items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY creature_items (id, creature_id, item_id, count) FROM stdin;
+2	1	2	6
+1	1	1	43
+\.
+
+
+--
+-- Name: creature_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('creature_items_id_seq', 2, true);
+
+
+--
 -- Data for Name: shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -417,6 +444,13 @@ SELECT pg_catalog.setval('creature_weapons_id_seq', 4, true);
 --
 
 SELECT pg_catalog.setval('creatures_id_seq', 1, true);
+
+
+--
+-- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('items_id_seq', 2, true);
 
 
 --

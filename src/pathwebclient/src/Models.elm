@@ -23,6 +23,7 @@ module Models
         , DiceDamage
         , CriticalDamage
         , PhysicalDamageType
+        , CreatureItem
         )
 
 
@@ -47,6 +48,7 @@ type alias Character =
     , fullWeapons : List Weapon
     , combatWeaponStats : List CombatWeaponStats
     , skills : List Skill
+    , items : List CreatureItem
     }
 
 
@@ -223,6 +225,14 @@ type alias CombatWeaponStats =
     , damageType : PhysicalDamageType
     , attackBonus : Int
     , damage : Int
+    }
+
+
+type alias CreatureItem =
+    { id : Int
+    , name : String
+    , description : String
+    , count : Int
     }
 
 

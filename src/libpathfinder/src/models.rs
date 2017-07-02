@@ -11,6 +11,7 @@ pub struct Character {
     pub full_weapons: Vec<Weapon>,
     pub combat_weapon_stats: Vec<CombatWeaponStat>,
     pub skills: Vec<CharacterSkill>,
+    pub items: Vec<CreatureItem>,
 }
 
 // Combers or Barbers or Numbats
@@ -284,6 +285,15 @@ pub struct Weapon {
     pub range: i32,
     pub weight: i32,
     pub damage_type: PhysicalDamageType,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct CreatureItem {
+    pub id: i32,
+    pub creature_id: i32,
+    pub name: String,
+    pub description: String,
+    pub count: i32,
 }
 
 #[derive(Clone, Copy, Serialize, Deserialize)]

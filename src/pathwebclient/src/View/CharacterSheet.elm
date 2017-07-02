@@ -244,6 +244,36 @@ displayCharacterSheet character =
             ]
         , Html.div
             [ Attr.class "row" ]
+            [ Html.div
+                [ Attr.class "col-md-7" ]
+                [ Elements.panelled "Items"
+                    False
+                    [ Html.table [ Attr.class "table table-striped" ]
+                        [ Html.thead []
+                            [ Html.tr []
+                                [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Description" ]
+                                , Html.th [ Attr.class "text-center" ] [ Html.text "Count" ]
+                                ]
+                            ]
+                        , Html.tbody [ Attr.class "text-center" ]
+                            (List.map
+                                (\item ->
+                                    Html.tr []
+                                        [ Html.td [ Attr.class "text-left" ] [ Elements.labelDefault False item.name ]
+                                        , Html.td [ Attr.class "text-left" ]
+                                            [ Elements.labelDefault False item.description ]
+                                        , Html.td [] [ Elements.labelDefault False (toString item.count) ]
+                                        ]
+                                )
+                                character.items
+                            )
+                        ]
+                    ]
+                ]
+            ]
+        , Html.div
+            [ Attr.class "row" ]
             [ Elements.panelled "Armor Piece"
                 False
                 [ Elements.table True

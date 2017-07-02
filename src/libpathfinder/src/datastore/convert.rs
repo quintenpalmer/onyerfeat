@@ -20,7 +20,8 @@ pub fn into_canonical_character(character: structs::Character,
                                 optional_shield_damage: Option<structs::ShieldDamage>,
                                 weapons: Vec<structs::Weapon>,
                                 base_saving_throws: structs::ClassSavingThrows,
-                                armor_proficiency: structs::ClassArmorProficiency)
+                                armor_proficiency: structs::ClassArmorProficiency,
+                                items: Vec<structs::ExpandedCreatureItem>)
                                 -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
@@ -140,6 +141,7 @@ pub fn into_canonical_character(character: structs::Character,
             deity: creature.deity,
             size: creature.size,
         },
+        items: items.iter().map(|x| x.into_canonical()).collect(),
     };
 }
 
@@ -332,6 +334,18 @@ impl structs::Weapon {
             range: self.range.unwrap_or(5),
             weight: self.weight,
             damage_type: self.damage_type.clone(),
+        }
+    }
+}
+
+impl structs::ExpandedCreatureItem {
+    pub fn into_canonical(&self) -> models::CreatureItem {
+        models::CreatureItem {
+            id: self.id,
+            creature_id: self.creature_id,
+            name: self.name.clone(),
+            description: self.description.clone(),
+            count: self.count,
         }
     }
 }

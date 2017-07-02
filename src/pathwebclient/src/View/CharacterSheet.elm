@@ -84,7 +84,7 @@ displayCharacterSheet character =
                                     ]
                                 , Html.td []
                                     [ Html.span [ Attr.class "label label-default" ]
-                                        [ Html.text <| toString character.combatNumbers.currentHitPoints ]
+                                        [ Html.text <| toString character.combatNumbers.maxHitPoints ]
                                     ]
                                 , Html.td []
                                     [ Html.span [ Attr.class "label label-default" ]

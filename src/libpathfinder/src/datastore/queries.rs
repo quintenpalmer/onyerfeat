@@ -105,3 +105,40 @@ WHERE
 AND
     creature_shields.has_spikes = shield_damage.spiked
 "#;
+
+pub static CREATURE_ITEMS_SQL: &'static str = r#"
+SELECT
+    creature_items.id,
+    creature_items.creature_id,
+    items.name,
+    items.description,
+    creature_items.count
+FROM
+    creature_items
+INNER JOIN
+    items
+ON
+    creature_items.item_id = items.id
+WHERE
+    creature_items.creature_id = $1;
+"#;
+
+pub static INSERT_ITEM_SQL: &'static str = r#"
+INSERT INTO
+    items
+    (name, description)
+VALUES
+    ($1, $2)
+RETURNING
+    *
+"#;
+
+pub static INSERT_CHARACTER_ITEM_SQL: &'static str = r#"
+INSERT INTO
+    creature_items
+    (creature_id, item_id, count)
+VALUES
+    ($1, $2, $3)
+RETURNING
+    *
+"#;

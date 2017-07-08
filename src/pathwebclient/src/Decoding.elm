@@ -30,6 +30,7 @@ decodeCharacter =
         |> Pipeline.required "full_weapons" (Decode.list decodeWeapon)
         |> Pipeline.required "combat_weapon_stats" (Decode.list decodeCombatWeaponStats)
         |> Pipeline.required "skills" decodeSkills
+        |> Pipeline.required "items" (Decode.list decodeItem)
 
 
 decodeSkills : Decode.Decoder (List Models.Skill)
@@ -265,6 +266,15 @@ decodeCombatWeaponStats =
         |> Pipeline.required "damage_type" decodePhysicalDamageType
         |> Pipeline.required "attack_bonus" Decode.int
         |> Pipeline.required "damage" Decode.int
+
+
+decodeItem : Decode.Decoder Models.CreatureItem
+decodeItem =
+    Pipeline.decode Models.CreatureItem
+        |> Pipeline.required "id" Decode.int
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "description" Decode.string
+        |> Pipeline.required "count" Decode.int
 
 
 decodePhysicalDamageType : Decode.Decoder Models.PhysicalDamageType

@@ -1,5 +1,10 @@
+use std::io::Read;
+
 use rand;
 use rand::distributions::IndependentSample;
+
+use serde_json;
+use models;
 
 use iron;
 use iron::IronResult;
@@ -29,6 +34,7 @@ impl iron::middleware::Handler for Handler {
                          webshared::simple_server_error());
         let resp = match full_path.clone().as_ref() {
             "api/characters" => character_handler(conn, req),
+            "api/creature_items" => creature_item_handler(conn, req),
             "api/skills" => skills_handler(conn),
             "api/armor_pieces" => armor_pieces_handler(conn),
             "api/shields" => shields_handler(conn),
@@ -62,6 +68,24 @@ fn character_handler(ds: datastore::Datastore,
                   webshared::simple_server_error());
 
     return webshared::Response { data: c }.encode();
+}
+
+fn creature_item_handler(ds: datastore::Datastore,
+                         req: &mut iron::Request)
+                         -> IronResult<iron::Response> {
+
+    println!("handling request for creature_item");
+    match req.method {
+        iron::method::Method::Post => {
+            let mut buf = String::new();
+            itry!(req.body.read_to_string(&mut buf));
+
+            let char_item: models::CreatureItem = itry!(serde_json::from_str(buf.as_str()));
+            let ret_char_item = itry!(ds.insert_new_character_item(char_item));
+            webshared::Response { data: ret_char_item }.encode()
+        }
+        _ => method_not_allowed(),
+    }
 }
 
 fn skills_handler(ds: datastore::Datastore) -> IronResult<iron::Response> {
@@ -109,6 +133,12 @@ fn dice_roll_handler(req: &mut iron::Request) -> IronResult<iron::Response> {
     let roll = between.ind_sample(&mut rng);
 
     return webshared::Response { data: roll }.encode();
+}
+
+fn method_not_allowed() -> IronResult<iron::Response> {
+    let (status, msg) = webshared::method_not_allowed("method not allowed".to_owned());
+
+    Err(iron::IronError::new(Error::MethodNotAllowed, (status, msg)))
 }
 
 fn path_not_found(full_path: String) -> IronResult<iron::Response> {

@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use postgres;
 
 use libpathfinder_common::error;
+use libpathfinder_common::FromRow;
+use libpathfinder_common::TableNamer;
 
 use models;
 
@@ -81,6 +83,10 @@ impl Datastore {
                                                             queries::CLASS_ARMOR_PROFICIENCY_SQL,
                                                             class.id,
                                                             creature.level));
+        let items: Vec<structs::ExpandedCreatureItem> =
+            try!(selects::exec_and_select_by_field(&self.conn,
+                                                   queries::CREATURE_ITEMS_SQL,
+                                                   creature.id));
 
         return Ok(convert::into_canonical_character(character,
                                                     creature,
@@ -98,7 +104,8 @@ impl Datastore {
                                                     option_shield_damage,
                                                     weapons,
                                                     base_saving_throws,
-                                                    armor_proficiency));
+                                                    armor_proficiency,
+                                                    items));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {
@@ -141,6 +148,82 @@ impl Datastore {
         let shields: Vec<structs::Weapon> = try!(selects::select_all(&self.conn));
         return Ok(shields.iter().map(|x| x.into_canonical()).collect());
     }
+
+    pub fn insert_new_character_item(&self,
+                                     exp_char_item: models::CreatureItem)
+                                     -> Result<models::CreatureItem, error::Error> {
+        let txn = try!(self.conn.transaction().map_err(error::Error::Postgres));
+        match insert_character_item(&txn, exp_char_item) {
+            Ok(res) => {
+                let _ = txn.commit();
+                Ok(res)
+            }
+            Err(e) => {
+                txn.set_rollback();
+                Err(e)
+            }
+        }
+    }
+}
+
+fn insert_character_item(txn: &postgres::transaction::Transaction,
+                         exp_char_item: models::CreatureItem)
+                         -> Result<models::CreatureItem, error::Error> {
+    let existing_item: Option<structs::Item> =
+        try!(selects::select_optional_one_by_field(txn, "name", exp_char_item.name.clone()));
+    let item_to_insert = match existing_item {
+        Some(item) => item,
+        None => {
+            try!(insert_raw_item(txn,
+                                 exp_char_item.name.clone(),
+                                 exp_char_item.description.clone()))
+        }
+    };
+
+    let char_item = try!(insert_raw_char_item(txn,
+                                              item_to_insert.id,
+                                              exp_char_item.creature_id,
+                                              exp_char_item.count));
+
+    return Ok(models::CreatureItem {
+        id: char_item.id,
+        creature_id: char_item.creature_id,
+        name: item_to_insert.name.clone(),
+        description: item_to_insert.description.clone(),
+        count: char_item.count,
+    });
+}
+
+fn insert_raw_item(txn: &postgres::transaction::Transaction,
+                   name: String,
+                   description: String)
+                   -> Result<structs::Item, error::Error> {
+    let stmt = try!(txn.prepare(queries::INSERT_ITEM_SQL)
+        .map_err(error::Error::Postgres));
+    let rows = try!(stmt.query(&[&name, &description]).map_err(error::Error::Postgres));
+    if rows.len() != 1 {
+        return Err(error::Error::ManyResultsOnSelectOne(structs::Item::get_table_name()
+            .to_string()));
+    }
+    let row = rows.get(0);
+    return structs::Item::parse_row(row);
+}
+
+fn insert_raw_char_item(txn: &postgres::transaction::Transaction,
+                        item_id: i32,
+                        creature_id: i32,
+                        count: i32)
+                        -> Result<structs::CreatureItem, error::Error> {
+    let stmt = try!(txn.prepare(queries::INSERT_CHARACTER_ITEM_SQL)
+        .map_err(error::Error::Postgres));
+    let rows = try!(stmt.query(&[&creature_id, &item_id, &count])
+        .map_err(error::Error::Postgres));
+    if rows.len() != 1 {
+        return Err(error::Error::ManyResultsOnSelectOne(structs::CreatureItem::get_table_name()
+            .to_string()));
+    }
+    let row = rows.get(0);
+    return structs::CreatureItem::parse_row(row);
 }
 
 fn skill_constructor_map<'a>(s: &'a Vec<structs::SkillConstructor>)

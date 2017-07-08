@@ -73,7 +73,7 @@ COPY classes (id, name) FROM stdin;
 --
 
 COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	54	38	0	4	4
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	54	43	0	4	4
 \.
 
 
@@ -350,6 +350,39 @@ SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 1, true);
 
 
 --
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY items (id, name, description) FROM stdin;
+1	Dwarven Coin	Ancient coin from some dwarven society
+2	Rope (10ft)	10 feet of sturdy rope
+3	Flask (ale)	A flask full of ale
+4	Sleeping bag	Good for a good night's sleep
+5	Bucket	Can hold one gallon of liquid
+\.
+
+
+--
+-- Data for Name: creature_items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY creature_items (id, creature_id, item_id, count) FROM stdin;
+2	1	2	6
+1	1	1	43
+4	1	3	1
+5	1	4	1
+6	1	5	1
+\.
+
+
+--
+-- Name: creature_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('creature_items_id_seq', 6, true);
+
+
+--
 -- Data for Name: shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -417,6 +450,13 @@ SELECT pg_catalog.setval('creature_weapons_id_seq', 4, true);
 --
 
 SELECT pg_catalog.setval('creatures_id_seq', 1, true);
+
+
+--
+-- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('items_id_seq', 5, true);
 
 
 --

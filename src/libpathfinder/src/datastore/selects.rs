@@ -3,8 +3,9 @@ use postgres;
 use libpathfinder_common::FromRow;
 use libpathfinder_common::TableNamer;
 use libpathfinder_common::error;
+use libpathfinder_common::Datastore;
 
-pub fn exec_and_select_optional_one_by_field<T, F>(conn: &postgres::Connection,
+pub fn exec_and_select_optional_one_by_field<T, F>(conn: &Datastore,
                                                    query: &'static str,
                                                    id: F)
                                                    -> Result<Option<T>, error::Error>
@@ -27,7 +28,7 @@ pub fn exec_and_select_optional_one_by_field<T, F>(conn: &postgres::Connection,
     };
 }
 
-pub fn exec_and_select_one_by_two_fields<T, F, I>(conn: &postgres::Connection,
+pub fn exec_and_select_one_by_two_fields<T, F, I>(conn: &Datastore,
                                                   query: &'static str,
                                                   id1: F,
                                                   id2: I)
@@ -46,7 +47,7 @@ pub fn exec_and_select_one_by_two_fields<T, F, I>(conn: &postgres::Connection,
     return T::parse_row(row);
 }
 
-pub fn exec_and_select_one_by_field<T, F>(conn: &postgres::Connection,
+pub fn exec_and_select_one_by_field<T, F>(conn: &Datastore,
                                           query: &'static str,
                                           id: F)
                                           -> Result<T, error::Error>
@@ -63,7 +64,7 @@ pub fn exec_and_select_one_by_field<T, F>(conn: &postgres::Connection,
     return T::parse_row(row);
 }
 
-pub fn exec_and_select_by_field<T, F>(conn: &postgres::Connection,
+pub fn exec_and_select_by_field<T, F>(conn: &Datastore,
                                       query: &'static str,
                                       id: F)
                                       -> Result<Vec<T>, error::Error>
@@ -80,7 +81,7 @@ pub fn exec_and_select_by_field<T, F>(conn: &postgres::Connection,
     return Ok(ret);
 }
 
-pub fn select_all<T>(conn: &postgres::Connection) -> Result<Vec<T>, error::Error>
+pub fn select_all<T>(conn: &Datastore) -> Result<Vec<T>, error::Error>
     where T: FromRow + TableNamer
 {
     let query = format!("SELECT * FROM {}", T::get_table_name());
@@ -94,10 +95,7 @@ pub fn select_all<T>(conn: &postgres::Connection) -> Result<Vec<T>, error::Error
     return Ok(ret);
 }
 
-pub fn select_by_field<T, F>(conn: &postgres::Connection,
-                             id_name: &str,
-                             id: F)
-                             -> Result<Vec<T>, error::Error>
+pub fn select_by_field<T, F>(conn: &Datastore, id_name: &str, id: F) -> Result<Vec<T>, error::Error>
     where T: FromRow + TableNamer,
           F: postgres::types::ToSql
 {
@@ -114,7 +112,7 @@ pub fn select_by_field<T, F>(conn: &postgres::Connection,
     return Ok(ret);
 }
 
-pub fn select_optional_one_by_field<T, F>(conn: &postgres::Connection,
+pub fn select_optional_one_by_field<T, F>(conn: &Datastore,
                                           id_name: &str,
                                           id: F)
                                           -> Result<Option<T>, error::Error>
@@ -140,10 +138,7 @@ pub fn select_optional_one_by_field<T, F>(conn: &postgres::Connection,
     };
 }
 
-pub fn select_one_by_field<T, F>(conn: &postgres::Connection,
-                                 id_name: &str,
-                                 id: F)
-                                 -> Result<T, error::Error>
+pub fn select_one_by_field<T, F>(conn: &Datastore, id_name: &str, id: F) -> Result<T, error::Error>
     where T: FromRow + TableNamer,
           F: postgres::types::ToSql
 {
@@ -160,7 +155,7 @@ pub fn select_one_by_field<T, F>(conn: &postgres::Connection,
     return T::parse_row(row);
 }
 
-pub fn select_one_by_id<T>(conn: &postgres::Connection, id: i32) -> Result<T, error::Error>
+pub fn select_one_by_id<T>(conn: &Datastore, id: i32) -> Result<T, error::Error>
     where T: FromRow + TableNamer
 {
     select_one_by_field(conn, "id", id)

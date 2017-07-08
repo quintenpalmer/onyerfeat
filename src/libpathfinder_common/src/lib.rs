@@ -20,3 +20,19 @@ pub trait TableNamer {
 pub trait FromRow {
     fn parse_row(row: postgres::rows::Row) -> Result<Self, error::Error> where Self: Sized;
 }
+
+pub trait Datastore {
+    fn prepare<'a>(&'a self, query: &str) -> postgres::Result<postgres::stmt::Statement<'a>>;
+}
+
+impl Datastore for postgres::Connection {
+    fn prepare<'a>(&'a self, query: &str) -> postgres::Result<postgres::stmt::Statement<'a>> {
+        return self.prepare(query);
+    }
+}
+
+impl<'b> Datastore for postgres::transaction::Transaction<'b> {
+    fn prepare<'a>(&'a self, query: &str) -> postgres::Result<postgres::stmt::Statement<'a>> {
+        return self.prepare(query);
+    }
+}

@@ -43,6 +43,10 @@ pub fn not_found(msg: String) -> (status::Status, String) {
     return status_message(status::NotFound, msg);
 }
 
+pub fn method_not_allowed(msg: String) -> (status::Status, String) {
+    return status_message(status::MethodNotAllowed, msg);
+}
+
 fn status_message(s: status::Status, msg: String) -> (status::Status, String) {
     let json_msg = serde_json::to_string(&ErrMessage { error: msg }).unwrap();
     return (s, json_msg);

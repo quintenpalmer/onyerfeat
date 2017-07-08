@@ -122,3 +122,23 @@ ON
 WHERE
     creature_items.creature_id = $1;
 "#;
+
+pub static INSERT_ITEM_SQL: &'static str = r#"
+INSERT INTO
+    items
+    (name, description)
+VALUES
+    ($1, $2)
+RETURNING
+    *
+"#;
+
+pub static INSERT_CHARACTER_ITEM_SQL: &'static str = r#"
+INSERT INTO
+    creature_items
+    (creature_id, item_id, count)
+VALUES
+    ($1, $2, $3)
+RETURNING
+    *
+"#;

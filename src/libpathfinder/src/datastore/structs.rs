@@ -228,6 +228,23 @@ pub struct ClassArmorProficiency {
     pub max_dex_bonus: i32,
 }
 
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "items")]
+pub struct Item {
+    pub id: i32,
+    pub name: String,
+    pub description: String,
+}
+
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "creature_items")]
+pub struct CreatureItem {
+    pub id: i32,
+    pub item_id: i32,
+    pub creature_id: i32,
+    pub count: i32,
+}
+
 #[derive(FromRow)]
 pub struct ExpandedCreatureItem {
     pub id: i32,

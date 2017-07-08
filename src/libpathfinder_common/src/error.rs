@@ -15,6 +15,7 @@ pub enum Error {
     ManyResultsOnSelectOne(String),
     ParseInt(num::ParseIntError),
     PathNotFound(String),
+    MethodNotAllowed,
     MissingQueryParam(String),
     TooManyQueryParams(String),
 }
@@ -41,6 +42,7 @@ impl StdError for Error {
             Error::ManyResultsOnSelectOne(_) => "many results found on select expecting one result",
             Error::ParseInt(ref err) => err.description(),
             Error::PathNotFound(_) => "requested path does not exist",
+            Error::MethodNotAllowed => "method not allowed on that path",
             Error::MissingQueryParam(_) => "could not find expected query param",
             Error::TooManyQueryParams(_) => "found too many query param values",
         }

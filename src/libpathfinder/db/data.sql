@@ -21,7 +21,7 @@ SET search_path = public, pg_catalog;
 --
 
 COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
-1	12	16	18	14	10	8
+1	13	16	18	14	10	8
 \.
 
 
@@ -73,7 +73,7 @@ COPY classes (id, name) FROM stdin;
 --
 
 COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	54	43	0	4	4
+1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	67	24	0	5	5
 \.
 
 
@@ -121,17 +121,17 @@ COPY skills (id, name, trained_only, ability) FROM stdin;
 --
 
 COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
-1	1	4	1
 2	1	12	1
 3	1	15	1
 4	1	20	1
-5	1	21	1
 6	1	11	1
 7	1	10	1
-8	1	19	1
-9	1	1	1
 10	1	6	1
 11	1	2	1
+8	1	19	2
+9	1	1	2
+1	1	4	2
+5	1	21	2
 \.
 
 

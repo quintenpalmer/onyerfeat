@@ -123,6 +123,21 @@ WHERE
     creature_items.creature_id = $1;
 "#;
 
+pub static CREATURE_LANGUAGES_SQL: &'static str = r#"
+SELECT
+    creature_languages.id,
+    creature_languages.creature_id,
+    languages.name
+FROM
+    creature_items
+INNER JOIN
+    items
+ON
+    creature_items.item_id = items.id
+WHERE
+    creature_items.creature_id = $1;
+"#;
+
 pub static INSERT_ITEM_SQL: &'static str = r#"
 INSERT INTO
     items

@@ -253,3 +253,10 @@ pub struct ExpandedCreatureItem {
     pub description: String,
     pub count: i32,
 }
+
+#[derive(FromRow)]
+pub struct ExpandedCreatureLanguage {
+    pub id: i32,
+    pub creature_id: i32,
+    pub name: String,
+}

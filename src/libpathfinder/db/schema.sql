@@ -534,6 +534,40 @@ ALTER SEQUENCE creature_items_id_seq OWNED BY creature_items.id;
 
 
 --
+-- Name: creature_languages; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE creature_languages (
+    id integer NOT NULL,
+    creature_id integer NOT NULL,
+    language_id integer NOT NULL
+);
+
+
+ALTER TABLE creature_languages OWNER TO pathfinder_user;
+
+--
+-- Name: creature_languages_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE creature_languages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE creature_languages_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: creature_languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE creature_languages_id_seq OWNED BY creature_languages.id;
+
+
+--
 -- Name: creature_shields; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -679,6 +713,39 @@ ALTER TABLE items_id_seq OWNER TO pathfinder_user;
 --
 
 ALTER SEQUENCE items_id_seq OWNED BY items.id;
+
+
+--
+-- Name: languages; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE languages (
+    id integer NOT NULL,
+    name text NOT NULL
+);
+
+
+ALTER TABLE languages OWNER TO pathfinder_user;
+
+--
+-- Name: languages_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE languages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE languages_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: languages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE languages_id_seq OWNED BY languages.id;
 
 
 --
@@ -997,6 +1064,13 @@ ALTER TABLE ONLY creature_items ALTER COLUMN id SET DEFAULT nextval('creature_it
 
 
 --
+-- Name: creature_languages id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_languages ALTER COLUMN id SET DEFAULT nextval('creature_languages_id_seq'::regclass);
+
+
+--
 -- Name: creature_shields id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1022,6 +1096,13 @@ ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq
 --
 
 ALTER TABLE ONLY items ALTER COLUMN id SET DEFAULT nextval('items_id_seq'::regclass);
+
+
+--
+-- Name: languages id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY languages ALTER COLUMN id SET DEFAULT nextval('languages_id_seq'::regclass);
 
 
 --
@@ -1219,6 +1300,14 @@ ALTER TABLE ONLY creature_items
 
 
 --
+-- Name: creature_languages creature_languages_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_languages
+    ADD CONSTRAINT creature_languages_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: creature_shields creature_shields_creature_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1256,6 +1345,14 @@ ALTER TABLE ONLY creatures
 
 ALTER TABLE ONLY items
     ADD CONSTRAINT items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: languages languages_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY languages
+    ADD CONSTRAINT languages_pkey PRIMARY KEY (id);
 
 
 --
@@ -1448,6 +1545,22 @@ ALTER TABLE ONLY creature_items
 
 ALTER TABLE ONLY creature_items
     ADD CONSTRAINT creature_items_item_id_fkey FOREIGN KEY (item_id) REFERENCES items(id);
+
+
+--
+-- Name: creature_languages creature_languages_creature_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_languages
+    ADD CONSTRAINT creature_languages_creature_id_fkey FOREIGN KEY (creature_id) REFERENCES creatures(id);
+
+
+--
+-- Name: creature_languages creature_languages_language_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creature_languages
+    ADD CONSTRAINT creature_languages_language_id_fkey FOREIGN KEY (language_id) REFERENCES languages(id);
 
 
 --

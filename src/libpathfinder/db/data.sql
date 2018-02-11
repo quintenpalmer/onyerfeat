@@ -383,6 +383,37 @@ SELECT pg_catalog.setval('creature_items_id_seq', 6, true);
 
 
 --
+-- Data for Name: languages; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY languages (id, name) FROM stdin;
+1	Common
+2	Dwarf
+3	Terran
+4	Giant
+\.
+
+
+--
+-- Data for Name: creature_languages; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY creature_languages (id, creature_id, language_id) FROM stdin;
+1	1	1
+2	1	2
+3	1	3
+4	1	4
+\.
+
+
+--
+-- Name: creature_languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('creature_languages_id_seq', 4, true);
+
+
+--
 -- Data for Name: shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -457,6 +488,13 @@ SELECT pg_catalog.setval('creatures_id_seq', 1, true);
 --
 
 SELECT pg_catalog.setval('items_id_seq', 5, true);
+
+
+--
+-- Name: languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('languages_id_seq', 4, true);
 
 
 --

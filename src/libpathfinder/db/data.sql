@@ -65,6 +65,7 @@ SELECT pg_catalog.setval('armor_pieces_id_seq', 12, true);
 
 COPY classes (id, name) FROM stdin;
 1	fighter
+2	paladin
 \.
 
 
@@ -226,6 +227,26 @@ COPY class_armor_proficiencies (id, class_id, level, armor_check_penalty_reducti
 18	1	18	-4	4
 19	1	19	-4	4
 20	1	20	-4	4
+21	2	1	0	0
+22	2	2	0	0
+23	2	3	0	0
+24	2	4	0	0
+25	2	5	0	0
+26	2	6	0	0
+27	2	7	0	0
+28	2	8	0	0
+29	2	9	0	0
+30	2	10	0	0
+31	2	11	0	0
+32	2	12	0	0
+33	2	13	0	0
+34	2	14	0	0
+35	2	15	0	0
+36	2	16	0	0
+37	2	17	0	0
+38	2	18	0	0
+39	2	19	0	0
+40	2	20	0	0
 \.
 
 
@@ -233,7 +254,7 @@ COPY class_armor_proficiencies (id, class_id, level, armor_check_penalty_reducti
 -- Name: class_armor_proficiencies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_armor_proficiencies_id_seq', 20, true);
+SELECT pg_catalog.setval('class_armor_proficiencies_id_seq', 40, true);
 
 
 --
@@ -261,6 +282,26 @@ COPY class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM std
 18	1	18	11	6	6
 19	1	19	11	6	6
 20	1	20	12	6	6
+21	2	1	2	0	2
+22	2	2	3	0	3
+23	2	3	3	1	3
+24	2	4	4	1	4
+25	2	5	4	1	4
+26	2	6	5	2	5
+27	2	7	5	2	5
+28	2	8	6	2	6
+29	2	9	6	3	6
+30	2	10	7	3	7
+31	2	11	7	3	7
+32	2	12	8	4	8
+33	2	13	8	4	8
+34	2	14	9	4	9
+35	2	15	9	5	9
+36	2	16	10	5	10
+37	2	17	10	5	10
+38	2	18	11	6	11
+39	2	19	11	6	11
+40	2	20	12	6	12
 \.
 
 
@@ -268,7 +309,7 @@ COPY class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM std
 -- Name: class_saving_throws_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_saving_throws_id_seq', 20, true);
+SELECT pg_catalog.setval('class_saving_throws_id_seq', 40, true);
 
 
 --
@@ -278,6 +319,8 @@ SELECT pg_catalog.setval('class_saving_throws_id_seq', 20, true);
 COPY class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
 1	1	1
 2	1	4
+3	2	1
+4	2	4
 \.
 
 
@@ -285,7 +328,7 @@ COPY class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
 -- Name: class_skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_skill_constructors_id_seq', 2, true);
+SELECT pg_catalog.setval('class_skill_constructors_id_seq', 4, true);
 
 
 --
@@ -299,6 +342,12 @@ COPY class_skills (id, class_id, skill_id) FROM stdin;
 4	1	15
 5	1	20
 6	1	21
+7	2	5
+8	2	10
+9	2	11
+10	2	15
+11	2	16
+12	2	18
 \.
 
 
@@ -306,7 +355,7 @@ COPY class_skills (id, class_id, skill_id) FROM stdin;
 -- Name: class_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_skills_id_seq', 6, true);
+SELECT pg_catalog.setval('class_skills_id_seq', 12, true);
 
 
 --
@@ -316,6 +365,8 @@ SELECT pg_catalog.setval('class_skills_id_seq', 6, true);
 COPY class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
 1	1	3
 2	1	2
+3	2	8
+4	2	10
 \.
 
 
@@ -323,14 +374,14 @@ COPY class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
 -- Name: class_sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_sub_skills_id_seq', 2, true);
+SELECT pg_catalog.setval('class_sub_skills_id_seq', 4, true);
 
 
 --
 -- Name: classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('classes_id_seq', 1, true);
+SELECT pg_catalog.setval('classes_id_seq', 2, true);
 
 
 --

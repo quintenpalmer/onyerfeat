@@ -1,4 +1,4 @@
-module CustomSort exposing (armorSort)
+module CustomSort exposing (armorSort, weaponSort)
 
 
 armorSort : List { a | armorBonus : Int, armorClass : String } -> List { a | armorBonus : Int, armorClass : String }
@@ -17,3 +17,21 @@ armorSortFn a1 b1 =
 
         ( _, _ ) ->
             (compare a1.armorClass b1.armorClass)
+
+
+weaponSort :
+    List
+        { a
+            | name : comparable
+            , sizeStyle : comparable1
+            , trainingType : comparable2
+        }
+    ->
+        List
+            { a
+                | name : comparable
+                , sizeStyle : comparable1
+                , trainingType : comparable2
+            }
+weaponSort weapons =
+    (List.sortBy .trainingType (List.sortBy .sizeStyle (List.sortBy .name weapons)))

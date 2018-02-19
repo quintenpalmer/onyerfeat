@@ -1,4 +1,4 @@
-module Common exposing (Msg(..), weaponSort)
+module Common exposing (Msg(..))
 
 import Http
 import Models
@@ -16,21 +16,3 @@ type Msg
     | ShieldsLoaded (Result Http.Error (List Models.Shield))
     | ArmorPiecesLoaded (Result Http.Error (List Models.ArmorPiece))
     | DiceLoaded (Result Http.Error Int)
-
-
-weaponSort :
-    List
-        { a
-            | name : comparable
-            , sizeStyle : comparable1
-            , trainingType : comparable2
-        }
-    ->
-        List
-            { a
-                | name : comparable
-                , sizeStyle : comparable1
-                , trainingType : comparable2
-            }
-weaponSort weapons =
-    (List.sortBy .trainingType (List.sortBy .sizeStyle (List.sortBy .name weapons)))

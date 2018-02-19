@@ -3,6 +3,7 @@ module View.CharacterSheet exposing (displayCharacterSheet)
 import Html
 import Html.Attributes as Attr
 import Common
+import CustomSort
 import Models
 import View.Elements as Elements
 import View.WeaponTable as WeaponTable
@@ -242,7 +243,7 @@ displayCharacterSheet character =
                                 , Html.td [] [ Elements.labelDefault False <| (toString weaponStat.range) ++ "ft" ]
                                 ]
                         )
-                        (Common.weaponSort
+                        (CustomSort.weaponSort
                             character.combatWeaponStats
                         )
                     )

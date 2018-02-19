@@ -3,6 +3,7 @@ module View.WeaponTable exposing (displayWeapons, weaponsPanel)
 import Html
 import Html.Attributes as Attr
 import Common
+import CustomSort
 import Models
 import View.Elements as Elements
 import View.Displays as Displays
@@ -55,7 +56,7 @@ weaponsPanel weapons =
                             , Html.td [] [ Elements.labelDefault False <| Displays.displayPhysicalDamage weapon.damageType ]
                             ]
                     )
-                    (Common.weaponSort weapons)
+                    (CustomSort.weaponSort weapons)
                 )
             ]
         ]

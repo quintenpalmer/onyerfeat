@@ -4,25 +4,26 @@ use models;
 
 use datastore::structs;
 
-pub fn into_canonical_character(character: structs::Character,
-                                creature: structs::Creature,
-                                abs: structs::AbilityScoreSet,
-                                class: structs::Class,
-                                skills: Vec<structs::Skill>,
-                                skill_choices: Vec<structs::CharacterSkillChoice>,
-                                sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
-                                class_skills: Vec<structs::ClassSkill>,
-                                class_sub_skills: Vec<structs::ClassSubSkill>,
-                                class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-                                armor_piece: structs::ArmorPiece,
-                                optional_shield: Option<structs::Shield>,
-                                optional_creature_shield: Option<structs::CreatureShield>,
-                                optional_shield_damage: Option<structs::ShieldDamage>,
-                                weapons: Vec<structs::Weapon>,
-                                base_saving_throws: structs::ClassSavingThrows,
-                                armor_proficiency: structs::ClassArmorProficiency,
-                                items: Vec<structs::ExpandedCreatureItem>)
-                                -> models::Character {
+pub fn into_canonical_character(
+    character: structs::Character,
+    creature: structs::Creature,
+    abs: structs::AbilityScoreSet,
+    class: structs::Class,
+    skills: Vec<structs::Skill>,
+    skill_choices: Vec<structs::CharacterSkillChoice>,
+    sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
+    class_skills: Vec<structs::ClassSkill>,
+    class_sub_skills: Vec<structs::ClassSubSkill>,
+    class_skill_constructors: Vec<structs::ClassSkillConstructor>,
+    armor_piece: structs::ArmorPiece,
+    optional_shield: Option<structs::Shield>,
+    optional_creature_shield: Option<structs::CreatureShield>,
+    optional_shield_damage: Option<structs::ShieldDamage>,
+    weapons: Vec<structs::Weapon>,
+    base_saving_throws: structs::ClassSavingThrows,
+    armor_proficiency: structs::ClassArmorProficiency,
+    items: Vec<structs::ExpandedCreatureItem>,
+) -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
             score: abs.str,
@@ -50,16 +51,18 @@ pub fn into_canonical_character(character: structs::Character,
         },
     };
     let size_mod = creature.size.get_modifier();
-    let character_skills = get_character_skills(skills,
-                                                skill_choices,
-                                                sub_skills,
-                                                class_skills,
-                                                class_sub_skills,
-                                                class_skill_constructors,
-                                                &ability_score_model,
-                                                &armor_proficiency,
-                                                &armor_piece,
-                                                &optional_shield);
+    let character_skills = get_character_skills(
+        skills,
+        skill_choices,
+        sub_skills,
+        class_skills,
+        class_sub_skills,
+        class_skill_constructors,
+        &ability_score_model,
+        &armor_proficiency,
+        &armor_piece,
+        &optional_shield,
+    );
     let armor_class = {
         let dex_mod = ability_score_model.dex.modifier;
         let base = 10;
@@ -82,17 +85,20 @@ pub fn into_canonical_character(character: structs::Character,
         armor_class
     };
     let full_weapons = weapons.iter().map(|x| x.into_canonical()).collect();
-    let mut combat_weapons = build_combat_weapon_stats(&full_weapons,
-                                                       &creature.size,
-                                                       creature.base_attack_bonus,
-                                                       &ability_score_model);
+    let mut combat_weapons = build_combat_weapon_stats(
+        &full_weapons,
+        &creature.size,
+        creature.base_attack_bonus,
+        &ability_score_model,
+    );
     match optional_shield_damage {
         Some(shield_damage) => {
-            let mut shield_as_weapon =
-                build_combat_weapon_stats(&vec![shield_damage.into_canonical_weapon()],
-                                          &creature.size,
-                                          creature.base_attack_bonus,
-                                          &ability_score_model);
+            let mut shield_as_weapon = build_combat_weapon_stats(
+                &vec![shield_damage.into_canonical_weapon()],
+                &creature.size,
+                creature.base_attack_bonus,
+                &ability_score_model,
+            );
             combat_weapons.append(&mut shield_as_weapon)
         }
         None => (),
@@ -115,9 +121,11 @@ pub fn into_canonical_character(character: structs::Character,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
             saving_throws: base_saving_throws.into_canonical(&ability_score_model),
-            combat_maneuvers: build_combat_maneuvers(&ability_score_model,
-                                                     creature.base_attack_bonus,
-                                                     size_mod),
+            combat_maneuvers: build_combat_maneuvers(
+                &ability_score_model,
+                creature.base_attack_bonus,
+                size_mod,
+            ),
         },
         armor_piece: armor_piece.into_canonical(),
         shield: match (optional_shield, optional_creature_shield) {
@@ -145,17 +153,18 @@ pub fn into_canonical_character(character: structs::Character,
     };
 }
 
-fn get_character_skills(skills: Vec<structs::Skill>,
-                        skill_choices: Vec<structs::CharacterSkillChoice>,
-                        sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
-                        class_skills: Vec<structs::ClassSkill>,
-                        class_sub_skills: Vec<structs::ClassSubSkill>,
-                        class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-                        abs: &models::AbilityScoreInfo,
-                        armor_proficiency: &structs::ClassArmorProficiency,
-                        armor_piece: &structs::ArmorPiece,
-                        optional_shield: &Option<structs::Shield>)
-                        -> Vec<models::CharacterSkill> {
+fn get_character_skills(
+    skills: Vec<structs::Skill>,
+    skill_choices: Vec<structs::CharacterSkillChoice>,
+    sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
+    class_skills: Vec<structs::ClassSkill>,
+    class_sub_skills: Vec<structs::ClassSubSkill>,
+    class_skill_constructors: Vec<structs::ClassSkillConstructor>,
+    abs: &models::AbilityScoreInfo,
+    armor_proficiency: &structs::ClassArmorProficiency,
+    armor_piece: &structs::ArmorPiece,
+    optional_shield: &Option<structs::Shield>,
+) -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
     let class_map = class_skill_map(&class_skills);
@@ -165,8 +174,8 @@ fn get_character_skills(skills: Vec<structs::Skill>,
         Some(ref s) => s.skill_penalty,
         None => 0,
     };
-    let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty -
-                              armor_proficiency.armor_check_penalty_reduction;
+    let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty
+        - armor_proficiency.armor_check_penalty_reduction;
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
             Some(armor_penalty_value)
@@ -200,8 +209,8 @@ fn get_character_skills(skills: Vec<structs::Skill>,
             None
         };
         let count = sub_skill.count;
-        let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id) ||
-                             class_constructor_set.contains(&sub_skill.skill_constructor_id);
+        let is_class_skill = class_sub_set.contains(&sub_skill.sub_skill_id)
+            || class_constructor_set.contains(&sub_skill.skill_constructor_id);
         let class_mod = if is_class_skill && count > 0 { 3 } else { 0 };
         let ability_mod = abs.get_ability_mod(sub_skill.ability.clone());
         let total = count + ability_mod + class_mod + armor_penalty.unwrap_or(0);
@@ -244,8 +253,9 @@ fn class_skill_map<'a>(s: &'a Vec<structs::ClassSkill>) -> HashMap<i32, &'a stru
     return m;
 }
 
-fn skill_choice_map<'a>(s: &'a Vec<structs::CharacterSkillChoice>)
-                        -> HashMap<i32, &'a structs::CharacterSkillChoice> {
+fn skill_choice_map<'a>(
+    s: &'a Vec<structs::CharacterSkillChoice>,
+) -> HashMap<i32, &'a structs::CharacterSkillChoice> {
     let mut m = HashMap::new();
     for s in s.iter() {
         m.insert(s.skill_id, s);
@@ -270,9 +280,10 @@ impl structs::ArmorPiece {
 }
 
 impl structs::Shield {
-    pub fn into_personal_canonical(&self,
-                                   c_shield: &structs::CreatureShield)
-                                   -> models::PersonalShield {
+    pub fn into_personal_canonical(
+        &self,
+        c_shield: &structs::CreatureShield,
+    ) -> models::PersonalShield {
         models::PersonalShield {
             shield: models::Shield {
                 name: self.name.clone(),
@@ -350,19 +361,21 @@ impl structs::ExpandedCreatureItem {
     }
 }
 
-fn build_combat_weapon_stats(weapons: &Vec<models::Weapon>,
-                             size: &models::Size,
-                             base_attack_bonus: i32,
-                             abs: &models::AbilityScoreInfo)
-                             -> Vec<models::CombatWeaponStat> {
-    weapons.iter()
+fn build_combat_weapon_stats(
+    weapons: &Vec<models::Weapon>,
+    size: &models::Size,
+    base_attack_bonus: i32,
+    abs: &models::AbilityScoreInfo,
+) -> Vec<models::CombatWeaponStat> {
+    weapons
+        .iter()
         .map(|weapon| {
-            let (ab_ability_mod, damage_ability_mod) = if weapon.size_style ==
-                                                          models::WeaponSizeStyle::Ranged {
-                (abs.dex.modifier, 0)
-            } else {
-                (abs.str.modifier, abs.str.modifier)
-            };
+            let (ab_ability_mod, damage_ability_mod) =
+                if weapon.size_style == models::WeaponSizeStyle::Ranged {
+                    (abs.dex.modifier, 0)
+                } else {
+                    (abs.str.modifier, abs.str.modifier)
+                };
             models::CombatWeaponStat {
                 name: weapon.name.clone(),
                 training_type: weapon.training_type.clone(),
@@ -385,19 +398,22 @@ fn build_combat_weapon_stats(weapons: &Vec<models::Weapon>,
 impl structs::ClassSavingThrows {
     pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
         models::SavingThrows {
-            fortitude: build_saving_throw(self.fortitude,
-                                          abs.con.modifier,
-                                          models::AbilityName::Con),
+            fortitude: build_saving_throw(
+                self.fortitude,
+                abs.con.modifier,
+                models::AbilityName::Con,
+            ),
             reflex: build_saving_throw(self.reflex, abs.dex.modifier, models::AbilityName::Dex),
             will: build_saving_throw(self.will, abs.wis.modifier, models::AbilityName::Wis),
         }
     }
 }
 
-fn build_saving_throw(class_base: i32,
-                      ability_mod: i32,
-                      ability_name: models::AbilityName)
-                      -> models::SavingThrow {
+fn build_saving_throw(
+    class_base: i32,
+    ability_mod: i32,
+    ability_name: models::AbilityName,
+) -> models::SavingThrow {
     let total = class_base + ability_mod;
     return models::SavingThrow {
         total: total,
@@ -407,10 +423,11 @@ fn build_saving_throw(class_base: i32,
     };
 }
 
-fn build_combat_maneuvers(abilities: &models::AbilityScoreInfo,
-                          base_attack_bonus: i32,
-                          size_mod: i32)
-                          -> models::CombatManeuvers {
+fn build_combat_maneuvers(
+    abilities: &models::AbilityScoreInfo,
+    base_attack_bonus: i32,
+    size_mod: i32,
+) -> models::CombatManeuvers {
     let bonus = {
         let str_mod = abilities.str.modifier;
         let total = str_mod + base_attack_bonus + size_mod;

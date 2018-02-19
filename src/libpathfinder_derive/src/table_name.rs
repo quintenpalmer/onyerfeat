@@ -16,17 +16,20 @@ pub fn derive_table_namer(ast: &syn::DeriveInput) -> quote::Tokens {
                     let s = get_string_from_lit(name.as_ref(), name.as_ref(), lit);
                     o_table_name = Some(s);
                 }
-                _ => {
-                    panic!(format!("incorrect usage of custom attribute, use: {}",
-                                   table_namer_usage))
-                }
+                _ => panic!(format!(
+                    "incorrect usage of custom attribute, use: {}",
+                    table_namer_usage
+                )),
             }
         }
     }
 
     let table_name = match o_table_name {
         Some(s) => s,
-        None => panic!(format!("must provide the table name: {}", table_namer_usage)),
+        None => panic!(format!(
+            "must provide the table name: {}",
+            table_namer_usage
+        )),
     };
 
     // Used in the quasi-quotation below as `#name`
@@ -55,8 +58,10 @@ fn get_string_from_lit(attr_name: &str, meta_item_name: &str, lit: &syn::Lit) ->
     if let syn::Lit::Str(ref s, _) = *lit {
         s.clone()
     } else {
-        panic!(format!("expected table_name {} attribute to be a string: `{} = \"...\"`",
-                       attr_name,
-                       meta_item_name));
+        panic!(format!(
+            "expected table_name {} attribute to be a string: `{} = \"...\"`",
+            attr_name,
+            meta_item_name
+        ));
     }
 }

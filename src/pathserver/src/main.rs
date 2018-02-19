@@ -1,5 +1,5 @@
-extern crate libpathfinder as libpf;
 extern crate iron;
+extern crate libpathfinder as libpf;
 
 fn main() {
     match run_app() {
@@ -22,11 +22,13 @@ impl IronHttpError {
 
 fn run_app() -> Result<(), IronHttpError> {
     println!("serving pathfinder characters");
-    let handler = libpf::web::Handler::new("postgresql://pathfinder_user@localhost/pathfinder"
-        .to_owned());
-    try!(iron::Iron::new(handler)
-        .http("localhost:3000")
-        .map_err(IronHttpError::new));
+    let handler =
+        libpf::web::Handler::new("postgresql://pathfinder_user@localhost/pathfinder".to_owned());
+    try!(
+        iron::Iron::new(handler)
+            .http("localhost:3000")
+            .map_err(IronHttpError::new)
+    );
     println!("finished serving; exiting");
     return Ok(());
 }

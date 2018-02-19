@@ -14,9 +14,9 @@ pub fn derive_from_row(ast: &syn::DeriveInput) -> quote::Tokens {
                 let field = field_syn.ident.as_ref().unwrap();
                 let field_str = format!("{}", field);
                 field_lets.push(quote! { let #field =
-                    try!(try!(row.get_opt(#field_str).ok_or(
-                        error::Error::ParsingNonexistentField(#field_str.to_owned()))
-                    ).map_err(error::Error::Postgres)); });
+                try!(try!(row.get_opt(#field_str).ok_or(
+                    error::Error::ParsingNonexistentField(#field_str.to_owned()))
+                ).map_err(error::Error::Postgres)); });
                 field_assignments.push(quote! { #field: #field });
             }
 

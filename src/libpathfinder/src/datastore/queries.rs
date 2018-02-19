@@ -1,4 +1,3 @@
-
 pub static CHARACTER_SUB_SKILLS_SQL: &'static str = r#"
 SELECT
     cssc.id,

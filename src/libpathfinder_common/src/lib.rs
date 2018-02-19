@@ -1,16 +1,18 @@
 #[macro_use]
 extern crate iron;
+extern crate postgres;
 extern crate serde;
-extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
-extern crate postgres;
+extern crate serde_json;
 
 pub mod error;
 pub mod webshared;
 
 pub trait QueryParam {
-    fn parse_from(&mut iron::Request) -> iron::IronResult<Self> where Self: Sized;
+    fn parse_from(&mut iron::Request) -> iron::IronResult<Self>
+    where
+        Self: Sized;
 }
 
 pub trait TableNamer {
@@ -18,7 +20,9 @@ pub trait TableNamer {
 }
 
 pub trait FromRow {
-    fn parse_row(row: postgres::rows::Row) -> Result<Self, error::Error> where Self: Sized;
+    fn parse_row(row: postgres::rows::Row) -> Result<Self, error::Error>
+    where
+        Self: Sized;
 }
 
 pub trait Datastore {

@@ -242,7 +242,9 @@ displayCharacterSheet character =
                                 , Html.td [] [ Elements.labelDefault False <| (toString weaponStat.range) ++ "ft" ]
                                 ]
                         )
-                        character.combatWeaponStats
+                        (Common.weaponSort
+                            character.combatWeaponStats
+                        )
                     )
                 ]
             ]

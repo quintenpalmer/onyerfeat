@@ -55,7 +55,7 @@ weaponsPanel weapons =
                             , Html.td [] [ Elements.labelDefault False <| Displays.displayPhysicalDamage weapon.damageType ]
                             ]
                     )
-                    weapons
+                    (Common.weaponSort weapons)
                 )
             ]
         ]

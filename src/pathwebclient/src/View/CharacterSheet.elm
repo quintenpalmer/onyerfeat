@@ -284,7 +284,7 @@ displayCharacterSheet character =
                 [ Elements.table True
                     [ ( "(masterwork) name"
                       , ( True
-                        , (if character.armorPiece.is_masterwork then
+                        , (if character.armorPiece.isMasterwork then
                             "🌟"
                            else
                             ""

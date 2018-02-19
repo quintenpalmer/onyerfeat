@@ -196,7 +196,7 @@ type alias ArmorPieceInstance =
     , fastSpeed : Int
     , slowSpeed : Int
     , mediumWeight : Int
-    , is_masterwork : Bool
+    , isMasterwork : Bool
     , special : Maybe String
     }
 

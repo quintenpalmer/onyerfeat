@@ -1,6 +1,5 @@
 module View.CharacterSheet exposing (displayCharacterSheet)
 
-import Char
 import Html
 import Html.Attributes as Attr
 import Common

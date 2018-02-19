@@ -204,6 +204,8 @@ pub struct CreatureShield {
     pub creature_id: i32,
     pub shield_id: i32,
     pub has_spikes: bool,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
 }
 
 #[derive(TableNamer, FromRow)]

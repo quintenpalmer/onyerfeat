@@ -677,7 +677,9 @@ CREATE TABLE creature_shields (
     id integer NOT NULL,
     creature_id integer NOT NULL,
     shield_id integer NOT NULL,
-    has_spikes boolean NOT NULL
+    has_spikes boolean NOT NULL,
+    is_masterwork boolean NOT NULL,
+    special text
 );
 
 

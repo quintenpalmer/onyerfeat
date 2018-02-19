@@ -315,7 +315,16 @@ displayCharacterSheet character =
                                 personalShield.shield
                         in
                             Elements.table True
-                                [ ( "name", ( True, shield.name ) )
+                                [ ( "(masterwork) name"
+                                  , ( True
+                                    , (if personalShield.isMasterwork then
+                                        "🌟"
+                                       else
+                                        ""
+                                      )
+                                        ++ shield.name
+                                    )
+                                  )
                                 , ( "style"
                                   , ( True
                                     , (case shield.sizeStyle of
@@ -342,6 +351,7 @@ displayCharacterSheet character =
                                 , ( "spell failure", ( True, (toString shield.arcaneSpellFailureChance) ++ "%" ) )
                                 , ( "weight", ( True, (toString shield.weight) ++ "lbs" ) )
                                 , ( "has spikes", ( True, toString personalShield.hasSpikes ) )
+                                , ( "special", ( True, Maybe.withDefault "-" personalShield.special ) )
                                 ]
                 ]
             ]

@@ -63,6 +63,7 @@ pub fn into_canonical_character(
         &armor_proficiency,
         &armor_piece,
         &optional_shield,
+        &optional_creature_shield,
     );
     let armor_class = {
         let dex_mod = ability_score_model.dex.modifier;
@@ -166,6 +167,7 @@ fn get_character_skills(
     armor_proficiency: &structs::ClassArmorProficiency,
     armor_piece: &structs::ExpandedArmorPieceInstance,
     optional_shield: &Option<structs::Shield>,
+    optional_creature_shield: &Option<structs::CreatureShield>,
 ) -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
     let choice_map = skill_choice_map(&skill_choices);
@@ -177,8 +179,17 @@ fn get_character_skills(
         None => 0,
     };
     let masterwork_ac_reduction = if armor_piece.is_masterwork { -1 } else { 0 };
+    let masterwork_shield_ac_reduction = match *optional_creature_shield {
+        Some(ref cs) => if cs.is_masterwork {
+            -1
+        } else {
+            0
+        },
+        None => 0,
+    };
     let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty
-        - (armor_proficiency.armor_check_penalty_reduction + masterwork_ac_reduction);
+        - (armor_proficiency.armor_check_penalty_reduction + masterwork_ac_reduction
+            + masterwork_shield_ac_reduction);
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
             Some(armor_penalty_value)
@@ -316,6 +327,8 @@ impl structs::Shield {
                 size_style: self.size_style,
             },
             has_spikes: c_shield.has_spikes,
+            is_masterwork: c_shield.is_masterwork,
+            special: c_shield.special.clone(),
         }
     }
 

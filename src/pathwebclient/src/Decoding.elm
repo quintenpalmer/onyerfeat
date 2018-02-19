@@ -249,6 +249,8 @@ decodePersonalShield =
     Pipeline.decode Models.PersonalShield
         |> Pipeline.required "shield" decodeShield
         |> Pipeline.required "has_spikes" Decode.bool
+        |> Pipeline.required "is_masterwork" Decode.bool
+        |> Pipeline.required "special" (Decode.nullable Decode.string)
 
 
 decodeWeapons : Decode.Decoder (List Models.Weapon)

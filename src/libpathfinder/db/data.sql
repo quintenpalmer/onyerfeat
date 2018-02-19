@@ -604,6 +604,7 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 3	Shield, light steel	1	\N	-1	5	6	light_melee
 4	Shield, heavy wooden	2	\N	-2	15	10	one_handed_melee
 5	Shield, heavy steel	2	\N	-2	15	15	one_handed_melee
+7	Dork Firespitter Shield	1	\N	-1	5	7	light_melee
 \.
 
 
@@ -611,8 +612,8 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 -- Data for Name: creature_shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_shields (id, creature_id, shield_id, has_spikes) FROM stdin;
-1	1	3	t
+COPY creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, special) FROM stdin;
+1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact
 \.
 
 
@@ -732,7 +733,7 @@ SELECT pg_catalog.setval('shield_damage_id_seq', 8, true);
 -- Name: shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('shields_id_seq', 6, true);
+SELECT pg_catalog.setval('shields_id_seq', 7, true);
 
 
 --

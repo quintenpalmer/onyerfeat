@@ -263,6 +263,8 @@ pub struct ArmorPiece {
 pub struct PersonalShield {
     pub shield: Shield,
     pub has_spikes: bool,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

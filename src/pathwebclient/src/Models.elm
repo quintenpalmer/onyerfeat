@@ -204,6 +204,8 @@ type alias ArmorPieceInstance =
 type alias PersonalShield =
     { shield : Shield
     , hasSpikes : Bool
+    , isMasterwork : Bool
+    , special : Maybe String
     }
 
 

@@ -22,6 +22,8 @@ SET search_path = public, pg_catalog;
 
 COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 1	13	16	18	14	10	8
+5	15	14	13	13	8	16
+4	16	13	16	10	14	6
 \.
 
 
@@ -29,7 +31,7 @@ COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 -- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('ability_score_sets_id_seq', 3, true);
+SELECT pg_catalog.setval('ability_score_sets_id_seq', 5, true);
 
 
 --
@@ -74,7 +76,9 @@ COPY classes (id, name) FROM stdin;
 --
 
 COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	128	medium	67	24	0	5	5
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6
+3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5
+4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5
 \.
 
 
@@ -84,6 +88,8 @@ COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_moral
 
 COPY characters (id, player_name, creature_id, class_id) FROM stdin;
 1	Quinten	1	1
+4	Quinten	3	1
+5	Quinten	4	2
 \.
 
 
@@ -133,6 +139,19 @@ COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
 9	1	1	2
 1	1	4	2
 5	1	21	2
+12	4	20	1
+13	4	10	1
+14	4	15	1
+15	4	4	1
+16	4	21	1
+17	4	14	1
+18	5	10	1
+19	5	15	1
+20	5	16	1
+22	5	11	1
+23	5	14	1
+21	5	5	3
+24	5	18	1
 \.
 
 
@@ -140,7 +159,7 @@ COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
 -- Name: character_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('character_skill_choices_id_seq', 11, true);
+SELECT pg_catalog.setval('character_skill_choices_id_seq', 24, true);
 
 
 --
@@ -172,6 +191,10 @@ COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
 10	religion	2
 11	traps	1
 12	architect	4
+13	books	1
+14	archaeologist	4
+15	beer	1
+16	brewer	4
 \.
 
 
@@ -185,6 +208,14 @@ COPY character_sub_skill_choices (id, character_id, sub_skill_id, count) FROM st
 3	1	11	1
 4	1	12	1
 5	1	4	1
+6	4	15	1
+7	4	16	1
+8	4	2	1
+9	4	3	1
+10	5	13	1
+12	5	8	1
+13	5	10	1
+11	5	14	3
 \.
 
 
@@ -192,14 +223,14 @@ COPY character_sub_skill_choices (id, character_id, sub_skill_id, count) FROM st
 -- Name: character_sub_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('character_sub_skill_choices_id_seq', 5, true);
+SELECT pg_catalog.setval('character_sub_skill_choices_id_seq', 13, true);
 
 
 --
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('characters_id_seq', 3, true);
+SELECT pg_catalog.setval('characters_id_seq', 5, true);
 
 
 --
@@ -390,6 +421,8 @@ SELECT pg_catalog.setval('classes_id_seq', 2, true);
 
 COPY creature_armor_pieces (id, creature_id, armor_piece_id) FROM stdin;
 1	1	8
+2	3	8
+3	4	8
 \.
 
 
@@ -397,7 +430,7 @@ COPY creature_armor_pieces (id, creature_id, armor_piece_id) FROM stdin;
 -- Name: creature_armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 1, true);
+SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 3, true);
 
 
 --
@@ -505,6 +538,7 @@ COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_da
 4	Morningstar	simple	one_handed_melee	35	(1,6)	(1,8)	(20,2)	\N	6	(t,t,f,t)
 5	Dagger	simple	light_melee	2	(1,3)	(1,4)	(19,2)	10	1	(f,t,t,f)
 6	Rapier	martial	one_handed_melee	20	(1,4)	(1,6)	(18,2)	\N	2	(f,t,f,f)
+7	Greatsword	martial	two_handed_melee	50	(1,10)	(2,6)	(19,2)	\N	8	(f,f,t,f)
 \.
 
 
@@ -517,6 +551,8 @@ COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
 2	1	2
 3	1	3
 4	1	6
+5	3	7
+6	4	7
 \.
 
 
@@ -524,14 +560,14 @@ COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_weapons_id_seq', 4, true);
+SELECT pg_catalog.setval('creature_weapons_id_seq', 6, true);
 
 
 --
 -- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creatures_id_seq', 1, true);
+SELECT pg_catalog.setval('creatures_id_seq', 4, true);
 
 
 --
@@ -592,14 +628,14 @@ SELECT pg_catalog.setval('skills_id_seq', 22, true);
 -- Name: sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('sub_skills_id_seq', 12, true);
+SELECT pg_catalog.setval('sub_skills_id_seq', 16, true);
 
 
 --
 -- Name: weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('weapons_id_seq', 6, true);
+SELECT pg_catalog.setval('weapons_id_seq', 7, true);
 
 
 --

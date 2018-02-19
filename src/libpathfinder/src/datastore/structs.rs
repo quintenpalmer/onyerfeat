@@ -229,6 +229,15 @@ pub struct ClassArmorProficiency {
 }
 
 #[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "class_saving_throw_bonuses")]
+pub struct ClassSavingThrowBonus {
+    pub id: i32,
+    pub class_id: i32,
+    pub level: i32,
+    pub cha_bonus: bool,
+}
+
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "items")]
 pub struct Item {
     pub id: i32,

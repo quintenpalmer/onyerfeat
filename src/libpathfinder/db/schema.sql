@@ -359,6 +359,41 @@ ALTER SEQUENCE class_armor_proficiencies_id_seq OWNED BY class_armor_proficienci
 
 
 --
+-- Name: class_saving_throw_bonuses; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE class_saving_throw_bonuses (
+    id integer NOT NULL,
+    class_id integer NOT NULL,
+    level integer NOT NULL,
+    cha_bonus boolean NOT NULL
+);
+
+
+ALTER TABLE class_saving_throw_bonuses OWNER TO pathfinder_user;
+
+--
+-- Name: class_saving_throw_bonuses_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE class_saving_throw_bonuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE class_saving_throw_bonuses_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: class_saving_throw_bonuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE class_saving_throw_bonuses_id_seq OWNED BY class_saving_throw_bonuses.id;
+
+
+--
 -- Name: class_saving_throws; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -1204,6 +1239,13 @@ ALTER TABLE ONLY class_armor_proficiencies ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: class_saving_throw_bonuses id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_saving_throw_bonuses ALTER COLUMN id SET DEFAULT nextval('class_saving_throw_bonuses_id_seq'::regclass);
+
+
+--
 -- Name: class_saving_throws id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1435,6 +1477,14 @@ ALTER TABLE ONLY characters
 
 ALTER TABLE ONLY class_armor_proficiencies
     ADD CONSTRAINT class_armor_proficiencies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: class_saving_throw_bonuses class_saving_throw_bonuses_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_saving_throw_bonuses
+    ADD CONSTRAINT class_saving_throw_bonuses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1707,6 +1757,14 @@ ALTER TABLE ONLY character_sub_skill_choices
 
 ALTER TABLE ONLY class_armor_proficiencies
     ADD CONSTRAINT class_armor_proficiencies_class_id_fkey FOREIGN KEY (class_id) REFERENCES classes(id);
+
+
+--
+-- Name: class_saving_throw_bonuses class_saving_throw_bonuses_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY class_saving_throw_bonuses
+    ADD CONSTRAINT class_saving_throw_bonuses_class_id_fkey FOREIGN KEY (class_id) REFERENCES classes(id);
 
 
 --

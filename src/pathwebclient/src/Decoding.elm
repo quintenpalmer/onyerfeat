@@ -105,6 +105,7 @@ decodeSavingThrow =
         |> Pipeline.required "total" Decode.int
         |> Pipeline.required "base" Decode.int
         |> Pipeline.required "ability_mod" Decode.int
+        |> Pipeline.required "other" Decode.int
         |> Pipeline.required "ability_name" Decode.string
 
 

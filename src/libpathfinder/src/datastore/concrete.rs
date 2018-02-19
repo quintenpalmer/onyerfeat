@@ -19,27 +19,36 @@ pub struct Datastore {
 
 impl Datastore {
     pub fn new<T: postgres::params::IntoConnectParams>(c: T) -> Result<Datastore, error::Error> {
-        let conn = try!(postgres::Connection::connect(c, postgres::TlsMode::None)
-            .map_err(error::Error::PostgresConnect));
+        let conn = try!(
+            postgres::Connection::connect(c, postgres::TlsMode::None)
+                .map_err(error::Error::PostgresConnect)
+        );
         return Ok(Datastore { conn: conn });
     }
 
     pub fn get_character(&self, id: i32) -> Result<models::Character, error::Error> {
         let character: structs::Character = try!(selects::select_one_by_id(&self.conn, id));
-        let creature: structs::Creature = try!(selects::select_one_by_id(&self.conn,
-                                                                         character.creature_id));
-        let abs: structs::AbilityScoreSet = try!(selects::select_one_by_id(&self.conn,
-                                                                  creature.ability_score_set_id));
+        let creature: structs::Creature =
+            try!(selects::select_one_by_id(&self.conn, character.creature_id));
+        let abs: structs::AbilityScoreSet = try!(selects::select_one_by_id(
+            &self.conn,
+            creature.ability_score_set_id
+        ));
         let class: structs::Class = try!(selects::select_one_by_id(&self.conn, character.class_id));
 
         let skills: Vec<structs::Skill> = try!(selects::select_all(&self.conn));
-        let trained_skills: Vec<structs::CharacterSkillChoice> =
-            try!(selects::select_by_field(&self.conn, "character_id", character.id));
+        let trained_skills: Vec<structs::CharacterSkillChoice> = try!(selects::select_by_field(
+            &self.conn,
+            "character_id",
+            character.id
+        ));
 
         let sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice> =
-            try!(selects::exec_and_select_by_field(&self.conn,
-                                                   queries::CHARACTER_SUB_SKILLS_SQL,
-                                                   character.id));
+            try!(selects::exec_and_select_by_field(
+                &self.conn,
+                queries::CHARACTER_SUB_SKILLS_SQL,
+                character.id
+            ));
 
         let class_skills: Vec<structs::ClassSkill> =
             try!(selects::select_by_field(&self.conn, "class_id", class.id));
@@ -50,67 +59,93 @@ impl Datastore {
         let class_skill_constructors: Vec<structs::ClassSkillConstructor> =
             try!(selects::select_by_field(&self.conn, "class_id", class.id));
 
-        let armor_piece: structs::ArmorPiece =
-            try!(selects::exec_and_select_one_by_field(&self.conn,
-                                                       queries::CHARACTER_ARMOR_PIECE_SQL,
-                                                       creature.id));
+        let armor_piece: structs::ArmorPiece = try!(selects::exec_and_select_one_by_field(
+            &self.conn,
+            queries::CHARACTER_ARMOR_PIECE_SQL,
+            creature.id
+        ));
 
-        let option_creature_shield: Option<structs::CreatureShield> =
-            try!(selects::select_optional_one_by_field(&self.conn, "creature_id", creature.id));
+        let option_creature_shield: Option<structs::CreatureShield> = try!(
+            selects::select_optional_one_by_field(&self.conn, "creature_id", creature.id)
+        );
 
         let option_shield: Option<structs::Shield> =
-            try!(selects::exec_and_select_optional_one_by_field(&self.conn,
-                                                                queries::CHARACTER_SHIELD_SQL,
-                                                                creature.id));
+            try!(selects::exec_and_select_optional_one_by_field(
+                &self.conn,
+                queries::CHARACTER_SHIELD_SQL,
+                creature.id
+            ));
 
         let option_shield_damage: Option<structs::ShieldDamage> =
-            try!(selects::exec_and_select_optional_one_by_field(&self.conn,
-                                                                queries::SHIELD_DAMAGE_SQL,
-                                                                creature.id));
+            try!(selects::exec_and_select_optional_one_by_field(
+                &self.conn,
+                queries::SHIELD_DAMAGE_SQL,
+                creature.id
+            ));
 
-        let weapons: Vec<structs::Weapon> = try!(selects::exec_and_select_by_field(&self.conn,
-                                                   queries::CREATURE_WEAPON_SQL,
-                                                   creature.id));
+        let weapons: Vec<structs::Weapon> = try!(selects::exec_and_select_by_field(
+            &self.conn,
+            queries::CREATURE_WEAPON_SQL,
+            creature.id
+        ));
 
         let base_saving_throws: structs::ClassSavingThrows =
-            try!(selects::exec_and_select_one_by_two_fields(&self.conn,
-                                                            queries::BASE_SAVING_THROWS_SQL,
-                                                            class.id,
-                                                            creature.level));
+            try!(selects::exec_and_select_one_by_two_fields(
+                &self.conn,
+                queries::BASE_SAVING_THROWS_SQL,
+                class.id,
+                creature.level
+            ));
+
+        let class_saving_throw_bonus: structs::ClassSavingThrowBonus =
+            try!(selects::exec_and_select_one_by_two_fields(
+                &self.conn,
+                queries::CLASS_SAVING_THROW_BONUS_SQL,
+                class.id,
+                creature.level
+            ));
 
         let armor_proficiency: structs::ClassArmorProficiency =
-            try!(selects::exec_and_select_one_by_two_fields(&self.conn,
-                                                            queries::CLASS_ARMOR_PROFICIENCY_SQL,
-                                                            class.id,
-                                                            creature.level));
-        let items: Vec<structs::ExpandedCreatureItem> =
-            try!(selects::exec_and_select_by_field(&self.conn,
-                                                   queries::CREATURE_ITEMS_SQL,
-                                                   creature.id));
+            try!(selects::exec_and_select_one_by_two_fields(
+                &self.conn,
+                queries::CLASS_ARMOR_PROFICIENCY_SQL,
+                class.id,
+                creature.level
+            ));
 
-        return Ok(convert::into_canonical_character(character,
-                                                    creature,
-                                                    abs,
-                                                    class,
-                                                    skills,
-                                                    trained_skills,
-                                                    sub_skills,
-                                                    class_skills,
-                                                    class_sub_skills,
-                                                    class_skill_constructors,
-                                                    armor_piece,
-                                                    option_shield,
-                                                    option_creature_shield,
-                                                    option_shield_damage,
-                                                    weapons,
-                                                    base_saving_throws,
-                                                    armor_proficiency,
-                                                    items));
+        let items: Vec<structs::ExpandedCreatureItem> = try!(selects::exec_and_select_by_field(
+            &self.conn,
+            queries::CREATURE_ITEMS_SQL,
+            creature.id
+        ));
+
+        return Ok(convert::into_canonical_character(
+            character,
+            creature,
+            abs,
+            class,
+            skills,
+            trained_skills,
+            sub_skills,
+            class_skills,
+            class_sub_skills,
+            class_skill_constructors,
+            armor_piece,
+            option_shield,
+            option_creature_shield,
+            option_shield_damage,
+            weapons,
+            base_saving_throws,
+            class_saving_throw_bonus,
+            armor_proficiency,
+            items,
+        ));
     }
 
     pub fn get_skills(&self) -> Result<Vec<models::ConcreteSkill>, error::Error> {
         let skills: Vec<structs::Skill> = try!(selects::select_all(&self.conn));
-        let mut ret_skills: Vec<models::ConcreteSkill> = skills.iter()
+        let mut ret_skills: Vec<models::ConcreteSkill> = skills
+            .iter()
             .map(|x| -> models::ConcreteSkill {
                 models::ConcreteSkill::Skill(models::Skill {
                     name: x.name.clone(),
@@ -149,9 +184,10 @@ impl Datastore {
         return Ok(shields.iter().map(|x| x.into_canonical()).collect());
     }
 
-    pub fn insert_new_character_item(&self,
-                                     exp_char_item: models::CreatureItem)
-                                     -> Result<models::CreatureItem, error::Error> {
+    pub fn insert_new_character_item(
+        &self,
+        exp_char_item: models::CreatureItem,
+    ) -> Result<models::CreatureItem, error::Error> {
         let txn = try!(self.conn.transaction().map_err(error::Error::Postgres));
         match insert_character_item(&txn, exp_char_item) {
             Ok(res) => {
@@ -166,24 +202,30 @@ impl Datastore {
     }
 }
 
-fn insert_character_item(txn: &postgres::transaction::Transaction,
-                         exp_char_item: models::CreatureItem)
-                         -> Result<models::CreatureItem, error::Error> {
-    let existing_item: Option<structs::Item> =
-        try!(selects::select_optional_one_by_field(txn, "name", exp_char_item.name.clone()));
+fn insert_character_item(
+    txn: &postgres::transaction::Transaction,
+    exp_char_item: models::CreatureItem,
+) -> Result<models::CreatureItem, error::Error> {
+    let existing_item: Option<structs::Item> = try!(selects::select_optional_one_by_field(
+        txn,
+        "name",
+        exp_char_item.name.clone()
+    ));
     let item_to_insert = match existing_item {
         Some(item) => item,
-        None => {
-            try!(insert_raw_item(txn,
-                                 exp_char_item.name.clone(),
-                                 exp_char_item.description.clone()))
-        }
+        None => try!(insert_raw_item(
+            txn,
+            exp_char_item.name.clone(),
+            exp_char_item.description.clone()
+        )),
     };
 
-    let char_item = try!(insert_raw_char_item(txn,
-                                              item_to_insert.id,
-                                              exp_char_item.creature_id,
-                                              exp_char_item.count));
+    let char_item = try!(insert_raw_char_item(
+        txn,
+        item_to_insert.id,
+        exp_char_item.creature_id,
+        exp_char_item.count
+    ));
 
     return Ok(models::CreatureItem {
         id: char_item.id,
@@ -194,40 +236,54 @@ fn insert_character_item(txn: &postgres::transaction::Transaction,
     });
 }
 
-fn insert_raw_item(txn: &postgres::transaction::Transaction,
-                   name: String,
-                   description: String)
-                   -> Result<structs::Item, error::Error> {
-    let stmt = try!(txn.prepare(queries::INSERT_ITEM_SQL)
-        .map_err(error::Error::Postgres));
-    let rows = try!(stmt.query(&[&name, &description]).map_err(error::Error::Postgres));
+fn insert_raw_item(
+    txn: &postgres::transaction::Transaction,
+    name: String,
+    description: String,
+) -> Result<structs::Item, error::Error> {
+    let stmt = try!(
+        txn.prepare(queries::INSERT_ITEM_SQL)
+            .map_err(error::Error::Postgres)
+    );
+    let rows = try!(
+        stmt.query(&[&name, &description])
+            .map_err(error::Error::Postgres)
+    );
     if rows.len() != 1 {
-        return Err(error::Error::ManyResultsOnSelectOne(structs::Item::get_table_name()
-            .to_string()));
+        return Err(error::Error::ManyResultsOnSelectOne(
+            structs::Item::get_table_name().to_string(),
+        ));
     }
     let row = rows.get(0);
     return structs::Item::parse_row(row);
 }
 
-fn insert_raw_char_item(txn: &postgres::transaction::Transaction,
-                        item_id: i32,
-                        creature_id: i32,
-                        count: i32)
-                        -> Result<structs::CreatureItem, error::Error> {
-    let stmt = try!(txn.prepare(queries::INSERT_CHARACTER_ITEM_SQL)
-        .map_err(error::Error::Postgres));
-    let rows = try!(stmt.query(&[&creature_id, &item_id, &count])
-        .map_err(error::Error::Postgres));
+fn insert_raw_char_item(
+    txn: &postgres::transaction::Transaction,
+    item_id: i32,
+    creature_id: i32,
+    count: i32,
+) -> Result<structs::CreatureItem, error::Error> {
+    let stmt = try!(
+        txn.prepare(queries::INSERT_CHARACTER_ITEM_SQL)
+            .map_err(error::Error::Postgres)
+    );
+    let rows = try!(
+        stmt.query(&[&creature_id, &item_id, &count])
+            .map_err(error::Error::Postgres)
+    );
     if rows.len() != 1 {
-        return Err(error::Error::ManyResultsOnSelectOne(structs::CreatureItem::get_table_name()
-            .to_string()));
+        return Err(error::Error::ManyResultsOnSelectOne(
+            structs::CreatureItem::get_table_name().to_string(),
+        ));
     }
     let row = rows.get(0);
     return structs::CreatureItem::parse_row(row);
 }
 
-fn skill_constructor_map<'a>(s: &'a Vec<structs::SkillConstructor>)
-                             -> HashMap<i32, &'a structs::SkillConstructor> {
+fn skill_constructor_map<'a>(
+    s: &'a Vec<structs::SkillConstructor>,
+) -> HashMap<i32, &'a structs::SkillConstructor> {
     let mut m: HashMap<i32, &'a structs::SkillConstructor> = HashMap::new();
     for s in s.iter() {
         m.insert(s.id, s);

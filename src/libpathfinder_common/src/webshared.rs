@@ -11,12 +11,15 @@ pub struct Response<T: serde::Serialize> {
 
 impl<T: serde::Serialize> Response<T> {
     pub fn encode(&self) -> iron::IronResult<iron::Response> {
-        let msg = itry!(serde_json::to_string(self),
-                        server_error("could not encode json response".to_owned()));
+        let msg = itry!(
+            serde_json::to_string(self),
+            server_error("could not encode json response".to_owned())
+        );
 
         println!("responding with: {}", msg);
         let mut resp = iron::Response::with((status::Ok, msg));
-        resp.headers.set(iron::headers::AccessControlAllowOrigin::Any);
+        resp.headers
+            .set(iron::headers::AccessControlAllowOrigin::Any);
         return Ok(resp);
     }
 }
@@ -27,8 +30,10 @@ pub struct ErrMessage<T: serde::Serialize> {
 }
 
 pub fn simple_server_error() -> (status::Status, String) {
-    return status_message(status::InternalServerError,
-                          "internal_server_error".to_owned());
+    return status_message(
+        status::InternalServerError,
+        "internal_server_error".to_owned(),
+    );
 }
 
 pub fn server_error(msg: String) -> (status::Status, String) {

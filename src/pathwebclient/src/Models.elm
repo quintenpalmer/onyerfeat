@@ -98,6 +98,7 @@ type alias SavingThrow =
     { total : Int
     , base : Int
     , abilityMod : Int
+    , other : Int
     , abilityName : String
     }
 

@@ -62,6 +62,7 @@ pub struct SavingThrow {
     pub total: i32,
     pub base: i32,
     pub ability_mod: i32,
+    pub other: i32,
     pub ability_name: AbilityName,
 }
 

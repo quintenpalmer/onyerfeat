@@ -45,7 +45,7 @@ displayArmorPieces armorPieces =
                                         , Html.td [] [ Elements.labelDefault True <| toString piece.mediumWeight ]
                                         ]
                                 )
-                                armorPieces
+                                (List.sortBy .armorBonus (List.sortWith Common.armorSortFn armorPieces))
                             )
                         ]
                     ]

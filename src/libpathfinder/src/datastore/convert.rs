@@ -15,7 +15,7 @@ pub fn into_canonical_character(
     class_skills: Vec<structs::ClassSkill>,
     class_sub_skills: Vec<structs::ClassSubSkill>,
     class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-    armor_piece: structs::ArmorPiece,
+    armor_piece: structs::ExpandedArmorPieceInstance,
     optional_shield: Option<structs::Shield>,
     optional_creature_shield: Option<structs::CreatureShield>,
     optional_shield_damage: Option<structs::ShieldDamage>,
@@ -164,7 +164,7 @@ fn get_character_skills(
     class_skill_constructors: Vec<structs::ClassSkillConstructor>,
     abs: &models::AbilityScoreInfo,
     armor_proficiency: &structs::ClassArmorProficiency,
-    armor_piece: &structs::ArmorPiece,
+    armor_piece: &structs::ExpandedArmorPieceInstance,
     optional_shield: &Option<structs::Shield>,
 ) -> Vec<models::CharacterSkill> {
     let mut ret_skills = Vec::new();
@@ -176,8 +176,9 @@ fn get_character_skills(
         Some(ref s) => s.skill_penalty,
         None => 0,
     };
+    let masterwork_ac_reduction = if armor_piece.is_masterwork { -1 } else { 0 };
     let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty
-        - armor_proficiency.armor_check_penalty_reduction;
+        - (armor_proficiency.armor_check_penalty_reduction + masterwork_ac_reduction);
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
             Some(armor_penalty_value)
@@ -277,6 +278,24 @@ impl structs::ArmorPiece {
             fast_speed: self.fast_speed,
             slow_speed: self.slow_speed,
             medium_weight: self.medium_weight,
+        }
+    }
+}
+
+impl structs::ExpandedArmorPieceInstance {
+    pub fn into_canonical(&self) -> models::ArmorPieceInstance {
+        models::ArmorPieceInstance {
+            armor_class: self.armor_class.clone(),
+            name: self.name.clone(),
+            armor_bonus: self.armor_bonus,
+            max_dex_bonus: self.max_dex_bonus,
+            armor_check_penalty: self.armor_check_penalty,
+            arcane_spell_failure_chance: self.arcane_spell_failure_chance,
+            fast_speed: self.fast_speed,
+            slow_speed: self.slow_speed,
+            medium_weight: self.medium_weight,
+            is_masterwork: self.is_masterwork,
+            special: self.special.clone(),
         }
     }
 }

@@ -59,11 +59,12 @@ impl Datastore {
         let class_skill_constructors: Vec<structs::ClassSkillConstructor> =
             try!(selects::select_by_field(&self.conn, "class_id", class.id));
 
-        let armor_piece: structs::ArmorPiece = try!(selects::exec_and_select_one_by_field(
-            &self.conn,
-            queries::CHARACTER_ARMOR_PIECE_SQL,
-            creature.id
-        ));
+        let armor_piece: structs::ExpandedArmorPieceInstance =
+            try!(selects::exec_and_select_one_by_field(
+                &self.conn,
+                queries::CHARACTER_ARMOR_PIECE_INSTANCE_SQL,
+                creature.id
+            ));
 
         let option_creature_shield: Option<structs::CreatureShield> = try!(
             selects::select_optional_one_by_field(&self.conn, "creature_id", creature.id)

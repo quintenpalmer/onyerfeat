@@ -282,7 +282,16 @@ displayCharacterSheet character =
             [ Elements.panelled "Armor Piece"
                 False
                 [ Elements.table True
-                    [ ( "name", ( True, character.armorPiece.name ) )
+                    [ ( "(masterwork) name"
+                      , ( True
+                        , (if character.armorPiece.is_masterwork then
+                            "🌟"
+                           else
+                            ""
+                          )
+                            ++ character.armorPiece.name
+                        )
+                      )
                     , ( "class", ( True, character.armorPiece.armorClass ) )
                     , ( "AC bonus", ( True, "+" ++ (toString character.armorPiece.armorBonus) ) )
                     , ( "max dex", ( True, "+" ++ (toString character.armorPiece.maxDexBonus) ) )
@@ -291,6 +300,7 @@ displayCharacterSheet character =
                     , ( "fast speed", ( True, (toString character.armorPiece.fastSpeed) ++ "ft" ) )
                     , ( "slow speed", ( True, (toString character.armorPiece.slowSpeed) ++ "ft" ) )
                     , ( "weight", ( True, (toString character.armorPiece.mediumWeight) ++ "lbs" ) )
+                    , ( "special", ( True, Maybe.withDefault "-" character.armorPiece.special ) )
                     ]
                 ]
             , Elements.panelled "Shield"

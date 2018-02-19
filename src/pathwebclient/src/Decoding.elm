@@ -25,7 +25,7 @@ decodeCharacter =
         |> Pipeline.required "ability_score_info" decodeAbilityScores
         |> Pipeline.required "meta_information" decodeMetaInformation
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
-        |> Pipeline.required "armor_piece" decodeArmorPiece
+        |> Pipeline.required "armor_piece" decodeArmorPieceInstance
         |> Pipeline.required "shield" (Decode.nullable decodePersonalShield)
         |> Pipeline.required "full_weapons" (Decode.list decodeWeapon)
         |> Pipeline.required "combat_weapon_stats" (Decode.list decodeCombatWeaponStats)
@@ -209,6 +209,22 @@ decodeArmorPiece =
         |> Pipeline.required "fast_speed" Decode.int
         |> Pipeline.required "slow_speed" Decode.int
         |> Pipeline.required "medium_weight" Decode.int
+
+
+decodeArmorPieceInstance : Decode.Decoder Models.ArmorPieceInstance
+decodeArmorPieceInstance =
+    Pipeline.decode Models.ArmorPieceInstance
+        |> Pipeline.required "armor_class" Decode.string
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "armor_bonus" Decode.int
+        |> Pipeline.required "max_dex_bonus" Decode.int
+        |> Pipeline.required "armor_check_penalty" Decode.int
+        |> Pipeline.required "arcane_spell_failure_chance" Decode.int
+        |> Pipeline.required "fast_speed" Decode.int
+        |> Pipeline.required "slow_speed" Decode.int
+        |> Pipeline.required "medium_weight" Decode.int
+        |> Pipeline.required "is_masterwork" Decode.bool
+        |> Pipeline.required "special" (Decode.nullable Decode.string)
 
 
 decodeShields : Decode.Decoder (List Models.Shield)

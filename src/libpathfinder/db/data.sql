@@ -55,6 +55,24 @@ COPY armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_chec
 
 
 --
+-- Data for Name: armor_piece_instances; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY armor_piece_instances (id, armor_piece_id, is_masterwork, special) FROM stdin;
+2	8	t	\N
+3	8	t	\N
+1	8	t	Heal 1hp per round...
+\.
+
+
+--
+-- Name: armor_piece_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('armor_piece_instances_id_seq', 3, true);
+
+
+--
 -- Name: armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -116,10 +134,10 @@ COPY classes (id, name) FROM stdin;
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6
-3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5
-4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6	1
+3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
+4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5	3
 \.
 
 

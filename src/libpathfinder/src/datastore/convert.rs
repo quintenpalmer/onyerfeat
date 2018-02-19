@@ -21,6 +21,7 @@ pub fn into_canonical_character(
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::Weapon>,
     base_saving_throws: structs::ClassSavingThrows,
+    class_saving_throw_bonus: structs::ClassSavingThrowBonus,
     armor_proficiency: structs::ClassArmorProficiency,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
@@ -120,7 +121,8 @@ pub fn into_canonical_character(
             nonlethal_damage: creature.nonlethal_damage,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
-            saving_throws: base_saving_throws.into_canonical(&ability_score_model),
+            saving_throws: base_saving_throws
+                .into_canonical(&ability_score_model, &class_saving_throw_bonus),
             combat_maneuvers: build_combat_maneuvers(
                 &ability_score_model,
                 creature.base_attack_bonus,
@@ -396,15 +398,31 @@ fn build_combat_weapon_stats(
 }
 
 impl structs::ClassSavingThrows {
-    pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
+    pub fn into_canonical(
+        &self,
+        abs: &models::AbilityScoreInfo,
+        cstb: &structs::ClassSavingThrowBonus,
+    ) -> models::SavingThrows {
+        let class_cha_bonus = if cstb.cha_bonus { abs.cha.modifier } else { 0 };
         models::SavingThrows {
             fortitude: build_saving_throw(
                 self.fortitude,
                 abs.con.modifier,
+                class_cha_bonus,
                 models::AbilityName::Con,
             ),
-            reflex: build_saving_throw(self.reflex, abs.dex.modifier, models::AbilityName::Dex),
-            will: build_saving_throw(self.will, abs.wis.modifier, models::AbilityName::Wis),
+            reflex: build_saving_throw(
+                self.reflex,
+                abs.dex.modifier,
+                class_cha_bonus,
+                models::AbilityName::Dex,
+            ),
+            will: build_saving_throw(
+                self.will,
+                abs.wis.modifier,
+                class_cha_bonus,
+                models::AbilityName::Wis,
+            ),
         }
     }
 }
@@ -412,14 +430,16 @@ impl structs::ClassSavingThrows {
 fn build_saving_throw(
     class_base: i32,
     ability_mod: i32,
+    other: i32,
     ability_name: models::AbilityName,
 ) -> models::SavingThrow {
-    let total = class_base + ability_mod;
+    let total = class_base + ability_mod + other;
     return models::SavingThrow {
         total: total,
         base: class_base,
         ability_mod: ability_mod,
         ability_name: ability_name,
+        other: other,
     };
 }
 

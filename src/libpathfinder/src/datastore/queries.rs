@@ -84,6 +84,17 @@ AND
     cap.level = $2
 "#;
 
+pub static CLASS_SAVING_THROW_BONUS_SQL: &'static str = r#"
+SELECT
+    cstb.*
+FROM
+    class_saving_throw_bonuses cstb
+WHERE
+    cstb.class_id = $1
+AND
+    cstb.level = $2
+"#;
+
 pub static SHIELD_DAMAGE_SQL: &'static str = r#"
 SELECT
     shields.name as shield_name,

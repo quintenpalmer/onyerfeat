@@ -3,6 +3,7 @@ module View.ArmorTable exposing (displayArmorPieces)
 import Html
 import Html.Attributes as Attr
 import Common
+import CustomSort
 import Models
 import View.Elements as Elements
 
@@ -45,7 +46,9 @@ displayArmorPieces armorPieces =
                                         , Html.td [] [ Elements.labelDefault True <| toString piece.mediumWeight ]
                                         ]
                                 )
-                                armorPieces
+                                (CustomSort.armorSort
+                                    armorPieces
+                                )
                             )
                         ]
                     ]

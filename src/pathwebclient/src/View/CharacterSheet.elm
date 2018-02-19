@@ -1,9 +1,9 @@
 module View.CharacterSheet exposing (displayCharacterSheet)
 
-import Char
 import Html
 import Html.Attributes as Attr
 import Common
+import CustomSort
 import Models
 import View.Elements as Elements
 import View.WeaponTable as WeaponTable
@@ -243,7 +243,9 @@ displayCharacterSheet character =
                                 , Html.td [] [ Elements.labelDefault False <| (toString weaponStat.range) ++ "ft" ]
                                 ]
                         )
-                        character.combatWeaponStats
+                        (CustomSort.weaponSort
+                            character.combatWeaponStats
+                        )
                     )
                 ]
             ]
@@ -466,7 +468,10 @@ buildSkillsPanel skills =
                                         ]
                                     ]
                             )
-                            skills
+                            (List.sortBy
+                                .name
+                                skills
+                            )
                         )
                     ]
                 ]

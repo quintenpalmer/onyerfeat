@@ -465,7 +465,10 @@ buildSkillsPanel skills =
                                         ]
                                     ]
                             )
-                            skills
+                            (List.sortBy
+                                .name
+                                skills
+                            )
                         )
                     ]
                 ]

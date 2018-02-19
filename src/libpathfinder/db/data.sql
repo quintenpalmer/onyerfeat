@@ -530,24 +530,6 @@ SELECT pg_catalog.setval('classes_id_seq', 2, true);
 
 
 --
--- Data for Name: creature_armor_pieces; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY creature_armor_pieces (id, creature_id, armor_piece_id) FROM stdin;
-1	1	8
-2	3	8
-3	4	8
-\.
-
-
---
--- Name: creature_armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
---
-
-SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 3, true);
-
-
---
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 

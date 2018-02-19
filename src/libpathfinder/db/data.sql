@@ -55,6 +55,24 @@ COPY armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_chec
 
 
 --
+-- Data for Name: armor_piece_instances; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY armor_piece_instances (id, armor_piece_id, is_masterwork, special) FROM stdin;
+2	8	t	\N
+3	8	t	\N
+1	8	t	Heal 1hp per round...
+\.
+
+
+--
+-- Name: armor_piece_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('armor_piece_instances_id_seq', 3, true);
+
+
+--
 -- Name: armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -116,10 +134,10 @@ COPY classes (id, name) FROM stdin;
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6
-3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5
-4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5
+COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6	1
+3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
+4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5	3
 \.
 
 
@@ -512,24 +530,6 @@ SELECT pg_catalog.setval('classes_id_seq', 2, true);
 
 
 --
--- Data for Name: creature_armor_pieces; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY creature_armor_pieces (id, creature_id, armor_piece_id) FROM stdin;
-1	1	8
-2	3	8
-3	4	8
-\.
-
-
---
--- Name: creature_armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
---
-
-SELECT pg_catalog.setval('creature_armor_pieces_id_seq', 3, true);
-
-
---
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -604,6 +604,7 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 3	Shield, light steel	1	\N	-1	5	6	light_melee
 4	Shield, heavy wooden	2	\N	-2	15	10	one_handed_melee
 5	Shield, heavy steel	2	\N	-2	15	15	one_handed_melee
+7	Dork Firespitter Shield	1	\N	-1	5	7	light_melee
 \.
 
 
@@ -611,8 +612,8 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 -- Data for Name: creature_shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_shields (id, creature_id, shield_id, has_spikes) FROM stdin;
-1	1	3	t
+COPY creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, special) FROM stdin;
+1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact
 \.
 
 
@@ -732,7 +733,7 @@ SELECT pg_catalog.setval('shield_damage_id_seq', 8, true);
 -- Name: shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('shields_id_seq', 6, true);
+SELECT pg_catalog.setval('shields_id_seq', 7, true);
 
 
 --

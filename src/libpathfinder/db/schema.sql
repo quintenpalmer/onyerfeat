@@ -111,6 +111,41 @@ ALTER SEQUENCE ability_score_sets_id_seq OWNED BY ability_score_sets.id;
 
 
 --
+-- Name: armor_piece_instances; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE armor_piece_instances (
+    id integer NOT NULL,
+    armor_piece_id integer NOT NULL,
+    is_masterwork boolean NOT NULL,
+    special text
+);
+
+
+ALTER TABLE armor_piece_instances OWNER TO pathfinder_user;
+
+--
+-- Name: armor_piece_instances_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE armor_piece_instances_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE armor_piece_instances_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: armor_piece_instances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE armor_piece_instances_id_seq OWNED BY armor_piece_instances.id;
+
+
+--
 -- Name: armor_pieces; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -566,40 +601,6 @@ ALTER SEQUENCE classes_id_seq OWNED BY classes.id;
 
 
 --
--- Name: creature_armor_pieces; Type: TABLE; Schema: public; Owner: pathfinder_user
---
-
-CREATE TABLE creature_armor_pieces (
-    id integer NOT NULL,
-    creature_id integer NOT NULL,
-    armor_piece_id integer NOT NULL
-);
-
-
-ALTER TABLE creature_armor_pieces OWNER TO pathfinder_user;
-
---
--- Name: creature_armor_pieces_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
---
-
-CREATE SEQUENCE creature_armor_pieces_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE creature_armor_pieces_id_seq OWNER TO pathfinder_user;
-
---
--- Name: creature_armor_pieces_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
---
-
-ALTER SEQUENCE creature_armor_pieces_id_seq OWNED BY creature_armor_pieces.id;
-
-
---
 -- Name: creature_items; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -676,7 +677,9 @@ CREATE TABLE creature_shields (
     id integer NOT NULL,
     creature_id integer NOT NULL,
     shield_id integer NOT NULL,
-    has_spikes boolean NOT NULL
+    has_spikes boolean NOT NULL,
+    is_masterwork boolean NOT NULL,
+    special text
 );
 
 
@@ -755,7 +758,8 @@ CREATE TABLE creatures (
     current_hit_points integer NOT NULL,
     nonlethal_damage integer NOT NULL,
     base_attack_bonus integer NOT NULL,
-    level integer NOT NULL
+    level integer NOT NULL,
+    armor_piece_instance_id integer NOT NULL
 );
 
 
@@ -1190,6 +1194,13 @@ ALTER TABLE ONLY ability_score_sets ALTER COLUMN id SET DEFAULT nextval('ability
 
 
 --
+-- Name: armor_piece_instances id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY armor_piece_instances ALTER COLUMN id SET DEFAULT nextval('armor_piece_instances_id_seq'::regclass);
+
+
+--
 -- Name: armor_pieces id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1278,13 +1289,6 @@ ALTER TABLE ONLY class_sub_skills ALTER COLUMN id SET DEFAULT nextval('class_sub
 --
 
 ALTER TABLE ONLY classes ALTER COLUMN id SET DEFAULT nextval('classes_id_seq'::regclass);
-
-
---
--- Name: creature_armor_pieces id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY creature_armor_pieces ALTER COLUMN id SET DEFAULT nextval('creature_armor_pieces_id_seq'::regclass);
 
 
 --
@@ -1405,6 +1409,14 @@ ALTER TABLE ONLY wondrous_items ALTER COLUMN id SET DEFAULT nextval('wondrous_it
 
 ALTER TABLE ONLY ability_score_sets
     ADD CONSTRAINT ability_score_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: armor_piece_instances armor_piece_instances_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY armor_piece_instances
+    ADD CONSTRAINT armor_piece_instances_pkey PRIMARY KEY (id);
 
 
 --
@@ -1552,22 +1564,6 @@ ALTER TABLE ONLY classes
 
 
 --
--- Name: creature_armor_pieces creature_armor_pieces_creature_unique; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY creature_armor_pieces
-    ADD CONSTRAINT creature_armor_pieces_creature_unique UNIQUE (creature_id);
-
-
---
--- Name: creature_armor_pieces creature_armor_pieces_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY creature_armor_pieces
-    ADD CONSTRAINT creature_armor_pieces_pkey PRIMARY KEY (id);
-
-
---
 -- Name: creature_items creature_items_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1704,6 +1700,14 @@ ALTER TABLE ONLY wondrous_items
 
 
 --
+-- Name: armor_piece_instances armor_piece_instances_armor_piece_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY armor_piece_instances
+    ADD CONSTRAINT armor_piece_instances_armor_piece_id_fkey FOREIGN KEY (armor_piece_id) REFERENCES armor_pieces(id);
+
+
+--
 -- Name: characters character_class_id; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1824,22 +1828,6 @@ ALTER TABLE ONLY class_sub_skills
 
 
 --
--- Name: creature_armor_pieces creature_armor_pieces_armor_piece_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY creature_armor_pieces
-    ADD CONSTRAINT creature_armor_pieces_armor_piece_id_fkey FOREIGN KEY (armor_piece_id) REFERENCES armor_pieces(id);
-
-
---
--- Name: creature_armor_pieces creature_armor_pieces_creature_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY creature_armor_pieces
-    ADD CONSTRAINT creature_armor_pieces_creature_id_fkey FOREIGN KEY (creature_id) REFERENCES creatures(id);
-
-
---
 -- Name: creature_items creature_items_creature_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1909,6 +1897,14 @@ ALTER TABLE ONLY creature_weapons
 
 ALTER TABLE ONLY creatures
     ADD CONSTRAINT creatures_ability_score_set_id_fkey FOREIGN KEY (ability_score_set_id) REFERENCES ability_score_sets(id);
+
+
+--
+-- Name: creatures creatures_armor_piece_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY creatures
+    ADD CONSTRAINT creatures_armor_piece_instance_id_fkey FOREIGN KEY (armor_piece_instance_id) REFERENCES armor_piece_instances(id);
 
 
 --

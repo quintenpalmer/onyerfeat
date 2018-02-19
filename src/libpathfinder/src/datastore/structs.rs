@@ -147,6 +147,21 @@ pub struct ArmorPiece {
     pub medium_weight: i32,
 }
 
+#[derive(FromRow)]
+pub struct ExpandedArmorPieceInstance {
+    pub armor_class: String,
+    pub name: String,
+    pub armor_bonus: i32,
+    pub max_dex_bonus: i32,
+    pub armor_check_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub fast_speed: i32,
+    pub slow_speed: i32,
+    pub medium_weight: i32,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
+}
+
 #[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "shields")]
 pub struct Shield {
@@ -189,6 +204,8 @@ pub struct CreatureShield {
     pub creature_id: i32,
     pub shield_id: i32,
     pub has_spikes: bool,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
 }
 
 #[derive(TableNamer, FromRow)]

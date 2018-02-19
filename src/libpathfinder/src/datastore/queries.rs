@@ -23,17 +23,23 @@ WHERE
 GROUP BY cssc.id, scons.trained_only, scons.name, scons.ability, scons.id, sub_skills.id, sub_name
 "#;
 
-pub static CHARACTER_ARMOR_PIECE_SQL: &'static str = r#"
+pub static CHARACTER_ARMOR_PIECE_INSTANCE_SQL: &'static str = r#"
 SELECT
-    a.*
+    a.*,
+    api.is_masterwork,
+    api.special
 FROM
-    creature_armor_pieces cap
+    armor_piece_instances api
 INNER JOIN
     armor_pieces a
 ON
-    cap.armor_piece_id = a.id
+    api.armor_piece_id = a.id
+INNER JOIN
+    creatures
+ON
+    creatures.armor_piece_instance_id = api.id
 WHERE
-    cap.creature_id = $1
+    creatures.id = $1
 "#;
 
 pub static CHARACTER_SHIELD_SQL: &'static str = r#"

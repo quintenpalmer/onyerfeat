@@ -6,7 +6,7 @@ pub struct Character {
     pub ability_score_info: AbilityScoreInfo,
     pub meta_information: MetaInformation,
     pub combat_numbers: CombatNumbers,
-    pub armor_piece: ArmorPiece,
+    pub armor_piece: ArmorPieceInstance,
     pub shield: Option<PersonalShield>,
     pub full_weapons: Vec<Weapon>,
     pub combat_weapon_stats: Vec<CombatWeaponStat>,
@@ -232,6 +232,21 @@ pub struct CharacterSkill {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct ArmorPieceInstance {
+    pub armor_class: String,
+    pub name: String,
+    pub armor_bonus: i32,
+    pub max_dex_bonus: i32,
+    pub armor_check_penalty: i32,
+    pub arcane_spell_failure_chance: i32,
+    pub fast_speed: i32,
+    pub slow_speed: i32,
+    pub medium_weight: i32,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct ArmorPiece {
     pub armor_class: String,
     pub name: String,
@@ -248,6 +263,8 @@ pub struct ArmorPiece {
 pub struct PersonalShield {
     pub shield: Shield,
     pub has_spikes: bool,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

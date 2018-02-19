@@ -62,6 +62,47 @@ SELECT pg_catalog.setval('armor_pieces_id_seq', 12, true);
 
 
 --
+-- Data for Name: aura_magnitudes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY aura_magnitudes (id, magnitude) FROM stdin;
+1	faint
+2	moderate
+3	strong
+\.
+
+
+--
+-- Name: aura_magnitudes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('aura_magnitudes_id_seq', 3, true);
+
+
+--
+-- Data for Name: aura_schools; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY aura_schools (id, school) FROM stdin;
+1	abjuration
+2	conjuration
+3	divination
+4	enchantment
+5	evocation
+6	illusion
+7	necromancy
+8	transmutation
+\.
+
+
+--
+-- Name: aura_schools_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('aura_schools_id_seq', 8, true);
+
+
+--
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -571,6 +612,35 @@ SELECT pg_catalog.setval('creatures_id_seq', 4, true);
 
 
 --
+-- Data for Name: item_body_slots; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY item_body_slots (id, name, max_count_in_slot, examples) FROM stdin;
+1	armor	1	suits of armor
+2	belt	1	belts and girdles
+3	body	1	robes and vestements
+4	chest	1	mantles, shirts, and vests
+5	eyes	1	eyes, glasses, and goggles
+6	feet	1	boots, shoes, and slippers
+7	hands	1	gauntlets and gloves
+8	head	1	circlets, crowns, hats, hemls, and masks
+9	headband	1	headbands and phylacteries
+10	neck	1	amulets, brooches, medallions, necklaces, periapts, and scarabs
+11	ring	2	rings
+12	shield	1	shields
+13	shoulders	1	capes and cloaks
+14	wrist	1	bracelets and bracers
+\.
+
+
+--
+-- Name: item_body_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('item_body_slots_id_seq', 14, true);
+
+
+--
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -636,6 +706,39 @@ SELECT pg_catalog.setval('sub_skills_id_seq', 16, true);
 --
 
 SELECT pg_catalog.setval('weapons_id_seq', 7, true);
+
+
+--
+-- Data for Name: wondrous_items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY wondrous_items (id, name, caster_level, slot_id, price, weight, description, construction_requirements_text) FROM stdin;
+1	boots of the winterlands	5	6	2500	1	This footgear bestows many powers upon the wearer. First, he is able to travel across snow at his normal speed, leaving no tracks. Second, the boots also enable him to travel at normal speed across the most slippery ice (horizontal surfaces only, not vertical or sharply slanted ones) without falling or slipping. Finally, boots of the winterlands warm the wearer, as if he were affected by an endure elements spell.	Requirements Craft Wondrous Item, cat's grace, endure elements, pass without trace; Cost 1,250 gp
+\.
+
+
+--
+-- Data for Name: wondrous_item_auras; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY wondrous_item_auras (id, wondrous_item_id, aura_magnitude_id, aura_school_id) FROM stdin;
+1	1	1	1
+2	1	1	8
+\.
+
+
+--
+-- Name: wondrous_item_auras_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('wondrous_item_auras_id_seq', 2, true);
+
+
+--
+-- Name: wondrous_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('wondrous_items_id_seq', 1, true);
 
 
 --

@@ -152,6 +152,72 @@ ALTER SEQUENCE armor_pieces_id_seq OWNED BY armor_pieces.id;
 
 
 --
+-- Name: aura_magnitudes; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE aura_magnitudes (
+    id integer NOT NULL,
+    magnitude text NOT NULL
+);
+
+
+ALTER TABLE aura_magnitudes OWNER TO pathfinder_user;
+
+--
+-- Name: aura_magnitudes_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE aura_magnitudes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE aura_magnitudes_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: aura_magnitudes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE aura_magnitudes_id_seq OWNED BY aura_magnitudes.id;
+
+
+--
+-- Name: aura_schools; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE aura_schools (
+    id integer NOT NULL,
+    school text NOT NULL
+);
+
+
+ALTER TABLE aura_schools OWNER TO pathfinder_user;
+
+--
+-- Name: aura_schools_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE aura_schools_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE aura_schools_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: aura_schools_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE aura_schools_id_seq OWNED BY aura_schools.id;
+
+
+--
 -- Name: character_skill_choices; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -682,6 +748,41 @@ ALTER SEQUENCE creatures_id_seq OWNED BY creatures.id;
 
 
 --
+-- Name: item_body_slots; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE item_body_slots (
+    id integer NOT NULL,
+    name text NOT NULL,
+    max_count_in_slot integer NOT NULL,
+    examples text NOT NULL
+);
+
+
+ALTER TABLE item_body_slots OWNER TO pathfinder_user;
+
+--
+-- Name: item_body_slots_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE item_body_slots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE item_body_slots_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: item_body_slots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE item_body_slots_id_seq OWNED BY item_body_slots.id;
+
+
+--
 -- Name: items; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -973,6 +1074,80 @@ ALTER SEQUENCE weapons_id_seq OWNED BY weapons.id;
 
 
 --
+-- Name: wondrous_item_auras; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE wondrous_item_auras (
+    id integer NOT NULL,
+    wondrous_item_id integer NOT NULL,
+    aura_magnitude_id integer NOT NULL,
+    aura_school_id integer NOT NULL
+);
+
+
+ALTER TABLE wondrous_item_auras OWNER TO pathfinder_user;
+
+--
+-- Name: wondrous_item_auras_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE wondrous_item_auras_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE wondrous_item_auras_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: wondrous_item_auras_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE wondrous_item_auras_id_seq OWNED BY wondrous_item_auras.id;
+
+
+--
+-- Name: wondrous_items; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE wondrous_items (
+    id integer NOT NULL,
+    name text NOT NULL,
+    caster_level integer NOT NULL,
+    slot_id integer,
+    price integer NOT NULL,
+    weight integer NOT NULL,
+    description text NOT NULL,
+    construction_requirements_text text NOT NULL
+);
+
+
+ALTER TABLE wondrous_items OWNER TO pathfinder_user;
+
+--
+-- Name: wondrous_items_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE wondrous_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE wondrous_items_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: wondrous_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE wondrous_items_id_seq OWNED BY wondrous_items.id;
+
+
+--
 -- Name: ability_score_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -984,6 +1159,20 @@ ALTER TABLE ONLY ability_score_sets ALTER COLUMN id SET DEFAULT nextval('ability
 --
 
 ALTER TABLE ONLY armor_pieces ALTER COLUMN id SET DEFAULT nextval('armor_pieces_id_seq'::regclass);
+
+
+--
+-- Name: aura_magnitudes id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY aura_magnitudes ALTER COLUMN id SET DEFAULT nextval('aura_magnitudes_id_seq'::regclass);
+
+
+--
+-- Name: aura_schools id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY aura_schools ALTER COLUMN id SET DEFAULT nextval('aura_schools_id_seq'::regclass);
 
 
 --
@@ -1092,6 +1281,13 @@ ALTER TABLE ONLY creatures ALTER COLUMN id SET DEFAULT nextval('creatures_id_seq
 
 
 --
+-- Name: item_body_slots id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY item_body_slots ALTER COLUMN id SET DEFAULT nextval('item_body_slots_id_seq'::regclass);
+
+
+--
 -- Name: items id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1148,6 +1344,20 @@ ALTER TABLE ONLY weapons ALTER COLUMN id SET DEFAULT nextval('weapons_id_seq'::r
 
 
 --
+-- Name: wondrous_item_auras id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_item_auras ALTER COLUMN id SET DEFAULT nextval('wondrous_item_auras_id_seq'::regclass);
+
+
+--
+-- Name: wondrous_items id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_items ALTER COLUMN id SET DEFAULT nextval('wondrous_items_id_seq'::regclass);
+
+
+--
 -- Name: ability_score_sets ability_score_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1161,6 +1371,22 @@ ALTER TABLE ONLY ability_score_sets
 
 ALTER TABLE ONLY armor_pieces
     ADD CONSTRAINT armor_pieces_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: aura_magnitudes aura_magnitudes_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY aura_magnitudes
+    ADD CONSTRAINT aura_magnitudes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: aura_schools aura_schools_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY aura_schools
+    ADD CONSTRAINT aura_schools_pkey PRIMARY KEY (id);
 
 
 --
@@ -1340,6 +1566,14 @@ ALTER TABLE ONLY creatures
 
 
 --
+-- Name: item_body_slots item_body_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY item_body_slots
+    ADD CONSTRAINT item_body_slots_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: items items_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1401,6 +1635,22 @@ ALTER TABLE ONLY sub_skills
 
 ALTER TABLE ONLY weapons
     ADD CONSTRAINT weapons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wondrous_item_auras wondrous_item_auras_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_item_auras
+    ADD CONSTRAINT wondrous_item_auras_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wondrous_items wondrous_items_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_items
+    ADD CONSTRAINT wondrous_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -1609,6 +1859,30 @@ ALTER TABLE ONLY creatures
 
 ALTER TABLE ONLY sub_skills
     ADD CONSTRAINT sub_skills_skill_constructor_id_fkey FOREIGN KEY (skill_constructor_id) REFERENCES skill_constructors(id);
+
+
+--
+-- Name: wondrous_item_auras wondrous_item_auras_aura_magnitude_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_item_auras
+    ADD CONSTRAINT wondrous_item_auras_aura_magnitude_id_fkey FOREIGN KEY (aura_magnitude_id) REFERENCES aura_magnitudes(id);
+
+
+--
+-- Name: wondrous_item_auras wondrous_item_auras_aura_school_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_item_auras
+    ADD CONSTRAINT wondrous_item_auras_aura_school_id_fkey FOREIGN KEY (aura_school_id) REFERENCES aura_schools(id);
+
+
+--
+-- Name: wondrous_item_auras wondrous_item_auras_wondrous_item_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY wondrous_item_auras
+    ADD CONSTRAINT wondrous_item_auras_wondrous_item_id_fkey FOREIGN KEY (wondrous_item_id) REFERENCES wondrous_items(id);
 
 
 --

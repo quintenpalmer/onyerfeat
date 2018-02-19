@@ -757,7 +757,7 @@ CREATE TABLE creatures (
     nonlethal_damage integer NOT NULL,
     base_attack_bonus integer NOT NULL,
     level integer NOT NULL,
-    armor_piece_instance_id integer
+    armor_piece_instance_id integer NOT NULL
 );
 
 

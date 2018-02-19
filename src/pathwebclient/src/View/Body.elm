@@ -32,6 +32,24 @@ view model =
                     [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 1 ] [ Html.text "Load Idrigoth" ] ]
                 , Html.li
                     (case model of
+                        Models.MCharacter _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 4 ] [ Html.text "Load Datanamàsh" ] ]
+                , Html.li
+                    (case model of
+                        Models.MCharacter _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 5 ] [ Html.text "Load Atolabsam" ] ]
+                , Html.li
+                    (case model of
                         Models.MWeapons _ ->
                             [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
 

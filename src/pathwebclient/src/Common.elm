@@ -1,4 +1,4 @@
-module Common exposing (Msg(..), weaponSort, armorSortFn)
+module Common exposing (Msg(..), weaponSort)
 
 import Http
 import Models
@@ -34,16 +34,3 @@ weaponSort :
             }
 weaponSort weapons =
     (List.sortBy .trainingType (List.sortBy .sizeStyle (List.sortBy .name weapons)))
-
-
-armorSortFn : { a | armorClass : String } -> { b | armorClass : String } -> Order
-armorSortFn a1 b1 =
-    case ( a1.armorClass, b1.armorClass ) of
-        ( "light", _ ) ->
-            LT
-
-        ( _, "heavy" ) ->
-            LT
-
-        ( _, _ ) ->
-            (compare a1.armorClass b1.armorClass)

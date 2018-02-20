@@ -9,6 +9,7 @@ module Models
         , Size(..)
         , CombatNumbers
         , Skill
+        , Language
         , ArmorPiece
         , ArmorPieceInstance
         , Shield
@@ -49,6 +50,7 @@ type alias Character =
     , fullWeapons : List Weapon
     , combatWeaponStats : List CombatWeaponStats
     , skills : List Skill
+    , languages : List Language
     , items : List CreatureItem
     }
 
@@ -170,6 +172,11 @@ type alias Skill =
     , classMod : Int
     , count : Int
     , armorCheckPenalty : Maybe Int
+    }
+
+
+type alias Language =
+    { name : String
     }
 
 

@@ -11,6 +11,7 @@ pub struct Character {
     pub full_weapons: Vec<Weapon>,
     pub combat_weapon_stats: Vec<CombatWeaponStat>,
     pub skills: Vec<CharacterSkill>,
+    pub languages: Vec<Language>,
     pub items: Vec<CreatureItem>,
 }
 
@@ -205,6 +206,11 @@ pub struct ConstructedSkill {
     pub name: String,
     pub sub_skill: String,
     pub ability: AbilityName,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Language {
+    pub name: String,
 }
 
 #[derive(Serialize, Deserialize, Clone)]

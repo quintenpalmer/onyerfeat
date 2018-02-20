@@ -282,7 +282,6 @@ pub struct ExpandedCreatureItem {
 
 #[derive(FromRow)]
 pub struct ExpandedCreatureLanguage {
-    pub id: i32,
     pub creature_id: i32,
     pub name: String,
 }

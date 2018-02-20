@@ -36,6 +36,13 @@ impl Datastore {
         ));
         let class: structs::Class = try!(selects::select_one_by_id(&self.conn, character.class_id));
 
+        let languages: Vec<structs::ExpandedCreatureLanguage> =
+            try!(selects::exec_and_select_by_field(
+                &self.conn,
+                queries::CREATURE_LANGUAGES_SQL,
+                creature.id
+            ));
+
         let skills: Vec<structs::Skill> = try!(selects::select_all(&self.conn));
         let trained_skills: Vec<structs::CharacterSkillChoice> = try!(selects::select_by_field(
             &self.conn,
@@ -125,6 +132,7 @@ impl Datastore {
             creature,
             abs,
             class,
+            languages,
             skills,
             trained_skills,
             sub_skills,

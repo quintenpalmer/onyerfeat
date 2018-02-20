@@ -211,7 +211,29 @@ displayCharacterSheet character =
                     ]
                 ]
             , Html.div [ Attr.class "col-md-7" ]
-                [ buildSkillsPanel character.skills ]
+                [ buildSkillsPanel character.skills
+                , Html.div [ Attr.class "col-md-3" ]
+                    [ Elements.panelled "Languages"
+                        True
+                        [ Html.table [ Attr.class "table table-striped" ]
+                            [ Html.thead []
+                                [ Html.tr []
+                                    [ Html.th [ Attr.class "text-center" ] [ Html.text "Name" ]
+                                    ]
+                                ]
+                            , Html.tbody [ Attr.class "text-center" ]
+                                (List.map
+                                    (\language ->
+                                        Html.tr []
+                                            [ Html.td [] [ Elements.labelDefault False language.name ]
+                                            ]
+                                    )
+                                    character.languages
+                                )
+                            ]
+                        ]
+                    ]
+                ]
             ]
         , Elements.panelled "Combat Weapon Stats"
             True

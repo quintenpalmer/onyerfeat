@@ -571,6 +571,7 @@ COPY languages (id, name) FROM stdin;
 2	Dwarf
 3	Terran
 4	Giant
+5	Orc
 \.
 
 
@@ -583,6 +584,11 @@ COPY creature_languages (id, creature_id, language_id) FROM stdin;
 2	1	2
 3	1	3
 4	1	4
+5	3	1
+6	3	2
+7	4	1
+8	4	2
+9	4	5
 \.
 
 
@@ -590,7 +596,7 @@ COPY creature_languages (id, creature_id, language_id) FROM stdin;
 -- Name: creature_languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_languages_id_seq', 4, true);
+SELECT pg_catalog.setval('creature_languages_id_seq', 9, true);
 
 
 --
@@ -707,7 +713,7 @@ SELECT pg_catalog.setval('items_id_seq', 5, true);
 -- Name: languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('languages_id_seq', 4, true);
+SELECT pg_catalog.setval('languages_id_seq', 5, true);
 
 
 --

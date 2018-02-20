@@ -30,6 +30,7 @@ decodeCharacter =
         |> Pipeline.required "full_weapons" (Decode.list decodeWeapon)
         |> Pipeline.required "combat_weapon_stats" (Decode.list decodeCombatWeaponStats)
         |> Pipeline.required "skills" decodeSkills
+        |> Pipeline.required "languages" (Decode.list decodeLanguage)
         |> Pipeline.required "items" (Decode.list decodeItem)
 
 
@@ -190,6 +191,12 @@ decodeSize s =
 
         _ ->
             Decode.fail "could not parse size"
+
+
+decodeLanguage : Decode.Decoder Models.Language
+decodeLanguage =
+    Pipeline.decode Models.Language
+        |> Pipeline.required "name" Decode.string
 
 
 decodeArmorPieces : Decode.Decoder (List Models.ArmorPiece)

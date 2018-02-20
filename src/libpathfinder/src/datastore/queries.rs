@@ -141,17 +141,16 @@ WHERE
 
 pub static CREATURE_LANGUAGES_SQL: &'static str = r#"
 SELECT
-    creature_languages.id,
     creature_languages.creature_id,
     languages.name
 FROM
-    creature_items
+    creature_languages
 INNER JOIN
-    items
+    languages
 ON
-    creature_items.item_id = items.id
+    creature_languages.language_id = languages .id
 WHERE
-    creature_items.creature_id = $1;
+    creature_languages.creature_id = $1;
 "#;
 
 pub static INSERT_ITEM_SQL: &'static str = r#"

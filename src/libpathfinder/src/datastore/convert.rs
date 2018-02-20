@@ -9,6 +9,7 @@ pub fn into_canonical_character(
     creature: structs::Creature,
     abs: structs::AbilityScoreSet,
     class: structs::Class,
+    languages: Vec<structs::ExpandedCreatureLanguage>,
     skills: Vec<structs::Skill>,
     skill_choices: Vec<structs::CharacterSkillChoice>,
     sub_skills: Vec<structs::AugmentedCharacterSubSkillChoice>,
@@ -138,6 +139,10 @@ pub fn into_canonical_character(
         combat_weapon_stats: combat_weapons,
         full_weapons: full_weapons,
         skills: character_skills,
+        languages: languages
+            .iter()
+            .map(|x| x.clone().into_canonical())
+            .collect(),
         ability_score_info: ability_score_model,
         meta_information: models::MetaInformation {
             name: creature.name,
@@ -275,6 +280,14 @@ fn skill_choice_map<'a>(
         m.insert(s.skill_id, s);
     }
     return m;
+}
+
+impl structs::ExpandedCreatureLanguage {
+    pub fn into_canonical(&self) -> models::Language {
+        models::Language {
+            name: self.name.clone(),
+        }
+    }
 }
 
 impl structs::ArmorPiece {

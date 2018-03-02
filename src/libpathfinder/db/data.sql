@@ -552,6 +552,12 @@ COPY creature_items (id, creature_id, item_id, count) FROM stdin;
 4	1	3	1
 5	1	4	1
 6	1	5	1
+7	3	3	1
+8	3	2	5
+9	3	4	1
+10	4	3	1
+11	4	2	10
+12	4	4	1
 \.
 
 
@@ -559,7 +565,7 @@ COPY creature_items (id, creature_id, item_id, count) FROM stdin;
 -- Name: creature_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_items_id_seq', 6, true);
+SELECT pg_catalog.setval('creature_items_id_seq', 12, true);
 
 
 --

@@ -135,9 +135,9 @@ COPY classes (id, name) FROM stdin;
 --
 
 COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6	1
 3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
 4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5	3
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	85	0	6	6	1
 \.
 
 

@@ -135,9 +135,9 @@ COPY classes (id, name) FROM stdin;
 --
 
 COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
-1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	71	0	6	6	1
 3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
 4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5	3
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	85	0	6	6	1
 \.
 
 
@@ -552,6 +552,12 @@ COPY creature_items (id, creature_id, item_id, count) FROM stdin;
 4	1	3	1
 5	1	4	1
 6	1	5	1
+7	3	3	1
+8	3	2	5
+9	3	4	1
+10	4	3	1
+11	4	2	10
+12	4	4	1
 \.
 
 
@@ -559,7 +565,7 @@ COPY creature_items (id, creature_id, item_id, count) FROM stdin;
 -- Name: creature_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_items_id_seq', 6, true);
+SELECT pg_catalog.setval('creature_items_id_seq', 12, true);
 
 
 --
@@ -571,6 +577,7 @@ COPY languages (id, name) FROM stdin;
 2	Dwarf
 3	Terran
 4	Giant
+5	Orc
 \.
 
 
@@ -583,6 +590,11 @@ COPY creature_languages (id, creature_id, language_id) FROM stdin;
 2	1	2
 3	1	3
 4	1	4
+5	3	1
+6	3	2
+7	4	1
+8	4	2
+9	4	5
 \.
 
 
@@ -590,7 +602,7 @@ COPY creature_languages (id, creature_id, language_id) FROM stdin;
 -- Name: creature_languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_languages_id_seq', 4, true);
+SELECT pg_catalog.setval('creature_languages_id_seq', 9, true);
 
 
 --
@@ -707,7 +719,7 @@ SELECT pg_catalog.setval('items_id_seq', 5, true);
 -- Name: languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('languages_id_seq', 4, true);
+SELECT pg_catalog.setval('languages_id_seq', 5, true);
 
 
 --

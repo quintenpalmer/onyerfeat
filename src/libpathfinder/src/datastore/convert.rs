@@ -20,7 +20,7 @@ pub fn into_canonical_character(
     optional_shield: Option<structs::Shield>,
     optional_creature_shield: Option<structs::CreatureShield>,
     optional_shield_damage: Option<structs::ShieldDamage>,
-    weapons: Vec<structs::Weapon>,
+    weapons: Vec<structs::ExpandedWeaponInstance>,
     base_saving_throws: structs::ClassSavingThrows,
     class_saving_throw_bonus: structs::ClassSavingThrowBonus,
     armor_proficiency: structs::ClassArmorProficiency,
@@ -359,22 +359,26 @@ impl structs::Shield {
 }
 
 impl structs::ShieldDamage {
-    pub fn into_canonical_weapon(&self) -> models::Weapon {
+    pub fn into_canonical_weapon(&self) -> models::WeaponInstance {
         let mut name = self.shield_name.clone();
         if self.spiked {
             name = name + " (spiked)";
         }
-        models::Weapon {
-            name: name,
-            training_type: models::WeaponTrainingType::Martial,
-            size_style: self.size_style,
-            cost: 1, /* models::CombatWeaponStat doesn't need the cost, which is why we are converting to models::Weapon */
-            small_damage: self.small_damage,
-            medium_damage: self.medium_damage,
-            critical: self.critical,
-            range: self.range.unwrap_or(5),
-            weight: self.weight,
-            damage_type: self.damage_type.clone(),
+        models::WeaponInstance {
+            weapon: models::Weapon {
+                name: name,
+                training_type: models::WeaponTrainingType::Martial,
+                size_style: self.size_style,
+                cost: 1, /* models::CombatWeaponStat doesn't need the cost, which is why we are converting to models::Weapon */
+                small_damage: self.small_damage,
+                medium_damage: self.medium_damage,
+                critical: self.critical,
+                range: self.range.unwrap_or(5),
+                weight: self.weight,
+                damage_type: self.damage_type.clone(),
+            },
+            is_masterwork: false,
+            special: None,
         }
     }
 }
@@ -396,6 +400,31 @@ impl structs::Weapon {
     }
 }
 
+impl structs::ExpandedWeaponInstance {
+    pub fn into_canonical(&self) -> models::WeaponInstance {
+        let name = match &self.weapon_instance_name {
+            &Some(ref n) => n.clone(),
+            &None => self.name.clone(),
+        };
+        models::WeaponInstance {
+            weapon: models::Weapon {
+                name: name,
+                training_type: self.training_type.clone(),
+                size_style: self.size_style.clone(),
+                cost: self.cost,
+                small_damage: self.small_damage.clone(),
+                medium_damage: self.medium_damage.clone(),
+                critical: self.critical.clone(),
+                range: self.range.unwrap_or(5),
+                weight: self.weight,
+                damage_type: self.damage_type.clone(),
+            },
+            is_masterwork: self.is_masterwork,
+            special: self.special.clone(),
+        }
+    }
+}
+
 impl structs::ExpandedCreatureItem {
     pub fn into_canonical(&self) -> models::CreatureItem {
         models::CreatureItem {
@@ -409,32 +438,32 @@ impl structs::ExpandedCreatureItem {
 }
 
 fn build_combat_weapon_stats(
-    weapons: &Vec<models::Weapon>,
+    weapons: &Vec<models::WeaponInstance>,
     size: &models::Size,
     base_attack_bonus: i32,
     abs: &models::AbilityScoreInfo,
 ) -> Vec<models::CombatWeaponStat> {
     weapons
         .iter()
-        .map(|weapon| {
+        .map(|weapon_instance| {
             let (ab_ability_mod, damage_ability_mod) =
-                if weapon.size_style == models::WeaponSizeStyle::Ranged {
+                if weapon_instance.weapon.size_style == models::WeaponSizeStyle::Ranged {
                     (abs.dex.modifier, 0)
                 } else {
                     (abs.str.modifier, abs.str.modifier)
                 };
             models::CombatWeaponStat {
-                name: weapon.name.clone(),
-                training_type: weapon.training_type.clone(),
-                size_style: weapon.size_style.clone(),
+                name: weapon_instance.weapon.name.clone(),
+                training_type: weapon_instance.weapon.training_type.clone(),
+                size_style: weapon_instance.weapon.size_style.clone(),
                 dice_damage: if size >= &models::Size::Medium {
-                    weapon.medium_damage.clone()
+                    weapon_instance.weapon.medium_damage.clone()
                 } else {
-                    weapon.small_damage.clone()
+                    weapon_instance.weapon.small_damage.clone()
                 },
-                critical: weapon.critical.clone(),
-                range: weapon.range,
-                damage_type: weapon.damage_type.clone(),
+                critical: weapon_instance.weapon.critical.clone(),
+                range: weapon_instance.weapon.range,
+                damage_type: weapon_instance.weapon.damage_type.clone(),
                 attack_bonus: base_attack_bonus + ab_ability_mod,
                 damage: damage_ability_mod,
             }

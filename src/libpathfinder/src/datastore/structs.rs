@@ -236,6 +236,34 @@ pub struct Weapon {
 }
 
 #[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "weapon_instances")]
+pub struct WeaponInstance {
+    pub id: i32,
+    pub weapon_id: i32,
+    pub name: Option<String>,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
+}
+
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "creature_weapons")]
+pub struct ExpandedWeaponInstance {
+    pub name: String,
+    pub training_type: models::WeaponTrainingType,
+    pub size_style: models::WeaponSizeStyle,
+    pub cost: i32,
+    pub small_damage: models::DiceDamage,
+    pub medium_damage: models::DiceDamage,
+    pub critical: models::CriticalDamage,
+    pub range: Option<i32>,
+    pub weight: i32,
+    pub damage_type: models::PhysicalDamageType,
+    pub weapon_instance_name: Option<String>,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
+}
+
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "class_armor_proficiencies")]
 pub struct ClassArmorProficiency {
     pub id: i32,

@@ -14,6 +14,7 @@ module Models
         , ArmorPieceInstance
         , Shield
         , PersonalShield
+        , WeaponInstance
         , Weapon
         , CombatWeaponStats
         , ArmorClass
@@ -47,7 +48,7 @@ type alias Character =
     , combatNumbers : CombatNumbers
     , armorPiece : ArmorPieceInstance
     , shield : Maybe PersonalShield
-    , fullWeapons : List Weapon
+    , fullWeapons : List WeaponInstance
     , combatWeaponStats : List CombatWeaponStats
     , skills : List Skill
     , languages : List Language
@@ -224,6 +225,13 @@ type alias Shield =
     , arcaneSpellFailureChance : Int
     , weight : Int
     , sizeStyle : Maybe String
+    }
+
+
+type alias WeaponInstance =
+    { weapon : Weapon
+    , is_masterwork : Bool
+    , special : Maybe String
     }
 
 

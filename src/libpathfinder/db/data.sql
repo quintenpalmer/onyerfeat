@@ -651,14 +651,26 @@ COPY public.weapons (id, name, training_type, size_style, cost, small_damage, me
 
 
 --
+-- Data for Name: weapon_instances; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.weapon_instances (id, weapon_id, name, is_masterwork, special) FROM stdin;
+1	1	\N	f	\N
+2	2	\N	f	\N
+3	7	\N	t	\N
+4	7	\N	t	\N
+\.
+
+
+--
 -- Data for Name: creature_weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.creature_weapons (id, creature_id, weapon_id) FROM stdin;
+COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 1	1	1
 2	1	2
-5	3	7
-6	4	7
+5	3	3
+6	4	4
 \.
 
 
@@ -764,6 +776,13 @@ SELECT pg_catalog.setval('public.skills_id_seq', 22, true);
 --
 
 SELECT pg_catalog.setval('public.sub_skills_id_seq', 16, true);
+
+
+--
+-- Name: weapon_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('public.weapon_instances_id_seq', 4, true);
 
 
 --

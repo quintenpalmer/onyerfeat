@@ -712,7 +712,7 @@ ALTER SEQUENCE public.creature_shields_id_seq OWNED BY public.creature_shields.i
 CREATE TABLE public.creature_weapons (
     id integer NOT NULL,
     creature_id integer NOT NULL,
-    weapon_id integer NOT NULL
+    weapon_instance_id integer NOT NULL
 );
 
 
@@ -1070,6 +1070,42 @@ ALTER SEQUENCE public.sub_skills_id_seq OWNED BY public.sub_skills.id;
 
 
 --
+-- Name: weapon_instances; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE public.weapon_instances (
+    id integer NOT NULL,
+    weapon_id integer NOT NULL,
+    name text,
+    is_masterwork boolean NOT NULL,
+    special text
+);
+
+
+ALTER TABLE public.weapon_instances OWNER TO pathfinder_user;
+
+--
+-- Name: weapon_instances_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE public.weapon_instances_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.weapon_instances_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: weapon_instances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE public.weapon_instances_id_seq OWNED BY public.weapon_instances.id;
+
+
+--
 -- Name: weapons; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -1382,6 +1418,13 @@ ALTER TABLE ONLY public.sub_skills ALTER COLUMN id SET DEFAULT nextval('public.s
 
 
 --
+-- Name: weapon_instances id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.weapon_instances ALTER COLUMN id SET DEFAULT nextval('public.weapon_instances_id_seq'::regclass);
+
+
+--
 -- Name: weapons id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1675,6 +1718,14 @@ ALTER TABLE ONLY public.sub_skills
 
 
 --
+-- Name: weapon_instances weapon_instances_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.weapon_instances
+    ADD CONSTRAINT weapon_instances_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: weapons weapons_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1883,11 +1934,11 @@ ALTER TABLE ONLY public.creature_weapons
 
 
 --
--- Name: creature_weapons creature_weapons_weapon_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: creature_weapons creature_weapons_weapon_instance_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.creature_weapons
-    ADD CONSTRAINT creature_weapons_weapon_id_fkey FOREIGN KEY (weapon_id) REFERENCES public.weapons(id);
+    ADD CONSTRAINT creature_weapons_weapon_instance_id_fkey FOREIGN KEY (weapon_instance_id) REFERENCES public.weapon_instances(id);
 
 
 --
@@ -1912,6 +1963,14 @@ ALTER TABLE ONLY public.creatures
 
 ALTER TABLE ONLY public.sub_skills
     ADD CONSTRAINT sub_skills_skill_constructor_id_fkey FOREIGN KEY (skill_constructor_id) REFERENCES public.skill_constructors(id);
+
+
+--
+-- Name: weapon_instances weapon_instances_weapon_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.weapon_instances
+    ADD CONSTRAINT weapon_instances_weapon_id_fkey FOREIGN KEY (weapon_id) REFERENCES public.weapons(id);
 
 
 --

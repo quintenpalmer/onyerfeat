@@ -68,13 +68,20 @@ AND
 
 pub static CREATURE_WEAPON_SQL: &'static str = r#"
 SELECT
-    weapons.*
+    weapons.*,
+    weapon_instances.name as weapon_instance_name,
+    weapon_instances.is_masterwork,
+    weapon_instances.special
 FROM
     creature_weapons cws
 INNER JOIN
+    weapon_instances
+ON
+    cws.weapon_instance_id = weapon_instances.id
+INNER JOIN
     weapons
 ON
-    cws.weapon_id = weapons.id
+    weapon_instances.weapon_id = weapons.id
 WHERE
     cws.creature_id = $1
 "#;

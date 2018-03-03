@@ -61,7 +61,7 @@ COPY armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_chec
 COPY armor_piece_instances (id, armor_piece_id, is_masterwork, special) FROM stdin;
 2	8	t	\N
 3	8	t	\N
-1	8	t	Heal 1hp per round...
+1	8	f	\N
 \.
 
 
@@ -658,8 +658,6 @@ COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_da
 COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
 1	1	1
 2	1	2
-3	1	3
-4	1	6
 5	3	7
 6	4	7
 \.

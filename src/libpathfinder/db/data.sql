@@ -624,7 +624,7 @@ COPY public.shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_fa
 --
 
 COPY public.creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, special) FROM stdin;
-1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact
+1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact; +1 AC on arrows
 \.
 
 
@@ -647,6 +647,13 @@ COPY public.weapons (id, name, training_type, size_style, cost, small_damage, me
 5	Dagger	simple	light_melee	2	(1,3)	(1,4)	(19,2)	10	1	(f,t,t,f)
 6	Rapier	martial	one_handed_melee	20	(1,4)	(1,6)	(18,2)	\N	2	(f,t,f,f)
 7	Greatsword	martial	two_handed_melee	50	(1,10)	(2,6)	(19,2)	\N	8	(f,f,t,f)
+8	Longbow	martial	ranged	75	(1,6)	(1,8)	(20,3)	100	3	(f,t,f,f)
+9	Axe, throwing	martial	light_melee	8	(1,4)	(1,6)	(20,2)	10	2	(f,f,t,f)
+10	Handaxe	martial	light_melee	8	(1,4)	(1,6)	(20,3)	\N	3	(f,f,t,f)
+11	Glaive	martial	two_handed_melee	8	(1,8)	(1,10)	(20,3)	\N	10	(f,f,t,f)
+13	Lance	martial	two_handed_melee	10	(1,6)	(1,8)	(20,3)	\N	10	(f,t,f,f)
+12	Guisarme	martial	two_handed_melee	9	(1,6)	(2,4)	(20,3)	\N	12	(f,f,t,f)
+14	Ranseur	martial	two_handed_melee	10	(1,6)	(2,4)	(20,3)	\N	11	(f,t,f,f)
 \.
 
 
@@ -656,9 +663,14 @@ COPY public.weapons (id, name, training_type, size_style, cost, small_damage, me
 
 COPY public.weapon_instances (id, weapon_id, name, is_masterwork, special) FROM stdin;
 1	1	\N	f	\N
-2	2	\N	f	\N
 3	7	\N	t	\N
 4	7	\N	t	\N
+5	8	Backbiter Bow	t	Always deals max damage on hit; wielder takes 8-1d8 damage on hit
+6	9	\N	f	\N
+7	10	\N	f	\N
+8	10	\N	f	\N
+9	14	\N	t	\N
+2	2	\N	f	Has grappling hook extension bows
 \.
 
 
@@ -671,6 +683,11 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 2	1	2
 5	3	3
 6	4	4
+7	1	5
+8	1	6
+9	1	7
+10	1	8
+11	4	9
 \.
 
 
@@ -678,7 +695,7 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creature_weapons_id_seq', 6, true);
+SELECT pg_catalog.setval('public.creature_weapons_id_seq', 11, true);
 
 
 --
@@ -782,14 +799,14 @@ SELECT pg_catalog.setval('public.sub_skills_id_seq', 16, true);
 -- Name: weapon_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.weapon_instances_id_seq', 4, true);
+SELECT pg_catalog.setval('public.weapon_instances_id_seq', 9, true);
 
 
 --
 -- Name: weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.weapons_id_seq', 7, true);
+SELECT pg_catalog.setval('public.weapons_id_seq', 14, true);
 
 
 --

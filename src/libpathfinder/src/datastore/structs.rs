@@ -220,6 +220,7 @@ pub struct ClassBonuses {
     pub cha_bonus: bool,
     pub ac_penalty_reduction: i32,
     pub max_dex_bonus: i32,
+    pub natural_armor_bonus: i32,
 }
 
 #[derive(TableNamer, FromRow)]

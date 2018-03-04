@@ -113,6 +113,7 @@ type alias ArmorClass =
     , dex : Int
     , armorAc : Int
     , shieldAc : Int
+    , misc : Int
     , sizeMod : Int
     }
 

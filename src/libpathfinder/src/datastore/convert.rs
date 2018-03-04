@@ -72,8 +72,9 @@ pub fn into_canonical_character(
             Some(ref shield) => shield.ac_bonus,
             None => 0,
         };
+        let misc = base_saving_throws.natural_armor_bonus;
         let armor_class = models::ArmorClass {
-            total: dex_mod + base + armor_ac + shield_ac + size_mod,
+            total: dex_mod + base + armor_ac + shield_ac + misc + size_mod,
             base: base,
             dex: dex_mod,
             armor_ac: armor_ac,
@@ -81,6 +82,7 @@ pub fn into_canonical_character(
             deflection_mod: 0,
             dodge_mod: 0,
             shield_ac: shield_ac,
+            misc: misc,
             natural_armor: 0,
         };
         armor_class

@@ -118,6 +118,7 @@ decodeArmorClass =
         |> Pipeline.required "dex" Decode.int
         |> Pipeline.required "armor_ac" Decode.int
         |> Pipeline.required "shield_ac" Decode.int
+        |> Pipeline.required "misc" Decode.int
         |> Pipeline.required "size_mod" Decode.int
 
 

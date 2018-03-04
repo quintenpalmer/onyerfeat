@@ -369,7 +369,8 @@ CREATE TABLE public.class_bonuses (
     will integer NOT NULL,
     cha_bonus boolean DEFAULT false NOT NULL,
     ac_penalty_reduction integer DEFAULT 0 NOT NULL,
-    max_dex_bonus integer DEFAULT 0 NOT NULL
+    max_dex_bonus integer DEFAULT 0 NOT NULL,
+    natural_armor_bonus integer DEFAULT 0 NOT NULL
 );
 
 

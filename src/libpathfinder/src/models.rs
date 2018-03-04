@@ -80,6 +80,7 @@ pub struct ArmorClass {
     pub shield_ac: i32,
     // TODO implement this
     pub natural_armor: i32,
+    pub misc: i32,
     pub size_mod: i32,
 }
 

@@ -124,6 +124,7 @@ displayCharacterSheet character =
                         , ( "Dex", ( True, toString character.combatNumbers.armorClass.dex ) )
                         , ( "Armor", ( True, toString character.combatNumbers.armorClass.armorAc ) )
                         , ( "Shield", ( True, toString character.combatNumbers.armorClass.shieldAc ) )
+                        , ( "Misc", ( True, toString character.combatNumbers.armorClass.misc ) )
                         , ( "Size", ( True, toString character.combatNumbers.armorClass.sizeMod ) )
                         ]
                     ]

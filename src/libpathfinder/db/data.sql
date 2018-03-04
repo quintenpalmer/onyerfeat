@@ -297,220 +297,70 @@ SELECT pg_catalog.setval('public.characters_id_seq', 6, true);
 
 
 --
--- Data for Name: class_armor_proficiencies; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+-- Data for Name: class_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_armor_proficiencies (id, class_id, level, armor_check_penalty_reduction, max_dex_bonus) FROM stdin;
-1	1	1	0	0
-2	1	2	0	0
-3	1	3	-1	1
-4	1	4	-1	1
-5	1	5	-1	1
-6	1	6	-1	1
-7	1	7	-2	2
-8	1	8	-2	2
-9	1	9	-2	2
-10	1	10	-2	2
-11	1	11	-3	3
-12	1	12	-3	3
-13	1	13	-3	3
-14	1	14	-3	3
-15	1	15	-4	4
-16	1	16	-4	4
-17	1	17	-4	4
-18	1	18	-4	4
-19	1	19	-4	4
-20	1	20	-4	4
-21	2	1	0	0
-22	2	2	0	0
-23	2	3	0	0
-24	2	4	0	0
-25	2	5	0	0
-26	2	6	0	0
-27	2	7	0	0
-28	2	8	0	0
-29	2	9	0	0
-30	2	10	0	0
-31	2	11	0	0
-32	2	12	0	0
-33	2	13	0	0
-34	2	14	0	0
-35	2	15	0	0
-36	2	16	0	0
-37	2	17	0	0
-38	2	18	0	0
-39	2	19	0	0
-40	2	20	0	0
-41	3	1	0	0
-42	3	2	0	0
-43	3	3	0	0
-44	3	4	0	0
-45	3	5	0	0
-46	3	6	0	0
-47	3	7	0	0
-48	3	8	0	0
-49	3	9	0	0
-50	3	10	0	0
-51	3	11	0	0
-52	3	12	0	0
-53	3	13	0	0
-54	3	14	0	0
-55	3	15	0	0
-56	3	16	0	0
-57	3	17	0	0
-58	3	18	0	0
-59	3	19	0	0
-60	3	20	0	0
-\.
-
-
---
--- Name: class_armor_proficiencies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
---
-
-SELECT pg_catalog.setval('public.class_armor_proficiencies_id_seq', 60, true);
-
-
---
--- Data for Name: class_saving_throw_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY public.class_saving_throw_bonuses (id, class_id, level, cha_bonus) FROM stdin;
-1	1	1	f
-2	1	2	f
-3	1	3	f
-4	1	4	f
-5	1	5	f
-6	1	6	f
-7	1	7	f
-8	1	8	f
-9	1	9	f
-10	1	10	f
-11	1	11	f
-12	1	12	f
-13	1	13	f
-14	1	14	f
-15	1	15	f
-16	1	16	f
-17	1	17	f
-18	1	18	f
-19	1	19	f
-20	1	20	f
-21	2	1	f
-22	2	2	t
-23	2	3	t
-24	2	4	t
-25	2	5	t
-26	2	6	t
-27	2	7	t
-28	2	8	t
-29	2	9	t
-30	2	10	t
-31	2	12	t
-32	2	11	t
-33	2	13	t
-34	2	14	t
-35	2	15	t
-36	2	16	t
-37	2	17	t
-38	2	18	t
-39	2	19	t
-40	2	20	t
-41	3	1	f
-42	3	2	f
-43	3	3	f
-44	3	4	f
-45	3	5	f
-46	3	6	f
-47	3	7	f
-48	3	8	f
-49	3	9	f
-50	3	10	f
-51	3	11	f
-52	3	12	f
-53	3	13	f
-54	3	14	f
-55	3	15	f
-56	3	16	f
-57	3	17	f
-58	3	18	f
-59	3	19	f
-60	3	20	f
-\.
-
-
---
--- Name: class_saving_throw_bonuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
---
-
-SELECT pg_catalog.setval('public.class_saving_throw_bonuses_id_seq', 60, true);
-
-
---
--- Data for Name: class_saving_throws; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY public.class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM stdin;
-1	1	1	2	0	0
-2	1	2	3	0	0
-3	1	3	3	1	1
-4	1	4	4	1	1
-5	1	5	4	1	1
-6	1	6	5	2	2
-7	1	7	5	2	2
-8	1	8	6	2	2
-9	1	9	6	3	3
-10	1	10	7	3	3
-11	1	11	7	3	3
-12	1	12	8	4	4
-13	1	13	8	4	4
-14	1	14	9	4	4
-15	1	15	9	5	5
-16	1	16	10	5	5
-17	1	17	10	5	5
-18	1	18	11	6	6
-19	1	19	11	6	6
-20	1	20	12	6	6
-21	2	1	2	0	2
-22	2	2	3	0	3
-23	2	3	3	1	3
-24	2	4	4	1	4
-25	2	5	4	1	4
-26	2	6	5	2	5
-27	2	7	5	2	5
-28	2	8	6	2	6
-29	2	9	6	3	6
-30	2	10	7	3	7
-31	2	11	7	3	7
-32	2	12	8	4	8
-33	2	13	8	4	8
-34	2	14	9	4	9
-35	2	15	9	5	9
-36	2	16	10	5	10
-37	2	17	10	5	10
-38	2	18	11	6	11
-39	2	19	11	6	11
-40	2	20	12	6	12
-41	3	1	3	3	0
-42	3	2	3	3	1
-43	3	3	3	3	1
-44	3	4	4	4	1
-45	3	5	4	4	1
-46	3	6	5	5	2
-47	3	7	5	5	2
-48	3	8	5	5	2
-49	3	9	6	6	2
-50	3	10	6	6	6
-51	3	11	6	6	6
-52	3	12	7	7	7
-53	3	13	8	7	7
-54	3	14	9	8	8
-55	3	15	9	8	8
-56	3	16	9	8	8
-57	3	17	10	9	9
-58	3	18	11	9	9
-59	3	19	11	9	9
-60	3	20	12	10	10
+COPY public.class_bonuses (id, class_id, level, fortitude, reflex, will, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus) FROM stdin;
+1	1	1	2	0	0	f	0	0	0	0
+2	1	2	3	0	0	f	0	0	0	0
+41	3	1	3	3	0	f	0	0	0	0
+42	3	2	3	3	1	f	0	0	0	0
+22	2	2	3	0	3	t	0	0	0	0
+23	2	3	3	1	3	t	0	0	0	0
+24	2	4	4	1	4	t	0	0	0	0
+25	2	5	4	1	4	t	0	0	0	0
+26	2	6	5	2	5	t	0	0	0	0
+27	2	7	5	2	5	t	0	0	0	0
+28	2	8	6	2	6	t	0	0	0	0
+29	2	9	6	3	6	t	0	0	0	0
+30	2	10	7	3	7	t	0	0	0	0
+31	2	11	7	3	7	t	0	0	0	0
+32	2	12	8	4	8	t	0	0	0	0
+33	2	13	8	4	8	t	0	0	0	0
+34	2	14	9	4	9	t	0	0	0	0
+35	2	15	9	5	9	t	0	0	0	0
+36	2	16	10	5	10	t	0	0	0	0
+37	2	17	10	5	10	t	0	0	0	0
+38	2	18	11	6	11	t	0	0	0	0
+39	2	19	11	6	11	t	0	0	0	0
+40	2	20	12	6	12	t	0	0	0	0
+21	2	1	2	0	2	f	0	0	0	0
+3	1	3	3	1	1	f	-1	1	0	0
+4	1	4	4	1	1	f	-1	1	0	0
+5	1	5	4	1	1	f	-1	1	0	0
+6	1	6	5	2	2	f	-1	1	0	0
+7	1	7	5	2	2	f	-2	2	0	0
+8	1	8	6	2	2	f	-2	2	0	0
+9	1	9	6	3	3	f	-2	2	0	0
+10	1	10	7	3	3	f	-2	2	0	0
+11	1	11	7	3	3	f	-3	3	0	0
+12	1	12	8	4	4	f	-3	3	0	0
+13	1	13	8	4	4	f	-3	3	0	0
+14	1	14	9	4	4	f	-3	3	0	0
+15	1	15	9	5	5	f	-4	4	0	0
+16	1	16	10	5	5	f	-4	4	0	0
+17	1	17	10	5	5	f	-4	4	0	0
+18	1	18	11	6	6	f	-4	4	0	0
+19	1	19	11	6	6	f	-4	4	0	0
+20	1	20	12	6	6	f	-4	4	0	0
+43	3	3	3	3	1	f	0	0	2	1
+44	3	4	4	4	1	f	0	0	2	1
+45	3	5	4	4	1	f	0	0	2	1
+46	3	6	5	5	2	f	0	0	4	2
+47	3	7	5	5	2	f	0	0	4	2
+48	3	8	5	5	2	f	0	0	4	2
+49	3	9	6	6	2	f	0	0	6	3
+50	3	10	6	6	6	f	0	0	6	3
+51	3	11	6	6	6	f	0	0	6	3
+52	3	12	7	7	7	f	0	0	8	4
+53	3	13	8	7	7	f	0	0	8	4
+54	3	14	9	8	8	f	0	0	8	4
+55	3	15	9	8	8	f	0	0	10	5
+56	3	16	9	8	8	f	0	0	10	5
+57	3	17	10	9	9	f	0	0	10	5
+58	3	18	11	9	9	f	0	0	12	6
+59	3	19	11	9	9	f	0	0	12	6
+60	3	20	12	10	10	f	0	0	12	6
 \.
 
 

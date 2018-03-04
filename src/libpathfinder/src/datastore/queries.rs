@@ -59,7 +59,7 @@ pub static BASE_SAVING_THROWS_SQL: &'static str = r#"
 SELECT
     *
 FROM
-    class_saving_throws
+    class_bonuses
 WHERE
     class_id = $1
 AND
@@ -84,28 +84,6 @@ ON
     weapon_instances.weapon_id = weapons.id
 WHERE
     cws.creature_id = $1
-"#;
-
-pub static CLASS_ARMOR_PROFICIENCY_SQL: &'static str = r#"
-SELECT
-    cap.*
-FROM
-    class_armor_proficiencies cap
-WHERE
-    cap.class_id = $1
-AND
-    cap.level = $2
-"#;
-
-pub static CLASS_SAVING_THROW_BONUS_SQL: &'static str = r#"
-SELECT
-    cstb.*
-FROM
-    class_saving_throw_bonuses cstb
-WHERE
-    cstb.class_id = $1
-AND
-    cstb.level = $2
 "#;
 
 pub static SHIELD_DAMAGE_SQL: &'static str = r#"

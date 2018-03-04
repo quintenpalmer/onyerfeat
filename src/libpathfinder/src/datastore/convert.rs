@@ -21,18 +21,16 @@ pub fn into_canonical_character(
     optional_creature_shield: Option<structs::CreatureShield>,
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::ExpandedWeaponInstance>,
-    base_saving_throws: structs::ClassSavingThrows,
-    class_saving_throw_bonus: structs::ClassSavingThrowBonus,
-    armor_proficiency: structs::ClassArmorProficiency,
+    base_saving_throws: structs::ClassBonuses,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
-            score: abs.str,
+            score: abs.str + base_saving_throws.str_dex_bonus,
             modifier: calc_ability_modifier(abs.str),
         },
         dex: models::ScoreAndMofidier {
-            score: abs.dex,
+            score: abs.dex + base_saving_throws.str_dex_bonus,
             modifier: calc_ability_modifier(abs.dex),
         },
         con: models::ScoreAndMofidier {
@@ -60,8 +58,8 @@ pub fn into_canonical_character(
         class_skills,
         class_sub_skills,
         class_skill_constructors,
+        &base_saving_throws,
         &ability_score_model,
-        &armor_proficiency,
         &armor_piece,
         &optional_shield,
         &optional_creature_shield,
@@ -74,8 +72,9 @@ pub fn into_canonical_character(
             Some(ref shield) => shield.ac_bonus,
             None => 0,
         };
+        let misc = base_saving_throws.natural_armor_bonus;
         let armor_class = models::ArmorClass {
-            total: dex_mod + base + armor_ac + shield_ac + size_mod,
+            total: dex_mod + base + armor_ac + shield_ac + misc + size_mod,
             base: base,
             dex: dex_mod,
             armor_ac: armor_ac,
@@ -83,6 +82,7 @@ pub fn into_canonical_character(
             deflection_mod: 0,
             dodge_mod: 0,
             shield_ac: shield_ac,
+            misc: misc,
             natural_armor: 0,
         };
         armor_class
@@ -123,8 +123,7 @@ pub fn into_canonical_character(
             nonlethal_damage: creature.nonlethal_damage,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
-            saving_throws: base_saving_throws
-                .into_canonical(&ability_score_model, &class_saving_throw_bonus),
+            saving_throws: base_saving_throws.into_canonical(&ability_score_model),
             combat_maneuvers: build_combat_maneuvers(
                 &ability_score_model,
                 creature.base_attack_bonus,
@@ -168,8 +167,8 @@ fn get_character_skills(
     class_skills: Vec<structs::ClassSkill>,
     class_sub_skills: Vec<structs::ClassSubSkill>,
     class_skill_constructors: Vec<structs::ClassSkillConstructor>,
+    class_bonuses: &structs::ClassBonuses,
     abs: &models::AbilityScoreInfo,
-    armor_proficiency: &structs::ClassArmorProficiency,
     armor_piece: &structs::ExpandedArmorPieceInstance,
     optional_shield: &Option<structs::Shield>,
     optional_creature_shield: &Option<structs::CreatureShield>,
@@ -193,7 +192,7 @@ fn get_character_skills(
         None => 0,
     };
     let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty
-        - (armor_proficiency.armor_check_penalty_reduction + masterwork_ac_reduction
+        - (class_bonuses.ac_penalty_reduction + masterwork_ac_reduction
             + masterwork_shield_ac_reduction);
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {
@@ -471,13 +470,9 @@ fn build_combat_weapon_stats(
         .collect()
 }
 
-impl structs::ClassSavingThrows {
-    pub fn into_canonical(
-        &self,
-        abs: &models::AbilityScoreInfo,
-        cstb: &structs::ClassSavingThrowBonus,
-    ) -> models::SavingThrows {
-        let class_cha_bonus = if cstb.cha_bonus { abs.cha.modifier } else { 0 };
+impl structs::ClassBonuses {
+    pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
+        let class_cha_bonus = if self.cha_bonus { abs.cha.modifier } else { 0 };
         models::SavingThrows {
             fortitude: build_saving_throw(
                 self.fortitude,

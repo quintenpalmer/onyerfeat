@@ -719,6 +719,8 @@ COPY public.weapons (id, name, training_type, size_style, cost, small_damage, me
 13	Lance	martial	two_handed_melee	10	(1,6)	(1,8)	(20,3)	\N	10	(f,t,f,f)
 12	Guisarme	martial	two_handed_melee	9	(1,6)	(2,4)	(20,3)	\N	12	(f,f,t,f)
 14	Ranseur	martial	two_handed_melee	10	(1,6)	(2,4)	(20,3)	\N	11	(f,t,f,f)
+15	Horse Bite	martial	two_handed_melee	0	(1,3)	(1,4)	(20,2)	\N	1	(t,f,f,f)
+16	Horse Hooves	martial	two_handed_melee	0	(1,4)	(1,6)	(20,2)	\N	1	(t,f,f,f)
 \.
 
 
@@ -734,8 +736,12 @@ COPY public.weapon_instances (id, weapon_id, name, is_masterwork, special) FROM 
 6	9	\N	f	\N
 7	10	\N	f	\N
 8	10	\N	f	\N
-9	14	\N	t	\N
 2	2	\N	f	Has grappling hook extension bows
+10	15	\N	f	\N
+11	16	\N	f	-5 attack
+12	13	\N	f	\N
+13	11	Mecho-Glaive	f	wind as move action to give +2 damage for 3 rounds
+14	2	Rusty Clockwork Crossbow	f	Load 10 fletchets; shoots all of them (blows up on d=#fletchets)
 \.
 
 
@@ -752,7 +758,11 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 8	1	6
 9	1	7
 10	1	8
-11	4	9
+12	5	10
+13	5	11
+14	4	12
+15	1	13
+16	1	14
 \.
 
 
@@ -760,7 +770,7 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creature_weapons_id_seq', 11, true);
+SELECT pg_catalog.setval('public.creature_weapons_id_seq', 16, true);
 
 
 --
@@ -864,14 +874,14 @@ SELECT pg_catalog.setval('public.sub_skills_id_seq', 16, true);
 -- Name: weapon_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.weapon_instances_id_seq', 9, true);
+SELECT pg_catalog.setval('public.weapon_instances_id_seq', 14, true);
 
 
 --
 -- Name: weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.weapons_id_seq', 14, true);
+SELECT pg_catalog.setval('public.weapons_id_seq', 16, true);
 
 
 --

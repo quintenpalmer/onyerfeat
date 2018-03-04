@@ -38,7 +38,7 @@ view model =
                         _ ->
                             [ Attr.style [ ( "role", "presentation" ) ] ]
                     )
-                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 4 ] [ Html.text "Load Datanamàsh" ] ]
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 5 ] [ Html.text "Load Atolabsam" ] ]
                 , Html.li
                     (case model of
                         Models.MCharacter _ ->
@@ -47,7 +47,7 @@ view model =
                         _ ->
                             [ Attr.style [ ( "role", "presentation" ) ] ]
                     )
-                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 5 ] [ Html.text "Load Atolabsam" ] ]
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 6 ] [ Html.text "Load Charger" ] ]
                 , Html.li
                     (case model of
                         Models.MWeapons _ ->

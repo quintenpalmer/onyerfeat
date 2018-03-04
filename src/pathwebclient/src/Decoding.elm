@@ -27,7 +27,7 @@ decodeCharacter =
         |> Pipeline.required "combat_numbers" decodeCombatNumbers
         |> Pipeline.required "armor_piece" decodeArmorPieceInstance
         |> Pipeline.required "shield" (Decode.nullable decodePersonalShield)
-        |> Pipeline.required "full_weapons" (Decode.list decodeWeapon)
+        |> Pipeline.required "full_weapons" (Decode.list decodeWeaponInstance)
         |> Pipeline.required "combat_weapon_stats" (Decode.list decodeCombatWeaponStats)
         |> Pipeline.required "skills" decodeSkills
         |> Pipeline.required "languages" (Decode.list decodeLanguage)
@@ -263,6 +263,14 @@ decodePersonalShield =
 decodeWeapons : Decode.Decoder (List Models.Weapon)
 decodeWeapons =
     Decode.field "data" (Decode.list decodeWeapon)
+
+
+decodeWeaponInstance : Decode.Decoder Models.WeaponInstance
+decodeWeaponInstance =
+    Pipeline.decode Models.WeaponInstance
+        |> Pipeline.required "weapon" decodeWeapon
+        |> Pipeline.required "is_masterwork" Decode.bool
+        |> Pipeline.required "special" (Decode.nullable Decode.string)
 
 
 decodeWeapon : Decode.Decoder Models.Weapon

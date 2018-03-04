@@ -91,11 +91,12 @@ impl Datastore {
                 creature.id
             ));
 
-        let weapons: Vec<structs::Weapon> = try!(selects::exec_and_select_by_field(
-            &self.conn,
-            queries::CREATURE_WEAPON_SQL,
-            creature.id
-        ));
+        let expanded_weapon_instances: Vec<structs::ExpandedWeaponInstance> =
+            try!(selects::exec_and_select_by_field(
+                &self.conn,
+                queries::CREATURE_WEAPON_SQL,
+                creature.id
+            ));
 
         let base_saving_throws: structs::ClassSavingThrows =
             try!(selects::exec_and_select_one_by_two_fields(
@@ -143,7 +144,7 @@ impl Datastore {
             option_shield,
             option_creature_shield,
             option_shield_damage,
-            weapons,
+            expanded_weapon_instances,
             base_saving_throws,
             class_saving_throw_bonus,
             armor_proficiency,

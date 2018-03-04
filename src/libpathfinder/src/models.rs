@@ -8,7 +8,7 @@ pub struct Character {
     pub combat_numbers: CombatNumbers,
     pub armor_piece: ArmorPieceInstance,
     pub shield: Option<PersonalShield>,
-    pub full_weapons: Vec<Weapon>,
+    pub full_weapons: Vec<WeaponInstance>,
     pub combat_weapon_stats: Vec<CombatWeaponStat>,
     pub skills: Vec<CharacterSkill>,
     pub languages: Vec<Language>,
@@ -309,6 +309,13 @@ pub struct Weapon {
     pub range: i32,
     pub weight: i32,
     pub damage_type: PhysicalDamageType,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct WeaponInstance {
+    pub weapon: Weapon,
+    pub is_masterwork: bool,
+    pub special: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

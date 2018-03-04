@@ -2,25 +2,24 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.3
--- Dumped by pg_dump version 9.6.3
+-- Dumped from database version 9.6.8
+-- Dumped by pg_dump version 9.6.8
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
-
-SET search_path = public, pg_catalog;
 
 --
 -- Data for Name: ability_score_sets; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
+COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 1	13	16	18	14	10	8
 5	15	14	13	13	8	16
 4	16	13	16	10	14	6
@@ -31,14 +30,14 @@ COPY ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 -- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('ability_score_sets_id_seq', 5, true);
+SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 5, true);
 
 
 --
 -- Data for Name: armor_pieces; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_check_penalty, arcane_spell_failure_chance, fast_speed, slow_speed, medium_weight) FROM stdin;
+COPY public.armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_check_penalty, arcane_spell_failure_chance, fast_speed, slow_speed, medium_weight) FROM stdin;
 1	light	Padded	1	8	0	5	30	20	10
 2	light	Leather	2	6	0	10	30	20	15
 3	light	Studded leather	3	5	-1	15	30	20	20
@@ -58,10 +57,10 @@ COPY armor_pieces (id, armor_class, name, armor_bonus, max_dex_bonus, armor_chec
 -- Data for Name: armor_piece_instances; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY armor_piece_instances (id, armor_piece_id, is_masterwork, special) FROM stdin;
+COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) FROM stdin;
 2	8	t	\N
 3	8	t	\N
-1	8	t	Heal 1hp per round...
+1	8	f	\N
 \.
 
 
@@ -69,21 +68,21 @@ COPY armor_piece_instances (id, armor_piece_id, is_masterwork, special) FROM std
 -- Name: armor_piece_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('armor_piece_instances_id_seq', 3, true);
+SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 3, true);
 
 
 --
 -- Name: armor_pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('armor_pieces_id_seq', 12, true);
+SELECT pg_catalog.setval('public.armor_pieces_id_seq', 12, true);
 
 
 --
 -- Data for Name: aura_magnitudes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY aura_magnitudes (id, magnitude) FROM stdin;
+COPY public.aura_magnitudes (id, magnitude) FROM stdin;
 1	faint
 2	moderate
 3	strong
@@ -94,14 +93,14 @@ COPY aura_magnitudes (id, magnitude) FROM stdin;
 -- Name: aura_magnitudes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('aura_magnitudes_id_seq', 3, true);
+SELECT pg_catalog.setval('public.aura_magnitudes_id_seq', 3, true);
 
 
 --
 -- Data for Name: aura_schools; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY aura_schools (id, school) FROM stdin;
+COPY public.aura_schools (id, school) FROM stdin;
 1	abjuration
 2	conjuration
 3	divination
@@ -117,14 +116,14 @@ COPY aura_schools (id, school) FROM stdin;
 -- Name: aura_schools_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('aura_schools_id_seq', 8, true);
+SELECT pg_catalog.setval('public.aura_schools_id_seq', 8, true);
 
 
 --
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY classes (id, name) FROM stdin;
+COPY public.classes (id, name) FROM stdin;
 1	fighter
 2	paladin
 \.
@@ -134,7 +133,7 @@ COPY classes (id, name) FROM stdin;
 -- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
+COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
 3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
 4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	48	0	5	5	3
 1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	85	0	6	6	1
@@ -145,7 +144,7 @@ COPY creatures (id, name, ability_score_set_id, alignment_order, alignment_moral
 -- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY characters (id, player_name, creature_id, class_id) FROM stdin;
+COPY public.characters (id, player_name, creature_id, class_id) FROM stdin;
 1	Quinten	1	1
 4	Quinten	3	1
 5	Quinten	4	2
@@ -156,7 +155,7 @@ COPY characters (id, player_name, creature_id, class_id) FROM stdin;
 -- Data for Name: skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY skills (id, name, trained_only, ability) FROM stdin;
+COPY public.skills (id, name, trained_only, ability) FROM stdin;
 1	acrobatics	f	dex
 2	appraise	f	int
 3	bluff	f	cha
@@ -186,7 +185,7 @@ COPY skills (id, name, trained_only, ability) FROM stdin;
 -- Data for Name: character_skill_choices; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
+COPY public.character_skill_choices (id, character_id, skill_id, count) FROM stdin;
 2	1	12	1
 3	1	15	1
 4	1	20	1
@@ -218,14 +217,14 @@ COPY character_skill_choices (id, character_id, skill_id, count) FROM stdin;
 -- Name: character_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('character_skill_choices_id_seq', 24, true);
+SELECT pg_catalog.setval('public.character_skill_choices_id_seq', 24, true);
 
 
 --
 -- Data for Name: skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
+COPY public.skill_constructors (id, name, trained_only, ability) FROM stdin;
 1	craft	f	int
 2	knowledge	t	int
 3	perform	f	cha
@@ -237,7 +236,7 @@ COPY skill_constructors (id, name, trained_only, ability) FROM stdin;
 -- Data for Name: sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
+COPY public.sub_skills (id, name, skill_constructor_id) FROM stdin;
 1	arcana	2
 2	dungeoneering	2
 3	engineering	2
@@ -261,7 +260,7 @@ COPY sub_skills (id, name, skill_constructor_id) FROM stdin;
 -- Data for Name: character_sub_skill_choices; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY character_sub_skill_choices (id, character_id, sub_skill_id, count) FROM stdin;
+COPY public.character_sub_skill_choices (id, character_id, sub_skill_id, count) FROM stdin;
 1	1	2	1
 2	1	3	1
 3	1	11	1
@@ -282,21 +281,21 @@ COPY character_sub_skill_choices (id, character_id, sub_skill_id, count) FROM st
 -- Name: character_sub_skill_choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('character_sub_skill_choices_id_seq', 13, true);
+SELECT pg_catalog.setval('public.character_sub_skill_choices_id_seq', 13, true);
 
 
 --
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('characters_id_seq', 5, true);
+SELECT pg_catalog.setval('public.characters_id_seq', 5, true);
 
 
 --
 -- Data for Name: class_armor_proficiencies; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY class_armor_proficiencies (id, class_id, level, armor_check_penalty_reduction, max_dex_bonus) FROM stdin;
+COPY public.class_armor_proficiencies (id, class_id, level, armor_check_penalty_reduction, max_dex_bonus) FROM stdin;
 1	1	1	0	0
 2	1	2	0	0
 3	1	3	-1	1
@@ -344,14 +343,14 @@ COPY class_armor_proficiencies (id, class_id, level, armor_check_penalty_reducti
 -- Name: class_armor_proficiencies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_armor_proficiencies_id_seq', 40, true);
+SELECT pg_catalog.setval('public.class_armor_proficiencies_id_seq', 40, true);
 
 
 --
 -- Data for Name: class_saving_throw_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY class_saving_throw_bonuses (id, class_id, level, cha_bonus) FROM stdin;
+COPY public.class_saving_throw_bonuses (id, class_id, level, cha_bonus) FROM stdin;
 1	1	1	f
 2	1	2	f
 3	1	3	f
@@ -399,14 +398,14 @@ COPY class_saving_throw_bonuses (id, class_id, level, cha_bonus) FROM stdin;
 -- Name: class_saving_throw_bonuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_saving_throw_bonuses_id_seq', 40, true);
+SELECT pg_catalog.setval('public.class_saving_throw_bonuses_id_seq', 40, true);
 
 
 --
 -- Data for Name: class_saving_throws; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM stdin;
+COPY public.class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM stdin;
 1	1	1	2	0	0
 2	1	2	3	0	0
 3	1	3	3	1	1
@@ -454,14 +453,14 @@ COPY class_saving_throws (id, class_id, level, fortitude, reflex, will) FROM std
 -- Name: class_saving_throws_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_saving_throws_id_seq', 40, true);
+SELECT pg_catalog.setval('public.class_saving_throws_id_seq', 40, true);
 
 
 --
 -- Data for Name: class_skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
+COPY public.class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
 1	1	1
 2	1	4
 3	2	1
@@ -473,14 +472,14 @@ COPY class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
 -- Name: class_skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_skill_constructors_id_seq', 4, true);
+SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 4, true);
 
 
 --
 -- Data for Name: class_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY class_skills (id, class_id, skill_id) FROM stdin;
+COPY public.class_skills (id, class_id, skill_id) FROM stdin;
 1	1	4
 2	1	10
 3	1	12
@@ -500,14 +499,14 @@ COPY class_skills (id, class_id, skill_id) FROM stdin;
 -- Name: class_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_skills_id_seq', 12, true);
+SELECT pg_catalog.setval('public.class_skills_id_seq', 12, true);
 
 
 --
 -- Data for Name: class_sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
+COPY public.class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
 1	1	3
 2	1	2
 3	2	8
@@ -519,21 +518,21 @@ COPY class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
 -- Name: class_sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('class_sub_skills_id_seq', 4, true);
+SELECT pg_catalog.setval('public.class_sub_skills_id_seq', 4, true);
 
 
 --
 -- Name: classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('classes_id_seq', 2, true);
+SELECT pg_catalog.setval('public.classes_id_seq', 2, true);
 
 
 --
 -- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY items (id, name, description) FROM stdin;
+COPY public.items (id, name, description) FROM stdin;
 1	Dwarven Coin	Ancient coin from some dwarven society
 2	Rope (10ft)	10 feet of sturdy rope
 3	Flask (ale)	A flask full of ale
@@ -546,7 +545,7 @@ COPY items (id, name, description) FROM stdin;
 -- Data for Name: creature_items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_items (id, creature_id, item_id, count) FROM stdin;
+COPY public.creature_items (id, creature_id, item_id, count) FROM stdin;
 2	1	2	6
 1	1	1	43
 4	1	3	1
@@ -565,14 +564,14 @@ COPY creature_items (id, creature_id, item_id, count) FROM stdin;
 -- Name: creature_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_items_id_seq', 12, true);
+SELECT pg_catalog.setval('public.creature_items_id_seq', 12, true);
 
 
 --
 -- Data for Name: languages; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY languages (id, name) FROM stdin;
+COPY public.languages (id, name) FROM stdin;
 1	Common
 2	Dwarf
 3	Terran
@@ -585,7 +584,7 @@ COPY languages (id, name) FROM stdin;
 -- Data for Name: creature_languages; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_languages (id, creature_id, language_id) FROM stdin;
+COPY public.creature_languages (id, creature_id, language_id) FROM stdin;
 1	1	1
 2	1	2
 3	1	3
@@ -602,14 +601,14 @@ COPY creature_languages (id, creature_id, language_id) FROM stdin;
 -- Name: creature_languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_languages_id_seq', 9, true);
+SELECT pg_catalog.setval('public.creature_languages_id_seq', 9, true);
 
 
 --
 -- Data for Name: shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_chance, weight, size_style) FROM stdin;
+COPY public.shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_chance, weight, size_style) FROM stdin;
 1	Buckler	1	\N	-1	5	5	\N
 6	Shield, tower	4	2	-10	50	45	\N
 2	Shield, light wooden	1	\N	-1	5	5	light_melee
@@ -624,8 +623,8 @@ COPY shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_failure_c
 -- Data for Name: creature_shields; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, special) FROM stdin;
-1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact
+COPY public.creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, special) FROM stdin;
+1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact; +1 AC on arrows
 \.
 
 
@@ -633,14 +632,14 @@ COPY creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, sp
 -- Name: creature_shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_shields_id_seq', 1, true);
+SELECT pg_catalog.setval('public.creature_shields_id_seq', 1, true);
 
 
 --
 -- Data for Name: weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_damage, critical, range, weight, damage_type) FROM stdin;
+COPY public.weapons (id, name, training_type, size_style, cost, small_damage, medium_damage, critical, range, weight, damage_type) FROM stdin;
 1	Waraxe, dwarven	exotic	one_handed_melee	30	(1,8)	(1,10)	(20,3)	\N	8	(f,f,t,f)
 2	Crossbow, heavy	simple	ranged	50	(1,8)	(1,10)	(19,2)	120	8	(f,t,f,f)
 3	Crossbow, light	simple	ranged	35	(1,6)	(1,8)	(19,2)	80	4	(f,t,f,f)
@@ -648,6 +647,30 @@ COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_da
 5	Dagger	simple	light_melee	2	(1,3)	(1,4)	(19,2)	10	1	(f,t,t,f)
 6	Rapier	martial	one_handed_melee	20	(1,4)	(1,6)	(18,2)	\N	2	(f,t,f,f)
 7	Greatsword	martial	two_handed_melee	50	(1,10)	(2,6)	(19,2)	\N	8	(f,f,t,f)
+8	Longbow	martial	ranged	75	(1,6)	(1,8)	(20,3)	100	3	(f,t,f,f)
+9	Axe, throwing	martial	light_melee	8	(1,4)	(1,6)	(20,2)	10	2	(f,f,t,f)
+10	Handaxe	martial	light_melee	8	(1,4)	(1,6)	(20,3)	\N	3	(f,f,t,f)
+11	Glaive	martial	two_handed_melee	8	(1,8)	(1,10)	(20,3)	\N	10	(f,f,t,f)
+13	Lance	martial	two_handed_melee	10	(1,6)	(1,8)	(20,3)	\N	10	(f,t,f,f)
+12	Guisarme	martial	two_handed_melee	9	(1,6)	(2,4)	(20,3)	\N	12	(f,f,t,f)
+14	Ranseur	martial	two_handed_melee	10	(1,6)	(2,4)	(20,3)	\N	11	(f,t,f,f)
+\.
+
+
+--
+-- Data for Name: weapon_instances; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.weapon_instances (id, weapon_id, name, is_masterwork, special) FROM stdin;
+1	1	\N	f	\N
+3	7	\N	t	\N
+4	7	\N	t	\N
+5	8	Backbiter Bow	t	Always deals max damage on hit; wielder takes 8-1d8 damage on hit
+6	9	\N	f	\N
+7	10	\N	f	\N
+8	10	\N	f	\N
+9	14	\N	t	\N
+2	2	\N	f	Has grappling hook extension bows
 \.
 
 
@@ -655,13 +678,16 @@ COPY weapons (id, name, training_type, size_style, cost, small_damage, medium_da
 -- Data for Name: creature_weapons; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
+COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 1	1	1
 2	1	2
-3	1	3
-4	1	6
-5	3	7
-6	4	7
+5	3	3
+6	4	4
+7	1	5
+8	1	6
+9	1	7
+10	1	8
+11	4	9
 \.
 
 
@@ -669,21 +695,21 @@ COPY creature_weapons (id, creature_id, weapon_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creature_weapons_id_seq', 6, true);
+SELECT pg_catalog.setval('public.creature_weapons_id_seq', 11, true);
 
 
 --
 -- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('creatures_id_seq', 4, true);
+SELECT pg_catalog.setval('public.creatures_id_seq', 4, true);
 
 
 --
 -- Data for Name: item_body_slots; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY item_body_slots (id, name, max_count_in_slot, examples) FROM stdin;
+COPY public.item_body_slots (id, name, max_count_in_slot, examples) FROM stdin;
 1	armor	1	suits of armor
 2	belt	1	belts and girdles
 3	body	1	robes and vestements
@@ -705,28 +731,28 @@ COPY item_body_slots (id, name, max_count_in_slot, examples) FROM stdin;
 -- Name: item_body_slots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('item_body_slots_id_seq', 14, true);
+SELECT pg_catalog.setval('public.item_body_slots_id_seq', 14, true);
 
 
 --
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('items_id_seq', 5, true);
+SELECT pg_catalog.setval('public.items_id_seq', 5, true);
 
 
 --
 -- Name: languages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('languages_id_seq', 5, true);
+SELECT pg_catalog.setval('public.languages_id_seq', 5, true);
 
 
 --
 -- Data for Name: shield_damage; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY shield_damage (id, size_style, spiked, small_damage, medium_damage, critical, range, damage_type) FROM stdin;
+COPY public.shield_damage (id, size_style, spiked, small_damage, medium_damage, critical, range, damage_type) FROM stdin;
 5	light_melee	f	(1,2)	(1,3)	(20,2)	\N	(t,f,f,f)
 6	light_melee	t	(1,3)	(1,4)	(20,2)	\N	(f,t,f,f)
 7	one_handed_melee	f	(1,3)	(1,4)	(20,2)	\N	(t,f,f,f)
@@ -738,49 +764,56 @@ COPY shield_damage (id, size_style, spiked, small_damage, medium_damage, critica
 -- Name: shield_damage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('shield_damage_id_seq', 8, true);
+SELECT pg_catalog.setval('public.shield_damage_id_seq', 8, true);
 
 
 --
 -- Name: shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('shields_id_seq', 7, true);
+SELECT pg_catalog.setval('public.shields_id_seq', 7, true);
 
 
 --
 -- Name: skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('skill_constructors_id_seq', 4, true);
+SELECT pg_catalog.setval('public.skill_constructors_id_seq', 4, true);
 
 
 --
 -- Name: skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('skills_id_seq', 22, true);
+SELECT pg_catalog.setval('public.skills_id_seq', 22, true);
 
 
 --
 -- Name: sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('sub_skills_id_seq', 16, true);
+SELECT pg_catalog.setval('public.sub_skills_id_seq', 16, true);
+
+
+--
+-- Name: weapon_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('public.weapon_instances_id_seq', 9, true);
 
 
 --
 -- Name: weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('weapons_id_seq', 7, true);
+SELECT pg_catalog.setval('public.weapons_id_seq', 14, true);
 
 
 --
 -- Data for Name: wondrous_items; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY wondrous_items (id, name, caster_level, slot_id, price, weight, description, construction_requirements_text) FROM stdin;
+COPY public.wondrous_items (id, name, caster_level, slot_id, price, weight, description, construction_requirements_text) FROM stdin;
 1	boots of the winterlands	5	6	2500	1	This footgear bestows many powers upon the wearer. First, he is able to travel across snow at his normal speed, leaving no tracks. Second, the boots also enable him to travel at normal speed across the most slippery ice (horizontal surfaces only, not vertical or sharply slanted ones) without falling or slipping. Finally, boots of the winterlands warm the wearer, as if he were affected by an endure elements spell.	Requirements Craft Wondrous Item, cat's grace, endure elements, pass without trace; Cost 1,250 gp
 \.
 
@@ -789,7 +822,7 @@ COPY wondrous_items (id, name, caster_level, slot_id, price, weight, description
 -- Data for Name: wondrous_item_auras; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY wondrous_item_auras (id, wondrous_item_id, aura_magnitude_id, aura_school_id) FROM stdin;
+COPY public.wondrous_item_auras (id, wondrous_item_id, aura_magnitude_id, aura_school_id) FROM stdin;
 1	1	1	1
 2	1	1	8
 \.
@@ -799,14 +832,14 @@ COPY wondrous_item_auras (id, wondrous_item_id, aura_magnitude_id, aura_school_i
 -- Name: wondrous_item_auras_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('wondrous_item_auras_id_seq', 2, true);
+SELECT pg_catalog.setval('public.wondrous_item_auras_id_seq', 2, true);
 
 
 --
 -- Name: wondrous_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('wondrous_items_id_seq', 1, true);
+SELECT pg_catalog.setval('public.wondrous_items_id_seq', 1, true);
 
 
 --

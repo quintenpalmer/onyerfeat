@@ -382,7 +382,7 @@ displayCharacterSheet character =
             ]
         , Html.div
             [ Attr.class "row" ]
-            [ WeaponTable.weaponsPanel character.fullWeapons ]
+            [ WeaponTable.weaponsPanel (List.map (\x -> x.weapon) character.fullWeapons) ]
         ]
 
 

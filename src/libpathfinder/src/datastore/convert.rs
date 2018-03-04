@@ -26,11 +26,11 @@ pub fn into_canonical_character(
 ) -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
-            score: abs.str,
+            score: abs.str + base_saving_throws.str_dex_bonus,
             modifier: calc_ability_modifier(abs.str),
         },
         dex: models::ScoreAndMofidier {
-            score: abs.dex,
+            score: abs.dex + base_saving_throws.str_dex_bonus,
             modifier: calc_ability_modifier(abs.dex),
         },
         con: models::ScoreAndMofidier {

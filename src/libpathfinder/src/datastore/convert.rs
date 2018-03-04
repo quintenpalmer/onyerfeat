@@ -22,7 +22,6 @@ pub fn into_canonical_character(
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::ExpandedWeaponInstance>,
     base_saving_throws: structs::ClassBonuses,
-    armor_proficiency: structs::ClassArmorProficiency,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
@@ -59,8 +58,8 @@ pub fn into_canonical_character(
         class_skills,
         class_sub_skills,
         class_skill_constructors,
+        &base_saving_throws,
         &ability_score_model,
-        &armor_proficiency,
         &armor_piece,
         &optional_shield,
         &optional_creature_shield,
@@ -166,8 +165,8 @@ fn get_character_skills(
     class_skills: Vec<structs::ClassSkill>,
     class_sub_skills: Vec<structs::ClassSubSkill>,
     class_skill_constructors: Vec<structs::ClassSkillConstructor>,
+    class_bonuses: &structs::ClassBonuses,
     abs: &models::AbilityScoreInfo,
-    armor_proficiency: &structs::ClassArmorProficiency,
     armor_piece: &structs::ExpandedArmorPieceInstance,
     optional_shield: &Option<structs::Shield>,
     optional_creature_shield: &Option<structs::CreatureShield>,
@@ -191,7 +190,7 @@ fn get_character_skills(
         None => 0,
     };
     let armor_penalty_value = armor_piece.armor_check_penalty + shield_penalty
-        - (armor_proficiency.armor_check_penalty_reduction + masterwork_ac_reduction
+        - (class_bonuses.ac_penalty_reduction + masterwork_ac_reduction
             + masterwork_shield_ac_reduction);
     for skill in skills.iter() {
         let armor_penalty = if is_armor_penalized(skill.ability.clone()) {

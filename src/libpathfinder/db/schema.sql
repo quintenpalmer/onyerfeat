@@ -357,42 +357,6 @@ ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
 
 
 --
--- Name: class_armor_proficiencies; Type: TABLE; Schema: public; Owner: pathfinder_user
---
-
-CREATE TABLE public.class_armor_proficiencies (
-    id integer NOT NULL,
-    class_id integer NOT NULL,
-    level integer NOT NULL,
-    armor_check_penalty_reduction integer NOT NULL,
-    max_dex_bonus integer NOT NULL
-);
-
-
-ALTER TABLE public.class_armor_proficiencies OWNER TO pathfinder_user;
-
---
--- Name: class_armor_proficiencies_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
---
-
-CREATE SEQUENCE public.class_armor_proficiencies_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.class_armor_proficiencies_id_seq OWNER TO pathfinder_user;
-
---
--- Name: class_armor_proficiencies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
---
-
-ALTER SEQUENCE public.class_armor_proficiencies_id_seq OWNED BY public.class_armor_proficiencies.id;
-
-
---
 -- Name: class_bonuses; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -403,7 +367,9 @@ CREATE TABLE public.class_bonuses (
     fortitude integer NOT NULL,
     reflex integer NOT NULL,
     will integer NOT NULL,
-    cha_bonus boolean DEFAULT false NOT NULL
+    cha_bonus boolean DEFAULT false NOT NULL,
+    ac_penalty_reduction integer DEFAULT 0 NOT NULL,
+    max_dex_bonus integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1244,13 +1210,6 @@ ALTER TABLE ONLY public.characters ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
--- Name: class_armor_proficiencies id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY public.class_armor_proficiencies ALTER COLUMN id SET DEFAULT nextval('public.class_armor_proficiencies_id_seq'::regclass);
-
-
---
 -- Name: class_bonuses id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1482,14 +1441,6 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 ALTER TABLE ONLY public.characters
     ADD CONSTRAINT characters_pkey PRIMARY KEY (id);
-
-
---
--- Name: class_armor_proficiencies class_armor_proficiencies_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY public.class_armor_proficiencies
-    ADD CONSTRAINT class_armor_proficiencies_pkey PRIMARY KEY (id);
 
 
 --
@@ -1754,14 +1705,6 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 ALTER TABLE ONLY public.character_sub_skill_choices
     ADD CONSTRAINT character_sub_skill_choices_sub_skill_id_fkey FOREIGN KEY (sub_skill_id) REFERENCES public.sub_skills(id);
-
-
---
--- Name: class_armor_proficiencies class_armor_proficiencies_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
---
-
-ALTER TABLE ONLY public.class_armor_proficiencies
-    ADD CONSTRAINT class_armor_proficiencies_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
 
 
 --

@@ -106,14 +106,6 @@ impl Datastore {
                 creature.level
             ));
 
-        let armor_proficiency: structs::ClassArmorProficiency =
-            try!(selects::exec_and_select_one_by_two_fields(
-                &self.conn,
-                queries::CLASS_ARMOR_PROFICIENCY_SQL,
-                class.id,
-                creature.level
-            ));
-
         let items: Vec<structs::ExpandedCreatureItem> = try!(selects::exec_and_select_by_field(
             &self.conn,
             queries::CREATURE_ITEMS_SQL,
@@ -138,7 +130,6 @@ impl Datastore {
             option_shield_damage,
             expanded_weapon_instances,
             base_saving_throws,
-            armor_proficiency,
             items,
         ));
     }

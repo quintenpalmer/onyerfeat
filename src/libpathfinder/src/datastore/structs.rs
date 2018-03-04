@@ -218,6 +218,8 @@ pub struct ClassBonuses {
     pub reflex: i32,
     pub will: i32,
     pub cha_bonus: bool,
+    pub ac_penalty_reduction: i32,
+    pub max_dex_bonus: i32,
 }
 
 #[derive(TableNamer, FromRow)]
@@ -262,16 +264,6 @@ pub struct ExpandedWeaponInstance {
     pub weapon_instance_name: Option<String>,
     pub is_masterwork: bool,
     pub special: Option<String>,
-}
-
-#[derive(TableNamer, FromRow)]
-#[table_namer(table_name = "class_armor_proficiencies")]
-pub struct ClassArmorProficiency {
-    pub id: i32,
-    pub class_id: i32,
-    pub level: i32,
-    pub armor_check_penalty_reduction: i32,
-    pub max_dex_bonus: i32,
 }
 
 #[derive(TableNamer, FromRow)]

@@ -86,17 +86,6 @@ WHERE
     cws.creature_id = $1
 "#;
 
-pub static CLASS_ARMOR_PROFICIENCY_SQL: &'static str = r#"
-SELECT
-    cap.*
-FROM
-    class_armor_proficiencies cap
-WHERE
-    cap.class_id = $1
-AND
-    cap.level = $2
-"#;
-
 pub static SHIELD_DAMAGE_SQL: &'static str = r#"
 SELECT
     shields.name as shield_name,

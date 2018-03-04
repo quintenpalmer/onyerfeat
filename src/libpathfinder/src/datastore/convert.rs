@@ -22,7 +22,6 @@ pub fn into_canonical_character(
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::ExpandedWeaponInstance>,
     base_saving_throws: structs::ClassSavingThrows,
-    class_saving_throw_bonus: structs::ClassSavingThrowBonus,
     armor_proficiency: structs::ClassArmorProficiency,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
@@ -123,8 +122,7 @@ pub fn into_canonical_character(
             nonlethal_damage: creature.nonlethal_damage,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
-            saving_throws: base_saving_throws
-                .into_canonical(&ability_score_model, &class_saving_throw_bonus),
+            saving_throws: base_saving_throws.into_canonical(&ability_score_model),
             combat_maneuvers: build_combat_maneuvers(
                 &ability_score_model,
                 creature.base_attack_bonus,
@@ -472,12 +470,8 @@ fn build_combat_weapon_stats(
 }
 
 impl structs::ClassSavingThrows {
-    pub fn into_canonical(
-        &self,
-        abs: &models::AbilityScoreInfo,
-        cstb: &structs::ClassSavingThrowBonus,
-    ) -> models::SavingThrows {
-        let class_cha_bonus = if cstb.cha_bonus { abs.cha.modifier } else { 0 };
+    pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
+        let class_cha_bonus = if self.cha_bonus { abs.cha.modifier } else { 0 };
         models::SavingThrows {
             fortitude: build_saving_throw(
                 self.fortitude,

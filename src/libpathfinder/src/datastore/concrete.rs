@@ -106,14 +106,6 @@ impl Datastore {
                 creature.level
             ));
 
-        let class_saving_throw_bonus: structs::ClassSavingThrowBonus =
-            try!(selects::exec_and_select_one_by_two_fields(
-                &self.conn,
-                queries::CLASS_SAVING_THROW_BONUS_SQL,
-                class.id,
-                creature.level
-            ));
-
         let armor_proficiency: structs::ClassArmorProficiency =
             try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,
@@ -146,7 +138,6 @@ impl Datastore {
             option_shield_damage,
             expanded_weapon_instances,
             base_saving_throws,
-            class_saving_throw_bonus,
             armor_proficiency,
             items,
         ));

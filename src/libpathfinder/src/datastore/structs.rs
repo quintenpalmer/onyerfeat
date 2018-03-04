@@ -217,6 +217,7 @@ pub struct ClassSavingThrows {
     pub fortitude: i32,
     pub reflex: i32,
     pub will: i32,
+    pub cha_bonus: bool,
 }
 
 #[derive(TableNamer, FromRow)]
@@ -271,15 +272,6 @@ pub struct ClassArmorProficiency {
     pub level: i32,
     pub armor_check_penalty_reduction: i32,
     pub max_dex_bonus: i32,
-}
-
-#[derive(TableNamer, FromRow)]
-#[table_namer(table_name = "class_saving_throw_bonuses")]
-pub struct ClassSavingThrowBonus {
-    pub id: i32,
-    pub class_id: i32,
-    pub level: i32,
-    pub cha_bonus: bool,
 }
 
 #[derive(TableNamer, FromRow)]

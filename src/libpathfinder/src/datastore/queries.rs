@@ -59,7 +59,7 @@ pub static BASE_SAVING_THROWS_SQL: &'static str = r#"
 SELECT
     *
 FROM
-    class_saving_throws
+    class_bonuses
 WHERE
     class_id = $1
 AND

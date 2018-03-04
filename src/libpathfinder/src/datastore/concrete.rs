@@ -98,7 +98,7 @@ impl Datastore {
                 creature.id
             ));
 
-        let base_saving_throws: structs::ClassSavingThrows =
+        let base_saving_throws: structs::ClassBonuses =
             try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,
                 queries::BASE_SAVING_THROWS_SQL,

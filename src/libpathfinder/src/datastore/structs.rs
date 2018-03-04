@@ -209,8 +209,8 @@ pub struct CreatureShield {
 }
 
 #[derive(TableNamer, FromRow)]
-#[table_namer(table_name = "class_saving_throws")]
-pub struct ClassSavingThrows {
+#[table_namer(table_name = "class_bonuses")]
+pub struct ClassBonuses {
     pub id: i32,
     pub class_id: i32,
     pub level: i32,

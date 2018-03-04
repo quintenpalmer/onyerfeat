@@ -372,10 +372,10 @@ SELECT pg_catalog.setval('public.class_armor_proficiencies_id_seq', 60, true);
 
 
 --
--- Data for Name: class_saving_throws; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+-- Data for Name: class_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_saving_throws (id, class_id, level, fortitude, reflex, will, cha_bonus) FROM stdin;
+COPY public.class_bonuses (id, class_id, level, fortitude, reflex, will, cha_bonus) FROM stdin;
 1	1	1	2	0	0	f
 2	1	2	3	0	0	f
 3	1	3	3	1	1	f

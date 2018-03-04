@@ -21,7 +21,7 @@ pub fn into_canonical_character(
     optional_creature_shield: Option<structs::CreatureShield>,
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::ExpandedWeaponInstance>,
-    base_saving_throws: structs::ClassSavingThrows,
+    base_saving_throws: structs::ClassBonuses,
     armor_proficiency: structs::ClassArmorProficiency,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
@@ -469,7 +469,7 @@ fn build_combat_weapon_stats(
         .collect()
 }
 
-impl structs::ClassSavingThrows {
+impl structs::ClassBonuses {
     pub fn into_canonical(&self, abs: &models::AbilityScoreInfo) -> models::SavingThrows {
         let class_cha_bonus = if self.cha_bonus { abs.cha.modifier } else { 0 };
         models::SavingThrows {

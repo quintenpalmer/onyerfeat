@@ -138,6 +138,21 @@ WHERE
     creature_languages.creature_id = $1;
 "#;
 
+pub static CHARACTER_CLASSES_SQL: &'static str = r#"
+SELECT
+    classes.id as class_id,
+    classes.name,
+    character_classes.level
+FROM
+    character_classes
+INNER JOIN
+    classes
+ON
+    character_classes.class_id = classes.id
+WHERE
+    character_classes.character_id = $1
+"#;
+
 pub static INSERT_ITEM_SQL: &'static str = r#"
 INSERT INTO
     items

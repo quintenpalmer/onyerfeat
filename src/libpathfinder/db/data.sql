@@ -122,6 +122,30 @@ SELECT pg_catalog.setval('public.aura_schools_id_seq', 8, true);
 
 
 --
+-- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, armor_piece_instance_id) FROM stdin;
+3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	2
+5	Charger	6	lawful	good	Horse	\N	10	large	36	36	0	3	4
+4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	31	0	5	3
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	42	0	6	1
+\.
+
+
+--
+-- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.characters (id, player_name, creature_id) FROM stdin;
+1	Quinten	1
+4	Quinten	3
+5	Quinten	4
+6	Quinten	5
+\.
+
+
+--
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -133,27 +157,22 @@ COPY public.classes (id, name) FROM stdin;
 
 
 --
--- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+-- Data for Name: character_classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
-3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
-5	Charger	6	lawful	good	Horse	\N	10	large	36	36	0	3	5	4
-4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	31	0	5	5	3
-1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	42	0	6	6	1
+COPY public.character_classes (id, character_id, class_id, level) FROM stdin;
+1	1	1	6
+2	4	1	5
+3	5	2	5
+4	6	3	5
 \.
 
 
 --
--- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+-- Name: character_classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.characters (id, player_name, creature_id, class_id) FROM stdin;
-1	Quinten	1	1
-4	Quinten	3	1
-5	Quinten	4	2
-6	Quinten	5	3
-\.
+SELECT pg_catalog.setval('public.character_classes_id_seq', 4, true);
 
 
 --

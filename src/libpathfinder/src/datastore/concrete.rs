@@ -34,7 +34,13 @@ impl Datastore {
             &self.conn,
             creature.ability_score_set_id
         ));
-        let class: structs::Class = try!(selects::select_one_by_id(&self.conn, character.class_id));
+
+        let character_classes: Vec<structs::ExpanededCharacterClass> =
+            try!(selects::exec_and_select_by_field(
+                &self.conn,
+                queries::CHARACTER_CLASSES_SQL,
+                character.id
+            ));
 
         let languages: Vec<structs::ExpandedCreatureLanguage> =
             try!(selects::exec_and_select_by_field(
@@ -57,14 +63,32 @@ impl Datastore {
                 character.id
             ));
 
-        let class_skills: Vec<structs::ClassSkill> =
-            try!(selects::select_by_field(&self.conn, "class_id", class.id));
+        let mut class_skills: Vec<structs::ClassSkill> = Vec::new();
+        for character_class in character_classes.iter() {
+            class_skills.extend(try!(selects::select_by_field(
+                &self.conn,
+                "class_id",
+                character_class.class_id
+            )));
+        }
 
-        let class_sub_skills: Vec<structs::ClassSubSkill> =
-            try!(selects::select_by_field(&self.conn, "class_id", class.id));
+        let mut class_sub_skills: Vec<structs::ClassSubSkill> = Vec::new();
+        for character_class in character_classes.iter() {
+            class_sub_skills.extend(try!(selects::select_by_field(
+                &self.conn,
+                "class_id",
+                character_class.class_id
+            )));
+        }
 
-        let class_skill_constructors: Vec<structs::ClassSkillConstructor> =
-            try!(selects::select_by_field(&self.conn, "class_id", class.id));
+        let mut class_skill_constructors: Vec<structs::ClassSkillConstructor> = Vec::new();
+        for character_class in character_classes.iter() {
+            class_skill_constructors.extend(try!(selects::select_by_field(
+                &self.conn,
+                "class_id",
+                character_class.class_id
+            )));
+        }
 
         let armor_piece: structs::ExpandedArmorPieceInstance =
             try!(selects::exec_and_select_one_by_field(
@@ -98,13 +122,15 @@ impl Datastore {
                 creature.id
             ));
 
-        let base_saving_throws: structs::ClassBonuses =
-            try!(selects::exec_and_select_one_by_two_fields(
+        let mut base_saving_throws_list: Vec<structs::ClassBonuses> = Vec::new();
+        for character_class in character_classes.iter() {
+            base_saving_throws_list.push(try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,
                 queries::BASE_SAVING_THROWS_SQL,
-                class.id,
-                creature.level
-            ));
+                character_class.class_id,
+                character_class.level
+            )));
+        }
 
         let items: Vec<structs::ExpandedCreatureItem> = try!(selects::exec_and_select_by_field(
             &self.conn,
@@ -116,7 +142,7 @@ impl Datastore {
             character,
             creature,
             abs,
-            class,
+            character_classes,
             languages,
             skills,
             trained_skills,
@@ -129,7 +155,7 @@ impl Datastore {
             option_creature_shield,
             option_shield_damage,
             expanded_weapon_instances,
-            base_saving_throws,
+            base_saving_throws_list,
             items,
         ));
     }

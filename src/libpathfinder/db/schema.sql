@@ -252,6 +252,41 @@ ALTER SEQUENCE public.aura_schools_id_seq OWNED BY public.aura_schools.id;
 
 
 --
+-- Name: character_classes; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE public.character_classes (
+    id integer NOT NULL,
+    character_id integer NOT NULL,
+    class_id integer NOT NULL,
+    level integer NOT NULL
+);
+
+
+ALTER TABLE public.character_classes OWNER TO pathfinder_user;
+
+--
+-- Name: character_classes_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE public.character_classes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.character_classes_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: character_classes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE public.character_classes_id_seq OWNED BY public.character_classes.id;
+
+
+--
 -- Name: character_skill_choices; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -328,8 +363,7 @@ ALTER SEQUENCE public.character_sub_skill_choices_id_seq OWNED BY public.charact
 CREATE TABLE public.characters (
     id integer NOT NULL,
     player_name text NOT NULL,
-    creature_id integer NOT NULL,
-    class_id integer NOT NULL
+    creature_id integer NOT NULL
 );
 
 
@@ -691,7 +725,6 @@ CREATE TABLE public.creatures (
     current_hit_points integer NOT NULL,
     nonlethal_damage integer NOT NULL,
     base_attack_bonus integer NOT NULL,
-    level integer NOT NULL,
     armor_piece_instance_id integer NOT NULL
 );
 
@@ -1191,6 +1224,13 @@ ALTER TABLE ONLY public.aura_schools ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: character_classes id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.character_classes ALTER COLUMN id SET DEFAULT nextval('public.character_classes_id_seq'::regclass);
+
+
+--
 -- Name: character_skill_choices id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1403,6 +1443,14 @@ ALTER TABLE ONLY public.aura_magnitudes
 
 ALTER TABLE ONLY public.aura_schools
     ADD CONSTRAINT aura_schools_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: character_classes character_classes_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.character_classes
+    ADD CONSTRAINT character_classes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1661,6 +1709,13 @@ CREATE INDEX armor_pieces_instances_index_armor_piece_id ON public.armor_piece_i
 
 
 --
+-- Name: character_classes_index_character_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX character_classes_index_character_id ON public.character_classes USING btree (character_id);
+
+
+--
 -- Name: characters_unique_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
 --
 
@@ -1746,11 +1801,19 @@ ALTER TABLE ONLY public.armor_piece_instances
 
 
 --
--- Name: characters character_class_id; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: character_classes character_classes_character_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
-ALTER TABLE ONLY public.characters
-    ADD CONSTRAINT character_class_id FOREIGN KEY (class_id) REFERENCES public.classes(id);
+ALTER TABLE ONLY public.character_classes
+    ADD CONSTRAINT character_classes_character_id_fkey FOREIGN KEY (character_id) REFERENCES public.characters(id);
+
+
+--
+-- Name: character_classes character_classes_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.character_classes
+    ADD CONSTRAINT character_classes_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
 
 
 --

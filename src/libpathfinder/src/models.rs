@@ -182,11 +182,17 @@ pub struct MetaInformation {
     pub name: String,
     pub player_name: String,
     pub alignment: Alignment,
-    pub class: String,
+    pub classes: Vec<ClassInformation>,
     pub race: String,
     pub deity: Option<String>,
     pub age: i32,
     pub size: Size,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ClassInformation {
+    pub name: String,
+    pub level: i32,
 }
 
 #[derive(Serialize, Deserialize)]

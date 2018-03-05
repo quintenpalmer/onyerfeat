@@ -150,7 +150,12 @@ pub fn into_canonical_character(
                 morality: creature.alignment_morality,
                 order: creature.alignment_order,
             },
-            class: class.name,
+            classes: vec![
+                models::ClassInformation {
+                    name: class.name,
+                    level: creature.level,
+                },
+            ],
             race: creature.race,
             age: creature.age,
             deity: creature.deity,

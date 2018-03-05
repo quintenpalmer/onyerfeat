@@ -153,11 +153,18 @@ decodeMetaInformation =
         |> Pipeline.required "name" Decode.string
         |> Pipeline.required "player_name" Decode.string
         |> Pipeline.required "alignment" decodeAlignment
-        |> Pipeline.required "class" Decode.string
+        |> Pipeline.required "classes" (Decode.list decodeClassInformation)
         |> Pipeline.required "race" Decode.string
         |> Pipeline.required "deity" (Decode.nullable Decode.string)
         |> Pipeline.required "age" Decode.int
         |> Pipeline.required "size" (Decode.string |> Decode.andThen decodeSize)
+
+
+decodeClassInformation : Decode.Decoder Models.ClassInformation
+decodeClassInformation =
+    Pipeline.decode Models.ClassInformation
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "level" Decode.int
 
 
 decodeSize : String -> Decode.Decoder Models.Size

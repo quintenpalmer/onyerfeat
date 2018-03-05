@@ -6,6 +6,7 @@ module Models
         , Ability
         , Alignment
         , MetaInformation
+        , ClassInformation
         , Size(..)
         , CombatNumbers
         , Skill
@@ -156,11 +157,17 @@ type alias MetaInformation =
     { name : String
     , playerName : String
     , alignment : Alignment
-    , class : String
+    , classes : List ClassInformation
     , race : String
     , deity : Maybe String
     , age : Int
     , size : Size
+    }
+
+
+type alias ClassInformation =
+    { name : String
+    , level : Int
     }
 
 

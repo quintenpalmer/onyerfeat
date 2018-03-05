@@ -1654,6 +1654,90 @@ ALTER TABLE ONLY public.wondrous_items
 
 
 --
+-- Name: armor_pieces_instances_index_armor_piece_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX armor_pieces_instances_index_armor_piece_id ON public.armor_piece_instances USING btree (armor_piece_id);
+
+
+--
+-- Name: characters_unique_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE UNIQUE INDEX characters_unique_index_creature_id ON public.characters USING btree (creature_id);
+
+
+--
+-- Name: class_bonuses_unique_index_class_id_level; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE UNIQUE INDEX class_bonuses_unique_index_class_id_level ON public.class_bonuses USING btree (class_id, level);
+
+
+--
+-- Name: creature_items_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX creature_items_index_creature_id ON public.creature_items USING btree (creature_id);
+
+
+--
+-- Name: creature_languages_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX creature_languages_index_creature_id ON public.creature_languages USING btree (creature_id);
+
+
+--
+-- Name: creature_shields_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX creature_shields_index_creature_id ON public.creature_shields USING btree (creature_id);
+
+
+--
+-- Name: creature_weapons_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX creature_weapons_index_creature_id ON public.creature_weapons USING btree (creature_id);
+
+
+--
+-- Name: sub_skills_index_skill_constructor_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX sub_skills_index_skill_constructor_id ON public.sub_skills USING btree (skill_constructor_id);
+
+
+--
+-- Name: weapon_instances_index_weapon_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX weapon_instances_index_weapon_id ON public.weapon_instances USING btree (weapon_id);
+
+
+--
+-- Name: wondrous_item_auras_index_aura_magnitude_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX wondrous_item_auras_index_aura_magnitude_id ON public.wondrous_item_auras USING btree (aura_magnitude_id);
+
+
+--
+-- Name: wondrous_item_auras_index_aura_school_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX wondrous_item_auras_index_aura_school_id ON public.wondrous_item_auras USING btree (aura_school_id);
+
+
+--
+-- Name: wondrous_item_auras_index_wondrous_item_id; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE INDEX wondrous_item_auras_index_wondrous_item_id ON public.wondrous_item_auras USING btree (wondrous_item_id);
+
+
+--
 -- Name: armor_piece_instances armor_piece_instances_armor_piece_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 

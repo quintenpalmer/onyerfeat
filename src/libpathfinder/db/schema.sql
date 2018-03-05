@@ -1716,6 +1716,13 @@ CREATE INDEX character_classes_index_character_id ON public.character_classes US
 
 
 --
+-- Name: character_classes_unique_index_character_class_ids; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE UNIQUE INDEX character_classes_unique_index_character_class_ids ON public.character_classes USING btree (character_id, class_id);
+
+
+--
 -- Name: characters_unique_index_creature_id; Type: INDEX; Schema: public; Owner: pathfinder_user
 --
 

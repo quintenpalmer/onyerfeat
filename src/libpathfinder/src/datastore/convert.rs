@@ -78,9 +78,9 @@ pub fn into_canonical_character(
             Some(ref shield) => shield.ac_bonus,
             None => 0,
         };
-        let misc = base_saving_throws
-            .iter()
-            .fold(0, |sum, class_bonus| sum + class_bonus.natural_armor_bonus);
+        let misc = base_saving_throws.iter().fold(0, |sum, class_bonus| {
+            sum + class_bonus.natural_armor_bonus + class_bonus.ac_dodge_bonus
+        });
         let armor_class = models::ArmorClass {
             total: dex_mod + base + armor_ac + shield_ac + misc + size_mod,
             base: base,

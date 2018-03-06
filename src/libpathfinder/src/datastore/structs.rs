@@ -9,7 +9,6 @@ use models;
 pub struct Character {
     pub id: i32,
     pub player_name: String,
-    pub class_id: i32,
     pub creature_id: i32,
 }
 
@@ -21,11 +20,26 @@ pub struct Class {
 }
 
 #[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "character_classes")]
+pub struct CharacterClass {
+    pub id: i32,
+    pub character_id: i32,
+    pub class_id: i32,
+    pub level: i32,
+}
+
+#[derive(FromRow)]
+pub struct ExpanededCharacterClass {
+    pub class_id: i32,
+    pub name: String,
+    pub level: i32,
+}
+
+#[derive(TableNamer, FromRow)]
 #[table_namer(table_name = "creatures")]
 pub struct Creature {
     pub id: i32,
     pub name: String,
-    pub level: i32,
     pub alignment_order: models::AlignmentOrder,
     pub alignment_morality: models::AlignmentMorality,
     pub ability_score_set_id: i32,

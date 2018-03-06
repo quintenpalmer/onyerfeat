@@ -24,6 +24,7 @@ COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 5	15	14	13	13	8	16
 4	16	13	16	10	14	6
 6	18	14	17	6	12	6
+7	16	13	14	10	12	8
 \.
 
 
@@ -31,7 +32,7 @@ COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 -- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 6, true);
+SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 7, true);
 
 
 --
@@ -63,6 +64,7 @@ COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) F
 3	8	t	\N
 1	8	f	\N
 4	2	f	\N
+5	5	t	\N
 \.
 
 
@@ -70,7 +72,7 @@ COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) F
 -- Name: armor_piece_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 4, true);
+SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 5, true);
 
 
 --
@@ -122,6 +124,32 @@ SELECT pg_catalog.setval('public.aura_schools_id_seq', 8, true);
 
 
 --
+-- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, armor_piece_instance_id) FROM stdin;
+3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	2
+5	Charger	6	lawful	good	Horse	\N	10	large	36	36	0	3	4
+4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	31	0	5	3
+1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	42	0	6	1
+6	Amalgam	7	neutral	neutral	centaur	\N	30	medium	52	52	0	6	5
+\.
+
+
+--
+-- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.characters (id, player_name, creature_id) FROM stdin;
+1	Quinten	1
+4	Quinten	3
+5	Quinten	4
+6	Quinten	5
+7	Quinten	6
+\.
+
+
+--
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
@@ -133,27 +161,24 @@ COPY public.classes (id, name) FROM stdin;
 
 
 --
--- Data for Name: creatures; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+-- Data for Name: character_classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignment_morality, race, deity, age, size, max_hit_points, current_hit_points, nonlethal_damage, base_attack_bonus, level, armor_piece_instance_id) FROM stdin;
-3	Datanamàsh	4	neutral	good	dwarf	\N	78	medium	51	51	0	5	5	2
-5	Charger	6	lawful	good	Horse	\N	10	large	36	36	0	3	5	4
-4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	31	0	5	5	3
-1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	42	0	6	6	1
+COPY public.character_classes (id, character_id, class_id, level) FROM stdin;
+1	1	1	6
+2	4	1	5
+3	5	2	5
+4	6	3	5
+5	7	1	3
+7	7	3	3
 \.
 
 
 --
--- Data for Name: characters; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+-- Name: character_classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.characters (id, player_name, creature_id, class_id) FROM stdin;
-1	Quinten	1	1
-4	Quinten	3	1
-5	Quinten	4	2
-6	Quinten	5	3
-\.
+SELECT pg_catalog.setval('public.character_classes_id_seq', 7, true);
 
 
 --
@@ -293,7 +318,7 @@ SELECT pg_catalog.setval('public.character_sub_skill_choices_id_seq', 13, true);
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.characters_id_seq', 6, true);
+SELECT pg_catalog.setval('public.characters_id_seq', 7, true);
 
 
 --
@@ -592,6 +617,8 @@ COPY public.weapon_instances (id, weapon_id, name, is_masterwork, special) FROM 
 12	13	\N	f	\N
 13	11	Mecho-Glaive	f	wind as move action to give +2 damage for 3 rounds
 14	2	Rusty Clockwork Crossbow	f	Load 10 fletchets; shoots all of them (blows up on d=#fletchets)
+15	13	\N	t	\N
+16	16	\N	t	\N
 \.
 
 
@@ -613,6 +640,8 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 14	4	12
 15	1	13
 16	1	14
+17	6	15
+18	6	16
 \.
 
 
@@ -620,14 +649,14 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creature_weapons_id_seq', 16, true);
+SELECT pg_catalog.setval('public.creature_weapons_id_seq', 18, true);
 
 
 --
 -- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creatures_id_seq', 5, true);
+SELECT pg_catalog.setval('public.creatures_id_seq', 6, true);
 
 
 --
@@ -724,7 +753,7 @@ SELECT pg_catalog.setval('public.sub_skills_id_seq', 16, true);
 -- Name: weapon_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.weapon_instances_id_seq', 14, true);
+SELECT pg_catalog.setval('public.weapon_instances_id_seq', 16, true);
 
 
 --

@@ -24,8 +24,7 @@ displayCharacterSheet character =
                     , ( "player name", ( True, character.metaInformation.playerName ) )
                     , ( "alignment", ( True, Formatting.capitalize character.metaInformation.alignment.order ++ " " ++ Formatting.capitalize character.metaInformation.alignment.morality ) )
                     , ( "race", ( True, Formatting.capitalize character.metaInformation.race ) )
-                    , ( "class", ( True, Formatting.capitalize character.metaInformation.class ) )
-                    , ( "class level", ( True, toString character.level ) )
+                    , ( "total level", ( True, toString character.level ) )
                     , ( "size", ( True, toString character.metaInformation.size ) )
                     , ( "age", ( True, toString character.metaInformation.age ) )
                     , ( "deity"
@@ -40,6 +39,22 @@ displayCharacterSheet character =
                         )
                       )
                     ]
+                ]
+            ]
+        , Html.div [ Attr.class "row" ]
+            [ Html.div [ Attr.class "col-md-4" ]
+                [ Elements.panelled "Class Information"
+                    True
+                    (List.map
+                        (\class ->
+                            (Elements.table True
+                                [ ( "class", ( True, class.name ) )
+                                , ( "level", ( True, toString class.level ) )
+                                ]
+                            )
+                        )
+                        character.metaInformation.classes
+                    )
                 ]
             ]
         , Html.div [ Attr.class "row" ]

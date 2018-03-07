@@ -25,6 +25,8 @@ COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 4	16	13	16	10	14	6
 6	18	14	17	6	12	6
 7	16	13	14	10	12	8
+8	16	14	16	12	10	10
+9	16	12	16	10	10	8
 \.
 
 
@@ -32,7 +34,7 @@ COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 -- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 7, true);
+SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 9, true);
 
 
 --
@@ -65,6 +67,8 @@ COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) F
 1	8	f	\N
 4	2	f	\N
 5	5	t	\N
+6	5	t	\N
+7	12	t	\N
 \.
 
 
@@ -72,7 +76,7 @@ COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) F
 -- Name: armor_piece_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 5, true);
+SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 7, true);
 
 
 --
@@ -133,6 +137,8 @@ COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignmen
 4	Atolabsam	5	lawful	good	dwarf	\N	80	medium	48	31	0	5	3
 1	IDRIGOTH	1	neutral	good	dwarf	\N	63	medium	85	42	0	6	1
 6	Amalgam	7	neutral	neutral	centaur	\N	30	medium	52	52	0	6	5
+7	Rager	8	chaotic	good	dwarf	\N	64	medium	59	59	0	6	6
+8	Stonelaurd	9	lawful	good	dwarf	\N	58	medium	120	120	0	8	7
 \.
 
 
@@ -146,6 +152,8 @@ COPY public.characters (id, player_name, creature_id) FROM stdin;
 5	Quinten	4
 6	Quinten	5
 7	Quinten	6
+8	Quinten	7
+9	Quinten	8
 \.
 
 
@@ -157,6 +165,8 @@ COPY public.classes (id, name) FROM stdin;
 1	fighter
 2	paladin
 3	animal companion
+4	barbarian
+5	stalwart defender
 \.
 
 
@@ -171,6 +181,9 @@ COPY public.character_classes (id, character_id, class_id, level) FROM stdin;
 4	6	3	5
 5	7	1	3
 7	7	3	3
+8	8	4	6
+9	9	4	7
+10	9	5	1
 \.
 
 
@@ -178,7 +191,7 @@ COPY public.character_classes (id, character_id, class_id, level) FROM stdin;
 -- Name: character_classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.character_classes_id_seq', 7, true);
+SELECT pg_catalog.setval('public.character_classes_id_seq', 10, true);
 
 
 --
@@ -318,74 +331,104 @@ SELECT pg_catalog.setval('public.character_sub_skill_choices_id_seq', 13, true);
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.characters_id_seq', 7, true);
+SELECT pg_catalog.setval('public.characters_id_seq', 9, true);
 
 
 --
 -- Data for Name: class_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_bonuses (id, class_id, level, fortitude, reflex, will, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus) FROM stdin;
-1	1	1	2	0	0	f	0	0	0	0
-2	1	2	3	0	0	f	0	0	0	0
-41	3	1	3	3	0	f	0	0	0	0
-42	3	2	3	3	1	f	0	0	0	0
-22	2	2	3	0	3	t	0	0	0	0
-23	2	3	3	1	3	t	0	0	0	0
-24	2	4	4	1	4	t	0	0	0	0
-25	2	5	4	1	4	t	0	0	0	0
-26	2	6	5	2	5	t	0	0	0	0
-27	2	7	5	2	5	t	0	0	0	0
-28	2	8	6	2	6	t	0	0	0	0
-29	2	9	6	3	6	t	0	0	0	0
-30	2	10	7	3	7	t	0	0	0	0
-31	2	11	7	3	7	t	0	0	0	0
-32	2	12	8	4	8	t	0	0	0	0
-33	2	13	8	4	8	t	0	0	0	0
-34	2	14	9	4	9	t	0	0	0	0
-35	2	15	9	5	9	t	0	0	0	0
-36	2	16	10	5	10	t	0	0	0	0
-37	2	17	10	5	10	t	0	0	0	0
-38	2	18	11	6	11	t	0	0	0	0
-39	2	19	11	6	11	t	0	0	0	0
-40	2	20	12	6	12	t	0	0	0	0
-21	2	1	2	0	2	f	0	0	0	0
-3	1	3	3	1	1	f	-1	1	0	0
-4	1	4	4	1	1	f	-1	1	0	0
-5	1	5	4	1	1	f	-1	1	0	0
-6	1	6	5	2	2	f	-1	1	0	0
-7	1	7	5	2	2	f	-2	2	0	0
-8	1	8	6	2	2	f	-2	2	0	0
-9	1	9	6	3	3	f	-2	2	0	0
-10	1	10	7	3	3	f	-2	2	0	0
-11	1	11	7	3	3	f	-3	3	0	0
-12	1	12	8	4	4	f	-3	3	0	0
-13	1	13	8	4	4	f	-3	3	0	0
-14	1	14	9	4	4	f	-3	3	0	0
-15	1	15	9	5	5	f	-4	4	0	0
-16	1	16	10	5	5	f	-4	4	0	0
-17	1	17	10	5	5	f	-4	4	0	0
-18	1	18	11	6	6	f	-4	4	0	0
-19	1	19	11	6	6	f	-4	4	0	0
-20	1	20	12	6	6	f	-4	4	0	0
-43	3	3	3	3	1	f	0	0	2	1
-44	3	4	4	4	1	f	0	0	2	1
-45	3	5	4	4	1	f	0	0	2	1
-46	3	6	5	5	2	f	0	0	4	2
-47	3	7	5	5	2	f	0	0	4	2
-48	3	8	5	5	2	f	0	0	4	2
-49	3	9	6	6	2	f	0	0	6	3
-50	3	10	6	6	6	f	0	0	6	3
-51	3	11	6	6	6	f	0	0	6	3
-52	3	12	7	7	7	f	0	0	8	4
-53	3	13	8	7	7	f	0	0	8	4
-54	3	14	9	8	8	f	0	0	8	4
-55	3	15	9	8	8	f	0	0	10	5
-56	3	16	9	8	8	f	0	0	10	5
-57	3	17	10	9	9	f	0	0	10	5
-58	3	18	11	9	9	f	0	0	12	6
-59	3	19	11	9	9	f	0	0	12	6
-60	3	20	12	10	10	f	0	0	12	6
+COPY public.class_bonuses (id, class_id, level, fortitude, reflex, will, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus, ac_dodge_bonus) FROM stdin;
+1	1	1	2	0	0	f	0	0	0	0	0
+2	1	2	3	0	0	f	0	0	0	0	0
+41	3	1	3	3	0	f	0	0	0	0	0
+42	3	2	3	3	1	f	0	0	0	0	0
+22	2	2	3	0	3	t	0	0	0	0	0
+23	2	3	3	1	3	t	0	0	0	0	0
+24	2	4	4	1	4	t	0	0	0	0	0
+25	2	5	4	1	4	t	0	0	0	0	0
+26	2	6	5	2	5	t	0	0	0	0	0
+27	2	7	5	2	5	t	0	0	0	0	0
+28	2	8	6	2	6	t	0	0	0	0	0
+29	2	9	6	3	6	t	0	0	0	0	0
+30	2	10	7	3	7	t	0	0	0	0	0
+31	2	11	7	3	7	t	0	0	0	0	0
+32	2	12	8	4	8	t	0	0	0	0	0
+33	2	13	8	4	8	t	0	0	0	0	0
+34	2	14	9	4	9	t	0	0	0	0	0
+35	2	15	9	5	9	t	0	0	0	0	0
+36	2	16	10	5	10	t	0	0	0	0	0
+37	2	17	10	5	10	t	0	0	0	0	0
+38	2	18	11	6	11	t	0	0	0	0	0
+39	2	19	11	6	11	t	0	0	0	0	0
+40	2	20	12	6	12	t	0	0	0	0	0
+21	2	1	2	0	2	f	0	0	0	0	0
+3	1	3	3	1	1	f	-1	1	0	0	0
+4	1	4	4	1	1	f	-1	1	0	0	0
+5	1	5	4	1	1	f	-1	1	0	0	0
+6	1	6	5	2	2	f	-1	1	0	0	0
+7	1	7	5	2	2	f	-2	2	0	0	0
+8	1	8	6	2	2	f	-2	2	0	0	0
+9	1	9	6	3	3	f	-2	2	0	0	0
+10	1	10	7	3	3	f	-2	2	0	0	0
+11	1	11	7	3	3	f	-3	3	0	0	0
+12	1	12	8	4	4	f	-3	3	0	0	0
+13	1	13	8	4	4	f	-3	3	0	0	0
+14	1	14	9	4	4	f	-3	3	0	0	0
+15	1	15	9	5	5	f	-4	4	0	0	0
+16	1	16	10	5	5	f	-4	4	0	0	0
+17	1	17	10	5	5	f	-4	4	0	0	0
+18	1	18	11	6	6	f	-4	4	0	0	0
+19	1	19	11	6	6	f	-4	4	0	0	0
+20	1	20	12	6	6	f	-4	4	0	0	0
+43	3	3	3	3	1	f	0	0	2	1	0
+44	3	4	4	4	1	f	0	0	2	1	0
+45	3	5	4	4	1	f	0	0	2	1	0
+46	3	6	5	5	2	f	0	0	4	2	0
+47	3	7	5	5	2	f	0	0	4	2	0
+48	3	8	5	5	2	f	0	0	4	2	0
+49	3	9	6	6	2	f	0	0	6	3	0
+50	3	10	6	6	6	f	0	0	6	3	0
+51	3	11	6	6	6	f	0	0	6	3	0
+52	3	12	7	7	7	f	0	0	8	4	0
+53	3	13	8	7	7	f	0	0	8	4	0
+54	3	14	9	8	8	f	0	0	8	4	0
+55	3	15	9	8	8	f	0	0	10	5	0
+56	3	16	9	8	8	f	0	0	10	5	0
+57	3	17	10	9	9	f	0	0	10	5	0
+58	3	18	11	9	9	f	0	0	12	6	0
+59	3	19	11	9	9	f	0	0	12	6	0
+60	3	20	12	10	10	f	0	0	12	6	0
+61	4	1	2	0	0	f	0	0	0	0	0
+62	4	2	3	0	0	f	0	0	0	0	0
+63	4	3	3	1	1	f	0	0	0	0	0
+64	4	4	4	1	1	f	0	0	0	0	0
+65	4	5	4	1	1	f	0	0	0	0	0
+66	4	6	5	2	2	f	0	0	0	0	0
+67	4	7	5	2	2	f	0	0	0	0	0
+68	4	8	6	2	2	f	0	0	0	0	0
+69	4	9	6	3	3	f	0	0	0	0	0
+70	4	10	7	3	3	f	0	0	0	0	0
+71	4	11	7	3	3	f	0	0	0	0	0
+72	4	12	8	4	4	f	0	0	0	0	0
+73	4	13	8	4	4	f	0	0	0	0	0
+74	4	14	9	4	4	f	0	0	0	0	0
+75	4	15	9	5	5	f	0	0	0	0	0
+76	4	16	10	5	5	f	0	0	0	0	0
+77	4	17	10	5	5	f	0	0	0	0	0
+78	4	18	11	6	6	f	0	0	0	0	0
+79	4	19	11	6	6	f	0	0	0	0	0
+80	4	20	12	6	6	f	0	0	0	0	0
+81	5	1	1	0	1	f	0	0	0	0	1
+82	5	2	1	1	1	f	0	0	0	0	1
+83	5	3	2	1	2	f	0	0	0	0	1
+84	5	4	2	1	2	f	0	0	0	0	2
+85	5	5	3	2	3	f	0	0	0	0	2
+86	5	6	3	2	3	f	0	0	0	0	2
+87	5	7	4	2	4	f	0	0	0	0	2
+88	5	8	4	3	4	f	0	0	0	0	3
+89	5	9	5	3	5	f	0	0	0	0	3
+90	5	10	5	3	5	f	0	0	0	0	4
 \.
 
 
@@ -393,7 +436,7 @@ COPY public.class_bonuses (id, class_id, level, fortitude, reflex, will, cha_bon
 -- Name: class_saving_throws_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_saving_throws_id_seq', 60, true);
+SELECT pg_catalog.setval('public.class_saving_throws_id_seq', 90, true);
 
 
 --
@@ -405,6 +448,7 @@ COPY public.class_skill_constructors (id, class_id, skill_constructor_id) FROM s
 2	1	4
 3	2	1
 4	2	4
+5	4	1
 \.
 
 
@@ -412,7 +456,7 @@ COPY public.class_skill_constructors (id, class_id, skill_constructor_id) FROM s
 -- Name: class_skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 4, true);
+SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 5, true);
 
 
 --
@@ -432,6 +476,19 @@ COPY public.class_skills (id, class_id, skill_id) FROM stdin;
 10	2	15
 11	2	16
 12	2	18
+13	4	1
+14	4	4
+15	4	10
+16	4	12
+17	4	14
+18	4	15
+19	4	20
+20	4	21
+21	5	1
+22	5	4
+23	5	12
+24	5	14
+25	5	16
 \.
 
 
@@ -439,7 +496,7 @@ COPY public.class_skills (id, class_id, skill_id) FROM stdin;
 -- Name: class_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_skills_id_seq', 12, true);
+SELECT pg_catalog.setval('public.class_skills_id_seq', 25, true);
 
 
 --
@@ -451,6 +508,7 @@ COPY public.class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
 2	1	2
 3	2	8
 4	2	10
+5	4	7
 \.
 
 
@@ -458,14 +516,14 @@ COPY public.class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
 -- Name: class_sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_sub_skills_id_seq', 4, true);
+SELECT pg_catalog.setval('public.class_sub_skills_id_seq', 5, true);
 
 
 --
 -- Name: classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.classes_id_seq', 3, true);
+SELECT pg_catalog.setval('public.classes_id_seq', 5, true);
 
 
 --
@@ -565,6 +623,7 @@ COPY public.shields (id, name, ac_bonus, max_dex, skill_penalty, arcane_spell_fa
 
 COPY public.creature_shields (id, creature_id, shield_id, has_spikes, is_masterwork, special) FROM stdin;
 1	1	7	t	t	lite on fire for 3 rounds of 1d6 fire on contact; +1 AC on arrows
+2	8	6	t	t	\N
 \.
 
 
@@ -572,7 +631,7 @@ COPY public.creature_shields (id, creature_id, shield_id, has_spikes, is_masterw
 -- Name: creature_shields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creature_shields_id_seq', 1, true);
+SELECT pg_catalog.setval('public.creature_shields_id_seq', 2, true);
 
 
 --
@@ -619,6 +678,8 @@ COPY public.weapon_instances (id, weapon_id, name, is_masterwork, special) FROM 
 14	2	Rusty Clockwork Crossbow	f	Load 10 fletchets; shoots all of them (blows up on d=#fletchets)
 15	13	\N	t	\N
 16	16	\N	t	\N
+17	7	\N	t	\N
+18	6	\N	t	\N
 \.
 
 
@@ -642,6 +703,8 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 16	1	14
 17	6	15
 18	6	16
+19	7	17
+20	8	18
 \.
 
 
@@ -649,14 +712,14 @@ COPY public.creature_weapons (id, creature_id, weapon_instance_id) FROM stdin;
 -- Name: creature_weapons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creature_weapons_id_seq', 18, true);
+SELECT pg_catalog.setval('public.creature_weapons_id_seq', 20, true);
 
 
 --
 -- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creatures_id_seq', 6, true);
+SELECT pg_catalog.setval('public.creatures_id_seq', 8, true);
 
 
 --
@@ -753,7 +816,7 @@ SELECT pg_catalog.setval('public.sub_skills_id_seq', 16, true);
 -- Name: weapon_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.weapon_instances_id_seq', 16, true);
+SELECT pg_catalog.setval('public.weapon_instances_id_seq', 18, true);
 
 
 --

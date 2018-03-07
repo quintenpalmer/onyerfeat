@@ -59,6 +59,24 @@ view model =
                     [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 7 ] [ Html.text "Load Amalgam" ] ]
                 , Html.li
                     (case model of
+                        Models.MCharacter _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 8 ] [ Html.text "Load Rager" ] ]
+                , Html.li
+                    (case model of
+                        Models.MCharacter _ ->
+                            [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
+
+                        _ ->
+                            [ Attr.style [ ( "role", "presentation" ) ] ]
+                    )
+                    [ Html.a [ Attr.href "#", Events.onClick <| Common.LoadCharacter 9 ] [ Html.text "Load Stonelaurd" ] ]
+                , Html.li
+                    (case model of
                         Models.MWeapons _ ->
                             [ Attr.class "active", Attr.style [ ( "role", "presentation" ) ] ]
 

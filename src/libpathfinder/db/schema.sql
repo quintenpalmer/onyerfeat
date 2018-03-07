@@ -391,6 +391,46 @@ ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
 
 
 --
+-- Name: class_bonuses; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE public.class_bonuses (
+    id integer NOT NULL,
+    class_id integer NOT NULL,
+    level integer NOT NULL,
+    cha_bonus boolean DEFAULT false NOT NULL,
+    ac_penalty_reduction integer DEFAULT 0 NOT NULL,
+    max_dex_bonus integer DEFAULT 0 NOT NULL,
+    natural_armor_bonus integer DEFAULT 0 NOT NULL,
+    str_dex_bonus integer DEFAULT 0 NOT NULL,
+    ac_dodge_bonus integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public.class_bonuses OWNER TO pathfinder_user;
+
+--
+-- Name: class_bonuses_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE public.class_bonuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.class_bonuses_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: class_bonuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE public.class_bonuses_id_seq OWNED BY public.class_bonuses.id;
+
+
+--
 -- Name: class_saving_throws; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -400,13 +440,7 @@ CREATE TABLE public.class_saving_throws (
     level integer NOT NULL,
     fortitude integer NOT NULL,
     reflex integer NOT NULL,
-    will integer NOT NULL,
-    cha_bonus boolean DEFAULT false NOT NULL,
-    ac_penalty_reduction integer DEFAULT 0 NOT NULL,
-    max_dex_bonus integer DEFAULT 0 NOT NULL,
-    natural_armor_bonus integer DEFAULT 0 NOT NULL,
-    str_dex_bonus integer DEFAULT 0 NOT NULL,
-    ac_dodge_bonus integer DEFAULT 0 NOT NULL
+    will integer NOT NULL
 );
 
 
@@ -1253,6 +1287,13 @@ ALTER TABLE ONLY public.characters ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: class_bonuses id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_bonuses ALTER COLUMN id SET DEFAULT nextval('public.class_bonuses_id_seq'::regclass);
+
+
+--
 -- Name: class_saving_throws id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1492,6 +1533,14 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 ALTER TABLE ONLY public.characters
     ADD CONSTRAINT characters_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: class_bonuses class_bonuses_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_bonuses
+    ADD CONSTRAINT class_bonuses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1862,6 +1911,14 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 ALTER TABLE ONLY public.character_sub_skill_choices
     ADD CONSTRAINT character_sub_skill_choices_sub_skill_id_fkey FOREIGN KEY (sub_skill_id) REFERENCES public.sub_skills(id);
+
+
+--
+-- Name: class_bonuses class_bonuses_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_bonuses
+    ADD CONSTRAINT class_bonuses_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
 
 
 --

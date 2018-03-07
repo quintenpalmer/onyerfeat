@@ -132,6 +132,16 @@ impl Datastore {
             )));
         }
 
+        let mut class_bonuses_list: Vec<structs::ClassBonuses> = Vec::new();
+        for character_class in character_classes.iter() {
+            class_bonuses_list.push(try!(selects::exec_and_select_one_by_two_fields(
+                &self.conn,
+                queries::CLASS_BONUSES_SQL,
+                character_class.class_id,
+                character_class.level
+            )));
+        }
+
         let items: Vec<structs::ExpandedCreatureItem> = try!(selects::exec_and_select_by_field(
             &self.conn,
             queries::CREATURE_ITEMS_SQL,
@@ -156,6 +166,7 @@ impl Datastore {
             option_shield_damage,
             expanded_weapon_instances,
             base_saving_throws_list,
+            class_bonuses_list,
             items,
         ));
     }

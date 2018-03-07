@@ -66,6 +66,17 @@ AND
     level = $2
 "#;
 
+pub static CLASS_BONUSES_SQL: &'static str = r#"
+SELECT
+    *
+FROM
+    class_bonuses
+WHERE
+    class_id = $1
+AND
+    level = $2
+"#;
+
 pub static CREATURE_WEAPON_SQL: &'static str = r#"
 SELECT
     weapons.*,

@@ -391,10 +391,10 @@ ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
 
 
 --
--- Name: class_bonuses; Type: TABLE; Schema: public; Owner: pathfinder_user
+-- Name: class_saving_throws; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
-CREATE TABLE public.class_bonuses (
+CREATE TABLE public.class_saving_throws (
     id integer NOT NULL,
     class_id integer NOT NULL,
     level integer NOT NULL,
@@ -410,7 +410,7 @@ CREATE TABLE public.class_bonuses (
 );
 
 
-ALTER TABLE public.class_bonuses OWNER TO pathfinder_user;
+ALTER TABLE public.class_saving_throws OWNER TO pathfinder_user;
 
 --
 -- Name: class_saving_throws_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
@@ -430,7 +430,7 @@ ALTER TABLE public.class_saving_throws_id_seq OWNER TO pathfinder_user;
 -- Name: class_saving_throws_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
 --
 
-ALTER SEQUENCE public.class_saving_throws_id_seq OWNED BY public.class_bonuses.id;
+ALTER SEQUENCE public.class_saving_throws_id_seq OWNED BY public.class_saving_throws.id;
 
 
 --
@@ -1253,10 +1253,10 @@ ALTER TABLE ONLY public.characters ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
--- Name: class_bonuses id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+-- Name: class_saving_throws id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
-ALTER TABLE ONLY public.class_bonuses ALTER COLUMN id SET DEFAULT nextval('public.class_saving_throws_id_seq'::regclass);
+ALTER TABLE ONLY public.class_saving_throws ALTER COLUMN id SET DEFAULT nextval('public.class_saving_throws_id_seq'::regclass);
 
 
 --
@@ -1495,10 +1495,10 @@ ALTER TABLE ONLY public.characters
 
 
 --
--- Name: class_bonuses class_saving_throws_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_saving_throws class_saving_throws_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
-ALTER TABLE ONLY public.class_bonuses
+ALTER TABLE ONLY public.class_saving_throws
     ADD CONSTRAINT class_saving_throws_pkey PRIMARY KEY (id);
 
 
@@ -1734,7 +1734,7 @@ CREATE UNIQUE INDEX characters_unique_index_creature_id ON public.characters USI
 -- Name: class_bonuses_unique_index_class_id_level; Type: INDEX; Schema: public; Owner: pathfinder_user
 --
 
-CREATE UNIQUE INDEX class_bonuses_unique_index_class_id_level ON public.class_bonuses USING btree (class_id, level);
+CREATE UNIQUE INDEX class_bonuses_unique_index_class_id_level ON public.class_saving_throws USING btree (class_id, level);
 
 
 --
@@ -1865,10 +1865,10 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 
 --
--- Name: class_bonuses class_saving_throws_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_saving_throws class_saving_throws_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
-ALTER TABLE ONLY public.class_bonuses
+ALTER TABLE ONLY public.class_saving_throws
     ADD CONSTRAINT class_saving_throws_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
 
 

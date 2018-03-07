@@ -122,7 +122,7 @@ impl Datastore {
                 creature.id
             ));
 
-        let mut base_saving_throws_list: Vec<structs::ClassBonuses> = Vec::new();
+        let mut base_saving_throws_list: Vec<structs::ClassSavingThrows> = Vec::new();
         for character_class in character_classes.iter() {
             base_saving_throws_list.push(try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,

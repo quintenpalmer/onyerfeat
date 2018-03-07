@@ -21,7 +21,7 @@ pub fn into_canonical_character(
     optional_creature_shield: Option<structs::CreatureShield>,
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::ExpandedWeaponInstance>,
-    base_saving_throws: Vec<structs::ClassBonuses>,
+    base_saving_throws: Vec<structs::ClassSavingThrows>,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
@@ -183,7 +183,7 @@ fn get_character_skills(
     class_skills: Vec<structs::ClassSkill>,
     class_sub_skills: Vec<structs::ClassSubSkill>,
     class_skill_constructors: Vec<structs::ClassSkillConstructor>,
-    class_bonuses: &Vec<structs::ClassBonuses>,
+    class_bonuses: &Vec<structs::ClassSavingThrows>,
     abs: &models::AbilityScoreInfo,
     armor_piece: &structs::ExpandedArmorPieceInstance,
     optional_shield: &Option<structs::Shield>,
@@ -489,7 +489,7 @@ fn build_combat_weapon_stats(
 }
 
 pub fn into_canonical_saving_throws(
-    class_bonuses: &Vec<structs::ClassBonuses>,
+    class_bonuses: &Vec<structs::ClassSavingThrows>,
     abs: &models::AbilityScoreInfo,
 ) -> models::SavingThrows {
     let class_cha_bonus = if class_bonuses

@@ -335,6 +335,26 @@ SELECT pg_catalog.setval('public.characters_id_seq', 9, true);
 
 
 --
+-- Data for Name: class_archetypes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.class_archetypes (id, class_id, name) FROM stdin;
+1	1	\N
+2	2	\N
+3	3	\N
+4	4	\N
+5	5	\N
+\.
+
+
+--
+-- Name: class_archetypes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('public.class_archetypes_id_seq', 5, true);
+
+
+--
 -- Data for Name: class_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 

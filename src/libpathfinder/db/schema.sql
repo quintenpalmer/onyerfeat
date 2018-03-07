@@ -391,6 +391,40 @@ ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
 
 
 --
+-- Name: class_archetypes; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE public.class_archetypes (
+    id integer NOT NULL,
+    class_id integer NOT NULL,
+    name text
+);
+
+
+ALTER TABLE public.class_archetypes OWNER TO pathfinder_user;
+
+--
+-- Name: class_archetypes_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE public.class_archetypes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.class_archetypes_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: class_archetypes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE public.class_archetypes_id_seq OWNED BY public.class_archetypes.id;
+
+
+--
 -- Name: class_bonuses; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
@@ -1287,6 +1321,13 @@ ALTER TABLE ONLY public.characters ALTER COLUMN id SET DEFAULT nextval('public.c
 
 
 --
+-- Name: class_archetypes id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_archetypes ALTER COLUMN id SET DEFAULT nextval('public.class_archetypes_id_seq'::regclass);
+
+
+--
 -- Name: class_bonuses id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1536,6 +1577,14 @@ ALTER TABLE ONLY public.characters
 
 
 --
+-- Name: class_archetypes class_archetypes_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_archetypes
+    ADD CONSTRAINT class_archetypes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: class_bonuses class_bonuses_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1780,6 +1829,13 @@ CREATE UNIQUE INDEX characters_unique_index_creature_id ON public.characters USI
 
 
 --
+-- Name: class_archetypes_unique_class_id_name; Type: INDEX; Schema: public; Owner: pathfinder_user
+--
+
+CREATE UNIQUE INDEX class_archetypes_unique_class_id_name ON public.class_archetypes USING btree (class_id, name);
+
+
+--
 -- Name: class_bonuses_unique_index_class_id_level; Type: INDEX; Schema: public; Owner: pathfinder_user
 --
 
@@ -1911,6 +1967,14 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 ALTER TABLE ONLY public.character_sub_skill_choices
     ADD CONSTRAINT character_sub_skill_choices_sub_skill_id_fkey FOREIGN KEY (sub_skill_id) REFERENCES public.sub_skills(id);
+
+
+--
+-- Name: class_archetypes class_archetypes_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_archetypes
+    ADD CONSTRAINT class_archetypes_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
 
 
 --

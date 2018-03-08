@@ -67,8 +67,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_skills.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_id",
-                character_class.class_id
+                "class_archetype_id",
+                character_class.class_archetype_id
             )));
         }
 
@@ -76,8 +76,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_sub_skills.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_id",
-                character_class.class_id
+                "class_archetype_id",
+                character_class.class_archetype_id
             )));
         }
 
@@ -85,8 +85,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_skill_constructors.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_id",
-                character_class.class_id
+                "class_archetype_id",
+                character_class.class_archetype_id
             )));
         }
 
@@ -137,7 +137,7 @@ impl Datastore {
             class_bonuses_list.push(try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,
                 queries::CLASS_BONUSES_SQL,
-                character_class.class_id,
+                character_class.class_archetype_id,
                 character_class.level
             )));
         }

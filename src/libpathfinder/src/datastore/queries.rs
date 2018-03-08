@@ -72,7 +72,7 @@ SELECT
 FROM
     class_bonuses
 WHERE
-    class_id = $1
+    class_archetype_id = $1
 AND
     level = $2
 "#;
@@ -152,14 +152,19 @@ WHERE
 pub static CHARACTER_CLASSES_SQL: &'static str = r#"
 SELECT
     classes.id as class_id,
+    classes.id as class_archetype_id,
     classes.name,
     character_classes.level
 FROM
     character_classes
 INNER JOIN
+    class_archetypes
+ON
+    character_classes.class_archetype_id = class_archetypes.id
+INNER JOIN
     classes
 ON
-    character_classes.class_id = classes.id
+    class_archetypes.class_id = classes.id
 WHERE
     character_classes.character_id = $1
 "#;

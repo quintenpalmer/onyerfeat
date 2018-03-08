@@ -171,10 +171,23 @@ COPY public.classes (id, name) FROM stdin;
 
 
 --
+-- Data for Name: class_archetypes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.class_archetypes (id, class_id, name) FROM stdin;
+1	1	\N
+2	2	\N
+3	3	\N
+4	4	\N
+5	5	\N
+\.
+
+
+--
 -- Data for Name: character_classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.character_classes (id, character_id, class_id, level) FROM stdin;
+COPY public.character_classes (id, character_id, class_archetype_id, level) FROM stdin;
 1	1	1	6
 2	4	1	5
 3	5	2	5
@@ -335,19 +348,6 @@ SELECT pg_catalog.setval('public.characters_id_seq', 9, true);
 
 
 --
--- Data for Name: class_archetypes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
---
-
-COPY public.class_archetypes (id, class_id, name) FROM stdin;
-1	1	\N
-2	2	\N
-3	3	\N
-4	4	\N
-5	5	\N
-\.
-
-
---
 -- Name: class_archetypes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
@@ -358,7 +358,7 @@ SELECT pg_catalog.setval('public.class_archetypes_id_seq', 5, true);
 -- Data for Name: class_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_bonuses (id, class_id, level, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus, ac_dodge_bonus) FROM stdin;
+COPY public.class_bonuses (id, class_archetype_id, level, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus, ac_dodge_bonus) FROM stdin;
 1	1	1	f	0	0	0	0	0
 2	1	2	f	0	0	0	0	0
 3	3	1	f	0	0	0	0	0
@@ -568,7 +568,7 @@ SELECT pg_catalog.setval('public.class_saving_throws_id_seq', 90, true);
 -- Data for Name: class_skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_skill_constructors (id, class_id, skill_constructor_id) FROM stdin;
+COPY public.class_skill_constructors (id, class_archetype_id, skill_constructor_id) FROM stdin;
 1	1	1
 2	1	4
 3	2	1
@@ -588,7 +588,7 @@ SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 5, true);
 -- Data for Name: class_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_skills (id, class_id, skill_id) FROM stdin;
+COPY public.class_skills (id, class_archetype_id, skill_id) FROM stdin;
 1	1	4
 2	1	10
 3	1	12
@@ -628,7 +628,7 @@ SELECT pg_catalog.setval('public.class_skills_id_seq', 25, true);
 -- Data for Name: class_sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_sub_skills (id, class_id, sub_skill_id) FROM stdin;
+COPY public.class_sub_skills (id, class_archetype_id, sub_skill_id) FROM stdin;
 1	1	3
 2	1	2
 3	2	8

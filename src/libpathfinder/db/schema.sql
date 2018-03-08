@@ -258,7 +258,7 @@ ALTER SEQUENCE public.aura_schools_id_seq OWNED BY public.aura_schools.id;
 CREATE TABLE public.character_classes (
     id integer NOT NULL,
     character_id integer NOT NULL,
-    class_id integer NOT NULL,
+    class_archetype_id integer NOT NULL,
     level integer NOT NULL
 );
 
@@ -430,7 +430,7 @@ ALTER SEQUENCE public.class_archetypes_id_seq OWNED BY public.class_archetypes.i
 
 CREATE TABLE public.class_bonuses (
     id integer NOT NULL,
-    class_id integer NOT NULL,
+    class_archetype_id integer NOT NULL,
     level integer NOT NULL,
     cha_bonus boolean DEFAULT false NOT NULL,
     ac_penalty_reduction integer DEFAULT 0 NOT NULL,
@@ -507,7 +507,7 @@ ALTER SEQUENCE public.class_saving_throws_id_seq OWNED BY public.class_saving_th
 
 CREATE TABLE public.class_skill_constructors (
     id integer NOT NULL,
-    class_id integer NOT NULL,
+    class_archetype_id integer NOT NULL,
     skill_constructor_id integer NOT NULL
 );
 
@@ -541,7 +541,7 @@ ALTER SEQUENCE public.class_skill_constructors_id_seq OWNED BY public.class_skil
 
 CREATE TABLE public.class_skills (
     id integer NOT NULL,
-    class_id integer NOT NULL,
+    class_archetype_id integer NOT NULL,
     skill_id integer NOT NULL
 );
 
@@ -575,7 +575,7 @@ ALTER SEQUENCE public.class_skills_id_seq OWNED BY public.class_skills.id;
 
 CREATE TABLE public.class_sub_skills (
     id integer NOT NULL,
-    class_id integer NOT NULL,
+    class_archetype_id integer NOT NULL,
     sub_skill_id integer NOT NULL
 );
 
@@ -1605,7 +1605,7 @@ ALTER TABLE ONLY public.class_saving_throws
 --
 
 ALTER TABLE ONLY public.class_skill_constructors
-    ADD CONSTRAINT class_skill_constructor_unique UNIQUE (class_id, skill_constructor_id);
+    ADD CONSTRAINT class_skill_constructor_unique UNIQUE (class_archetype_id, skill_constructor_id);
 
 
 --
@@ -1629,7 +1629,7 @@ ALTER TABLE ONLY public.class_skills
 --
 
 ALTER TABLE ONLY public.class_skills
-    ADD CONSTRAINT class_skills_unique UNIQUE (class_id, skill_id);
+    ADD CONSTRAINT class_skills_unique UNIQUE (class_archetype_id, skill_id);
 
 
 --
@@ -1645,7 +1645,7 @@ ALTER TABLE ONLY public.class_sub_skills
 --
 
 ALTER TABLE ONLY public.class_sub_skills
-    ADD CONSTRAINT class_sub_skills_unique UNIQUE (class_id, sub_skill_id);
+    ADD CONSTRAINT class_sub_skills_unique UNIQUE (class_archetype_id, sub_skill_id);
 
 
 --
@@ -1818,7 +1818,7 @@ CREATE INDEX character_classes_index_character_id ON public.character_classes US
 -- Name: character_classes_unique_index_character_class_ids; Type: INDEX; Schema: public; Owner: pathfinder_user
 --
 
-CREATE UNIQUE INDEX character_classes_unique_index_character_class_ids ON public.character_classes USING btree (character_id, class_id);
+CREATE UNIQUE INDEX character_classes_unique_index_character_class_ids ON public.character_classes USING btree (character_id, class_archetype_id);
 
 
 --
@@ -1922,11 +1922,11 @@ ALTER TABLE ONLY public.character_classes
 
 
 --
--- Name: character_classes character_classes_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: character_classes character_classes_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.character_classes
-    ADD CONSTRAINT character_classes_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
+    ADD CONSTRAINT character_classes_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
 
 
 --
@@ -1978,11 +1978,11 @@ ALTER TABLE ONLY public.class_archetypes
 
 
 --
--- Name: class_bonuses class_bonuses_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_bonuses class_bonuses_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_bonuses
-    ADD CONSTRAINT class_bonuses_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
+    ADD CONSTRAINT class_bonuses_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
 
 
 --
@@ -1994,11 +1994,11 @@ ALTER TABLE ONLY public.class_saving_throws
 
 
 --
--- Name: class_skill_constructors class_skill_constructors_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_skill_constructors class_skill_constructors_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_skill_constructors
-    ADD CONSTRAINT class_skill_constructors_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
+    ADD CONSTRAINT class_skill_constructors_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
 
 
 --
@@ -2010,11 +2010,11 @@ ALTER TABLE ONLY public.class_skill_constructors
 
 
 --
--- Name: class_skills class_skills_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_skills class_skills_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_skills
-    ADD CONSTRAINT class_skills_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
+    ADD CONSTRAINT class_skills_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
 
 
 --
@@ -2026,11 +2026,11 @@ ALTER TABLE ONLY public.class_skills
 
 
 --
--- Name: class_sub_skills class_sub_skills_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_sub_skills class_sub_skills_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_sub_skills
-    ADD CONSTRAINT class_sub_skills_class_id_fkey FOREIGN KEY (class_id) REFERENCES public.classes(id);
+    ADD CONSTRAINT class_sub_skills_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
 
 
 --

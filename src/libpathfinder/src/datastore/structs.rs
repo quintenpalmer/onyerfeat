@@ -24,13 +24,14 @@ pub struct Class {
 pub struct CharacterClass {
     pub id: i32,
     pub character_id: i32,
-    pub class_id: i32,
+    pub class_archetype_id: i32,
     pub level: i32,
 }
 
 #[derive(FromRow)]
 pub struct ExpanededCharacterClass {
     pub class_id: i32,
+    pub class_archetype_id: i32,
     pub name: String,
     pub level: i32,
 }
@@ -125,7 +126,7 @@ pub struct AugmentedCharacterSubSkillChoice {
 #[table_namer(table_name = "class_skills")]
 pub struct ClassSkill {
     pub id: i32,
-    pub class_id: i32,
+    pub class_archetype_id: i32,
     pub skill_id: i32,
 }
 
@@ -134,7 +135,7 @@ pub struct ClassSkill {
 #[table_namer(table_name = "class_sub_skills")]
 pub struct ClassSubSkill {
     pub id: i32,
-    pub class_id: i32,
+    pub class_archetype_id: i32,
     pub sub_skill_id: i32,
 }
 
@@ -142,7 +143,7 @@ pub struct ClassSubSkill {
 #[table_namer(table_name = "class_skill_constructors")]
 pub struct ClassSkillConstructor {
     pub id: i32,
-    pub class_id: i32,
+    pub class_archetype_id: i32,
     pub skill_constructor_id: i32,
 }
 
@@ -223,14 +224,22 @@ pub struct CreatureShield {
 }
 
 #[derive(TableNamer, FromRow)]
-#[table_namer(table_name = "class_bonuses")]
-pub struct ClassBonuses {
+#[table_namer(table_name = "class_saving_throws")]
+pub struct ClassSavingThrows {
     pub id: i32,
     pub class_id: i32,
     pub level: i32,
     pub fortitude: i32,
     pub reflex: i32,
     pub will: i32,
+}
+
+#[derive(TableNamer, FromRow)]
+#[table_namer(table_name = "class_bonuses")]
+pub struct ClassBonuses {
+    pub id: i32,
+    pub class_archetype_id: i32,
+    pub level: i32,
     pub cha_bonus: bool,
     pub ac_penalty_reduction: i32,
     pub max_dex_bonus: i32,

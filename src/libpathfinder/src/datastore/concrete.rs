@@ -67,8 +67,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_skills.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_id",
-                character_class.class_id
+                "class_archetype_id",
+                character_class.class_archetype_id
             )));
         }
 
@@ -76,8 +76,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_sub_skills.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_id",
-                character_class.class_id
+                "class_archetype_id",
+                character_class.class_archetype_id
             )));
         }
 
@@ -85,8 +85,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_skill_constructors.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_id",
-                character_class.class_id
+                "class_archetype_id",
+                character_class.class_archetype_id
             )));
         }
 
@@ -122,12 +122,22 @@ impl Datastore {
                 creature.id
             ));
 
-        let mut base_saving_throws_list: Vec<structs::ClassBonuses> = Vec::new();
+        let mut base_saving_throws_list: Vec<structs::ClassSavingThrows> = Vec::new();
         for character_class in character_classes.iter() {
             base_saving_throws_list.push(try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,
                 queries::BASE_SAVING_THROWS_SQL,
                 character_class.class_id,
+                character_class.level
+            )));
+        }
+
+        let mut class_bonuses_list: Vec<structs::ClassBonuses> = Vec::new();
+        for character_class in character_classes.iter() {
+            class_bonuses_list.push(try!(selects::exec_and_select_one_by_two_fields(
+                &self.conn,
+                queries::CLASS_BONUSES_SQL,
+                character_class.class_archetype_id,
                 character_class.level
             )));
         }
@@ -156,6 +166,7 @@ impl Datastore {
             option_shield_damage,
             expanded_weapon_instances,
             base_saving_throws_list,
+            class_bonuses_list,
             items,
         ));
     }

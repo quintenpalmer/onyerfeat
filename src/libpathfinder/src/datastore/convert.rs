@@ -21,20 +21,21 @@ pub fn into_canonical_character(
     optional_creature_shield: Option<structs::CreatureShield>,
     optional_shield_damage: Option<structs::ShieldDamage>,
     weapons: Vec<structs::ExpandedWeaponInstance>,
-    base_saving_throws: Vec<structs::ClassBonuses>,
+    base_saving_throws: Vec<structs::ClassSavingThrows>,
+    class_bonuses: Vec<structs::ClassBonuses>,
     items: Vec<structs::ExpandedCreatureItem>,
 ) -> models::Character {
     let ability_score_model = models::AbilityScoreInfo {
         str: models::ScoreAndMofidier {
             score: abs.str
-                + base_saving_throws
+                + class_bonuses
                     .iter()
                     .fold(0, |sum, class_bonus| sum + class_bonus.str_dex_bonus),
             modifier: calc_ability_modifier(abs.str),
         },
         dex: models::ScoreAndMofidier {
             score: abs.dex
-                + base_saving_throws
+                + class_bonuses
                     .iter()
                     .fold(0, |sum, class_bonus| sum + class_bonus.str_dex_bonus),
             modifier: calc_ability_modifier(abs.dex),
@@ -64,7 +65,7 @@ pub fn into_canonical_character(
         class_skills,
         class_sub_skills,
         class_skill_constructors,
-        &base_saving_throws,
+        &class_bonuses,
         &ability_score_model,
         &armor_piece,
         &optional_shield,
@@ -78,7 +79,7 @@ pub fn into_canonical_character(
             Some(ref shield) => shield.ac_bonus,
             None => 0,
         };
-        let misc = base_saving_throws.iter().fold(0, |sum, class_bonus| {
+        let misc = class_bonuses.iter().fold(0, |sum, class_bonus| {
             sum + class_bonus.natural_armor_bonus + class_bonus.ac_dodge_bonus
         });
         let armor_class = models::ArmorClass {
@@ -131,7 +132,11 @@ pub fn into_canonical_character(
             nonlethal_damage: creature.nonlethal_damage,
             armor_class: armor_class,
             base_attack_bonus: creature.base_attack_bonus,
-            saving_throws: into_canonical_saving_throws(&base_saving_throws, &ability_score_model),
+            saving_throws: into_canonical_saving_throws(
+                &base_saving_throws,
+                &class_bonuses,
+                &ability_score_model,
+            ),
             combat_maneuvers: build_combat_maneuvers(
                 &ability_score_model,
                 creature.base_attack_bonus,
@@ -489,6 +494,7 @@ fn build_combat_weapon_stats(
 }
 
 pub fn into_canonical_saving_throws(
+    base_saving_throws: &Vec<structs::ClassSavingThrows>,
     class_bonuses: &Vec<structs::ClassBonuses>,
     abs: &models::AbilityScoreInfo,
 ) -> models::SavingThrows {
@@ -502,7 +508,7 @@ pub fn into_canonical_saving_throws(
     };
     models::SavingThrows {
         fortitude: build_saving_throw(
-            class_bonuses
+            base_saving_throws
                 .iter()
                 .fold(0, |sum, class_bonus| sum + class_bonus.fortitude),
             abs.con.modifier,
@@ -510,7 +516,7 @@ pub fn into_canonical_saving_throws(
             models::AbilityName::Con,
         ),
         reflex: build_saving_throw(
-            class_bonuses
+            base_saving_throws
                 .iter()
                 .fold(0, |sum, class_bonus| sum + class_bonus.reflex),
             abs.dex.modifier,
@@ -518,7 +524,7 @@ pub fn into_canonical_saving_throws(
             models::AbilityName::Dex,
         ),
         will: build_saving_throw(
-            class_bonuses
+            base_saving_throws
                 .iter()
                 .fold(0, |sum, class_bonus| sum + class_bonus.will),
             abs.wis.modifier,

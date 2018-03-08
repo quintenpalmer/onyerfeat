@@ -180,6 +180,7 @@ COPY public.class_archetypes (id, class_id, name) FROM stdin;
 3	3	\N
 4	4	\N
 5	5	\N
+6	4	Savage Technologist
 \.
 
 
@@ -351,7 +352,7 @@ SELECT pg_catalog.setval('public.characters_id_seq', 9, true);
 -- Name: class_archetypes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_archetypes_id_seq', 5, true);
+SELECT pg_catalog.setval('public.class_archetypes_id_seq', 6, true);
 
 
 --
@@ -574,6 +575,7 @@ COPY public.class_skill_constructors (id, class_archetype_id, skill_constructor_
 3	2	1
 4	2	4
 5	4	1
+6	6	1
 \.
 
 
@@ -581,7 +583,7 @@ COPY public.class_skill_constructors (id, class_archetype_id, skill_constructor_
 -- Name: class_skill_constructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 5, true);
+SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 6, true);
 
 
 --
@@ -614,6 +616,15 @@ COPY public.class_skills (id, class_archetype_id, skill_id) FROM stdin;
 23	5	12
 24	5	14
 25	5	16
+26	6	1
+27	6	4
+28	6	5
+29	6	12
+30	6	14
+31	6	16
+32	6	15
+33	6	20
+34	6	21
 \.
 
 
@@ -621,7 +632,7 @@ COPY public.class_skills (id, class_archetype_id, skill_id) FROM stdin;
 -- Name: class_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_skills_id_seq', 25, true);
+SELECT pg_catalog.setval('public.class_skills_id_seq', 34, true);
 
 
 --
@@ -634,6 +645,7 @@ COPY public.class_sub_skills (id, class_archetype_id, sub_skill_id) FROM stdin;
 3	2	8
 4	2	10
 5	4	7
+6	6	6
 \.
 
 
@@ -641,7 +653,7 @@ COPY public.class_sub_skills (id, class_archetype_id, sub_skill_id) FROM stdin;
 -- Name: class_sub_skills_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_sub_skills_id_seq', 5, true);
+SELECT pg_catalog.setval('public.class_sub_skills_id_seq', 6, true);
 
 
 --

@@ -27,6 +27,7 @@ COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 7	16	13	14	10	12	8
 8	16	14	16	12	10	10
 9	16	12	16	10	10	8
+10	14	14	12	10	10	8
 \.
 
 
@@ -34,7 +35,7 @@ COPY public.ability_score_sets (id, str, dex, con, "int", wis, cha) FROM stdin;
 -- Name: ability_score_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 9, true);
+SELECT pg_catalog.setval('public.ability_score_sets_id_seq', 10, true);
 
 
 --
@@ -69,6 +70,7 @@ COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) F
 5	5	t	\N
 6	5	t	\N
 7	12	t	\N
+8	8	t	\N
 \.
 
 
@@ -76,7 +78,7 @@ COPY public.armor_piece_instances (id, armor_piece_id, is_masterwork, special) F
 -- Name: armor_piece_instances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 7, true);
+SELECT pg_catalog.setval('public.armor_piece_instances_id_seq', 8, true);
 
 
 --
@@ -139,6 +141,7 @@ COPY public.creatures (id, name, ability_score_set_id, alignment_order, alignmen
 6	Amalgam	7	neutral	neutral	centaur	\N	30	medium	52	52	0	6	5
 7	Rager	8	chaotic	good	dwarf	\N	64	medium	59	59	0	6	6
 8	Stonelaurd	9	lawful	good	dwarf	\N	58	medium	120	120	0	8	7
+9	Yorick	10	chaotic	neutral	human	\N	31	medium	40	40	0	6	8
 \.
 
 
@@ -154,6 +157,7 @@ COPY public.characters (id, player_name, creature_id) FROM stdin;
 7	Quinten	6
 8	Quinten	7
 9	Quinten	8
+10	Quinten	9
 \.
 
 
@@ -198,6 +202,7 @@ COPY public.character_classes (id, character_id, class_archetype_id, level) FROM
 8	8	4	6
 9	9	4	7
 10	9	5	1
+11	10	6	6
 \.
 
 
@@ -205,7 +210,7 @@ COPY public.character_classes (id, character_id, class_archetype_id, level) FROM
 -- Name: character_classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.character_classes_id_seq', 10, true);
+SELECT pg_catalog.setval('public.character_classes_id_seq', 11, true);
 
 
 --
@@ -345,7 +350,7 @@ SELECT pg_catalog.setval('public.character_sub_skill_choices_id_seq', 13, true);
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.characters_id_seq', 9, true);
+SELECT pg_catalog.setval('public.characters_id_seq', 10, true);
 
 
 --
@@ -856,7 +861,7 @@ SELECT pg_catalog.setval('public.creature_weapons_id_seq', 20, true);
 -- Name: creatures_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.creatures_id_seq', 8, true);
+SELECT pg_catalog.setval('public.creatures_id_seq', 9, true);
 
 
 --

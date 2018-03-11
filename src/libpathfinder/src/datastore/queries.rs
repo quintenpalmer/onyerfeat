@@ -153,7 +153,9 @@ pub static CHARACTER_CLASSES_SQL: &'static str = r#"
 SELECT
     classes.id as class_id,
     class_archetypes.id as class_archetype_id,
-    classes.name,
+    CASE WHEN class_archetypes.name IS NULL THEN classes.name
+    	ELSE class_archetypes.name
+    END,
     CASE WHEN class_archetypes.class_bonus_set_id IS NULL THEN classes.class_bonus_set_id
         ELSE class_archetypes.class_bonus_set_id
     END,

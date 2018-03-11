@@ -455,6 +455,26 @@ COPY public.class_bonuses (id, class_archetype_id, level, cha_bonus, ac_penalty_
 88	5	8	f	0	0	0	0	3
 89	5	9	f	0	0	0	0	3
 90	5	10	f	0	0	0	0	4
+91	6	1	f	0	0	0	0	0
+92	6	2	f	0	0	0	0	0
+93	6	3	f	0	0	0	0	0
+94	6	4	f	0	0	0	0	0
+95	6	5	f	0	0	0	0	0
+96	6	6	f	0	0	0	0	0
+97	6	7	f	0	0	0	0	0
+98	6	8	f	0	0	0	0	0
+99	6	9	f	0	0	0	0	0
+100	6	10	f	0	0	0	0	0
+101	6	11	f	0	0	0	0	0
+102	6	12	f	0	0	0	0	0
+103	6	13	f	0	0	0	0	0
+104	6	14	f	0	0	0	0	0
+105	6	15	f	0	0	0	0	0
+106	6	16	f	0	0	0	0	0
+107	6	17	f	0	0	0	0	0
+108	6	18	f	0	0	0	0	0
+109	6	19	f	0	0	0	0	0
+110	6	20	f	0	0	0	0	0
 \.
 
 
@@ -462,7 +482,7 @@ COPY public.class_bonuses (id, class_archetype_id, level, cha_bonus, ac_penalty_
 -- Name: class_bonuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
 --
 
-SELECT pg_catalog.setval('public.class_bonuses_id_seq', 90, true);
+SELECT pg_catalog.setval('public.class_bonuses_id_seq', 110, true);
 
 
 --

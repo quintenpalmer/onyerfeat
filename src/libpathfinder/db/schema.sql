@@ -397,7 +397,8 @@ ALTER SEQUENCE public.characters_id_seq OWNED BY public.characters.id;
 CREATE TABLE public.class_archetypes (
     id integer NOT NULL,
     class_id integer NOT NULL,
-    name text
+    name text,
+    class_bonus_set_id integer
 );
 
 
@@ -425,12 +426,44 @@ ALTER SEQUENCE public.class_archetypes_id_seq OWNED BY public.class_archetypes.i
 
 
 --
+-- Name: class_bonus_sets; Type: TABLE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE TABLE public.class_bonus_sets (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE public.class_bonus_sets OWNER TO pathfinder_user;
+
+--
+-- Name: class_bonus_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: pathfinder_user
+--
+
+CREATE SEQUENCE public.class_bonus_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.class_bonus_sets_id_seq OWNER TO pathfinder_user;
+
+--
+-- Name: class_bonus_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: pathfinder_user
+--
+
+ALTER SEQUENCE public.class_bonus_sets_id_seq OWNED BY public.class_bonus_sets.id;
+
+
+--
 -- Name: class_bonuses; Type: TABLE; Schema: public; Owner: pathfinder_user
 --
 
 CREATE TABLE public.class_bonuses (
     id integer NOT NULL,
-    class_archetype_id integer NOT NULL,
+    class_bonus_set_id integer NOT NULL,
     level integer NOT NULL,
     cha_bonus boolean DEFAULT false NOT NULL,
     ac_penalty_reduction integer DEFAULT 0 NOT NULL,
@@ -609,7 +642,8 @@ ALTER SEQUENCE public.class_sub_skills_id_seq OWNED BY public.class_sub_skills.i
 
 CREATE TABLE public.classes (
     id integer NOT NULL,
-    name text NOT NULL
+    name text NOT NULL,
+    class_bonus_set_id integer NOT NULL
 );
 
 
@@ -1328,6 +1362,13 @@ ALTER TABLE ONLY public.class_archetypes ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: class_bonus_sets id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_bonus_sets ALTER COLUMN id SET DEFAULT nextval('public.class_bonus_sets_id_seq'::regclass);
+
+
+--
 -- Name: class_bonuses id; Type: DEFAULT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1582,6 +1623,14 @@ ALTER TABLE ONLY public.characters
 
 ALTER TABLE ONLY public.class_archetypes
     ADD CONSTRAINT class_archetypes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: class_bonus_sets class_bonus_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_bonus_sets
+    ADD CONSTRAINT class_bonus_sets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1970,6 +2019,14 @@ ALTER TABLE ONLY public.character_sub_skill_choices
 
 
 --
+-- Name: class_archetypes class_archetypes_class_bonus_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.class_archetypes
+    ADD CONSTRAINT class_archetypes_class_bonus_set_id_fkey FOREIGN KEY (class_bonus_set_id) REFERENCES public.class_bonus_sets(id);
+
+
+--
 -- Name: class_archetypes class_archetypes_class_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
@@ -1978,11 +2035,11 @@ ALTER TABLE ONLY public.class_archetypes
 
 
 --
--- Name: class_bonuses class_bonuses_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_bonuses class_bonuses_class_bonus_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_bonuses
-    ADD CONSTRAINT class_bonuses_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
+    ADD CONSTRAINT class_bonuses_class_bonus_set_id_fkey FOREIGN KEY (class_bonus_set_id) REFERENCES public.class_bonus_sets(id);
 
 
 --
@@ -2039,6 +2096,14 @@ ALTER TABLE ONLY public.class_sub_skills
 
 ALTER TABLE ONLY public.class_sub_skills
     ADD CONSTRAINT class_sub_skills_sub_skill_id_fkey FOREIGN KEY (sub_skill_id) REFERENCES public.sub_skills(id);
+
+
+--
+-- Name: classes classes_class_bonus_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+--
+
+ALTER TABLE ONLY public.classes
+    ADD CONSTRAINT classes_class_bonus_set_id_fkey FOREIGN KEY (class_bonus_set_id) REFERENCES public.class_bonus_sets(id);
 
 
 --

@@ -162,15 +162,29 @@ COPY public.characters (id, player_name, creature_id) FROM stdin;
 
 
 --
+-- Data for Name: class_bonus_sets; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.class_bonus_sets (id) FROM stdin;
+1
+2
+3
+4
+5
+6
+\.
+
+
+--
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.classes (id, name) FROM stdin;
-1	fighter
-2	paladin
-3	animal companion
-4	barbarian
-5	stalwart defender
+COPY public.classes (id, name, class_bonus_set_id) FROM stdin;
+1	fighter	1
+2	paladin	2
+3	animal companion	3
+4	barbarian	4
+5	stalwart defender	5
 \.
 
 
@@ -178,13 +192,13 @@ COPY public.classes (id, name) FROM stdin;
 -- Data for Name: class_archetypes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_archetypes (id, class_id, name) FROM stdin;
-1	1	\N
-2	2	\N
-3	3	\N
-4	4	\N
-5	5	\N
-6	4	Savage Technologist
+COPY public.class_archetypes (id, class_id, name, class_bonus_set_id) FROM stdin;
+1	1	\N	\N
+2	2	\N	\N
+3	3	\N	\N
+4	4	\N	\N
+5	5	\N	\N
+6	4	Savage Technologist	6
 \.
 
 
@@ -361,10 +375,17 @@ SELECT pg_catalog.setval('public.class_archetypes_id_seq', 6, true);
 
 
 --
+-- Name: class_bonus_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('public.class_bonus_sets_id_seq', 6, true);
+
+
+--
 -- Data for Name: class_bonuses; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_bonuses (id, class_archetype_id, level, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus, ac_dodge_bonus) FROM stdin;
+COPY public.class_bonuses (id, class_bonus_set_id, level, cha_bonus, ac_penalty_reduction, max_dex_bonus, natural_armor_bonus, str_dex_bonus, ac_dodge_bonus) FROM stdin;
 1	1	1	f	0	0	0	0	0
 2	1	2	f	0	0	0	0	0
 3	3	1	f	0	0	0	0	0

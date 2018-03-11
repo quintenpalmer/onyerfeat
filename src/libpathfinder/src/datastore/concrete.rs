@@ -137,7 +137,7 @@ impl Datastore {
             class_bonuses_list.push(try!(selects::exec_and_select_one_by_two_fields(
                 &self.conn,
                 queries::CLASS_BONUSES_SQL,
-                character_class.class_archetype_id,
+                character_class.class_bonus_set_id,
                 character_class.level
             )));
         }

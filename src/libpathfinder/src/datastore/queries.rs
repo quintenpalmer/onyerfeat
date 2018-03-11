@@ -72,7 +72,7 @@ SELECT
 FROM
     class_bonuses
 WHERE
-    class_archetype_id = $1
+    class_bonus_set_id = $1
 AND
     level = $2
 "#;
@@ -154,6 +154,9 @@ SELECT
     classes.id as class_id,
     class_archetypes.id as class_archetype_id,
     classes.name,
+    CASE WHEN class_archetypes.class_bonus_set_id IS NULL THEN classes.class_bonus_set_id
+        ELSE class_archetypes.class_bonus_set_id
+    END,
     character_classes.level
 FROM
     character_classes

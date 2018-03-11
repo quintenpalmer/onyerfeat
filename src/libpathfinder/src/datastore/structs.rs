@@ -32,6 +32,7 @@ pub struct CharacterClass {
 pub struct ExpanededCharacterClass {
     pub class_id: i32,
     pub class_archetype_id: i32,
+    pub class_bonus_set_id: i32,
     pub name: String,
     pub level: i32,
 }
@@ -238,7 +239,7 @@ pub struct ClassSavingThrows {
 #[table_namer(table_name = "class_bonuses")]
 pub struct ClassBonuses {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_bonus_set_id: i32,
     pub level: i32,
     pub cha_bonus: bool,
     pub ac_penalty_reduction: i32,

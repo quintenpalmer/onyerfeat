@@ -152,7 +152,7 @@ WHERE
 pub static CHARACTER_CLASSES_SQL: &'static str = r#"
 SELECT
     classes.id as class_id,
-    classes.id as class_archetype_id,
+    class_archetypes.id as class_archetype_id,
     classes.name,
     character_classes.level
 FROM

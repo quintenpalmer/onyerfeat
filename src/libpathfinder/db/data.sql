@@ -176,15 +176,29 @@ COPY public.class_bonus_sets (id) FROM stdin;
 
 
 --
+-- Data for Name: class_skill_sets; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
+--
+
+COPY public.class_skill_sets (id) FROM stdin;
+1
+2
+3
+4
+5
+6
+\.
+
+
+--
 -- Data for Name: classes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.classes (id, name, class_bonus_set_id) FROM stdin;
-1	fighter	1
-2	paladin	2
-3	animal companion	3
-4	barbarian	4
-5	stalwart defender	5
+COPY public.classes (id, name, class_bonus_set_id, class_skill_set_id) FROM stdin;
+1	fighter	1	1
+2	paladin	2	2
+3	animal companion	3	3
+4	barbarian	4	4
+5	stalwart defender	5	5
 \.
 
 
@@ -192,13 +206,13 @@ COPY public.classes (id, name, class_bonus_set_id) FROM stdin;
 -- Data for Name: class_archetypes; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_archetypes (id, class_id, name, class_bonus_set_id) FROM stdin;
-1	1	\N	\N
-2	2	\N	\N
-3	3	\N	\N
-4	4	\N	\N
-5	5	\N	\N
-6	4	Savage Technologist	6
+COPY public.class_archetypes (id, class_id, name, class_bonus_set_id, class_skill_set_id) FROM stdin;
+1	1	\N	\N	\N
+2	2	\N	\N	\N
+3	3	\N	\N	\N
+4	4	\N	\N	\N
+5	5	\N	\N	\N
+6	4	Savage Technologist	6	6
 \.
 
 
@@ -633,10 +647,17 @@ SELECT pg_catalog.setval('public.class_skill_constructors_id_seq', 6, true);
 
 
 --
+-- Name: class_skill_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pathfinder_user
+--
+
+SELECT pg_catalog.setval('public.class_skill_sets_id_seq', 6, true);
+
+
+--
 -- Data for Name: class_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_skills (id, class_archetype_id, skill_id) FROM stdin;
+COPY public.class_skills (id, class_skill_set_id, skill_id) FROM stdin;
 1	1	4
 2	1	10
 3	1	12
@@ -649,19 +670,6 @@ COPY public.class_skills (id, class_archetype_id, skill_id) FROM stdin;
 10	2	15
 11	2	16
 12	2	18
-13	4	1
-14	4	4
-15	4	10
-16	4	12
-17	4	14
-18	4	15
-19	4	20
-20	4	21
-21	5	1
-22	5	4
-23	5	12
-24	5	14
-25	5	16
 26	6	1
 27	6	4
 28	6	5
@@ -671,6 +679,19 @@ COPY public.class_skills (id, class_archetype_id, skill_id) FROM stdin;
 32	6	15
 33	6	20
 34	6	21
+21	5	1
+22	5	4
+23	5	12
+24	5	14
+25	5	16
+13	4	1
+14	4	4
+15	4	10
+16	4	12
+17	4	14
+18	4	15
+19	4	20
+20	4	21
 \.
 
 

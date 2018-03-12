@@ -33,6 +33,7 @@ pub struct ExpanededCharacterClass {
     pub class_id: i32,
     pub class_archetype_id: i32,
     pub class_bonus_set_id: i32,
+    pub class_skill_set_id: i32,
     pub name: String,
     pub level: i32,
 }
@@ -127,7 +128,7 @@ pub struct AugmentedCharacterSubSkillChoice {
 #[table_namer(table_name = "class_skills")]
 pub struct ClassSkill {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_skill_set_id: i32,
     pub skill_id: i32,
 }
 

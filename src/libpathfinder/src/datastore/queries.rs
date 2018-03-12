@@ -159,6 +159,9 @@ SELECT
     CASE WHEN class_archetypes.class_bonus_set_id IS NULL THEN classes.class_bonus_set_id
         ELSE class_archetypes.class_bonus_set_id
     END,
+    CASE WHEN class_archetypes.class_skill_set_id IS NULL THEN classes.class_skill_set_id
+        ELSE class_archetypes.class_skill_set_id
+    END,
     character_classes.level
 FROM
     character_classes

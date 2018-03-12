@@ -76,8 +76,8 @@ impl Datastore {
         for character_class in character_classes.iter() {
             class_sub_skills.extend(try!(selects::select_by_field(
                 &self.conn,
-                "class_archetype_id",
-                character_class.class_archetype_id
+                "class_skill_set_id",
+                character_class.class_skill_set_id
             )));
         }
 

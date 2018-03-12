@@ -641,7 +641,7 @@ ALTER SEQUENCE public.class_skills_id_seq OWNED BY public.class_skills.id;
 
 CREATE TABLE public.class_sub_skills (
     id integer NOT NULL,
-    class_archetype_id integer NOT NULL,
+    class_skill_set_id integer NOT NULL,
     sub_skill_id integer NOT NULL
 );
 
@@ -1743,7 +1743,7 @@ ALTER TABLE ONLY public.class_sub_skills
 --
 
 ALTER TABLE ONLY public.class_sub_skills
-    ADD CONSTRAINT class_sub_skills_unique UNIQUE (class_archetype_id, sub_skill_id);
+    ADD CONSTRAINT class_sub_skills_unique UNIQUE (class_skill_set_id, sub_skill_id);
 
 
 --
@@ -2140,11 +2140,11 @@ ALTER TABLE ONLY public.class_skills
 
 
 --
--- Name: class_sub_skills class_sub_skills_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_sub_skills class_sub_skills_class_skill_set_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_sub_skills
-    ADD CONSTRAINT class_sub_skills_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
+    ADD CONSTRAINT class_sub_skills_class_skill_set_id_fkey FOREIGN KEY (class_skill_set_id) REFERENCES public.class_skill_sets(id);
 
 
 --

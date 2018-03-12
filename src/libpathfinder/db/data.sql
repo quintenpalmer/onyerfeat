@@ -706,7 +706,7 @@ SELECT pg_catalog.setval('public.class_skills_id_seq', 34, true);
 -- Data for Name: class_sub_skills; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_sub_skills (id, class_archetype_id, sub_skill_id) FROM stdin;
+COPY public.class_sub_skills (id, class_skill_set_id, sub_skill_id) FROM stdin;
 1	1	3
 2	1	2
 3	2	8

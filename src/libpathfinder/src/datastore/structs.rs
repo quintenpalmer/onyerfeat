@@ -32,6 +32,8 @@ pub struct CharacterClass {
 pub struct ExpanededCharacterClass {
     pub class_id: i32,
     pub class_archetype_id: i32,
+    pub class_bonus_set_id: i32,
+    pub class_skill_set_id: i32,
     pub name: String,
     pub level: i32,
 }
@@ -126,7 +128,7 @@ pub struct AugmentedCharacterSubSkillChoice {
 #[table_namer(table_name = "class_skills")]
 pub struct ClassSkill {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_skill_set_id: i32,
     pub skill_id: i32,
 }
 
@@ -135,7 +137,7 @@ pub struct ClassSkill {
 #[table_namer(table_name = "class_sub_skills")]
 pub struct ClassSubSkill {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_skill_set_id: i32,
     pub sub_skill_id: i32,
 }
 
@@ -143,7 +145,7 @@ pub struct ClassSubSkill {
 #[table_namer(table_name = "class_skill_constructors")]
 pub struct ClassSkillConstructor {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_skill_set_id: i32,
     pub skill_constructor_id: i32,
 }
 
@@ -238,7 +240,7 @@ pub struct ClassSavingThrows {
 #[table_namer(table_name = "class_bonuses")]
 pub struct ClassBonuses {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_bonus_set_id: i32,
     pub level: i32,
     pub cha_bonus: bool,
     pub ac_penalty_reduction: i32,

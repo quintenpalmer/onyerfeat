@@ -72,7 +72,7 @@ SELECT
 FROM
     class_bonuses
 WHERE
-    class_archetype_id = $1
+    class_bonus_set_id = $1
 AND
     level = $2
 "#;
@@ -152,8 +152,16 @@ WHERE
 pub static CHARACTER_CLASSES_SQL: &'static str = r#"
 SELECT
     classes.id as class_id,
-    classes.id as class_archetype_id,
-    classes.name,
+    class_archetypes.id as class_archetype_id,
+    CASE WHEN class_archetypes.name IS NULL THEN classes.name
+    	ELSE class_archetypes.name
+    END,
+    CASE WHEN class_archetypes.class_bonus_set_id IS NULL THEN classes.class_bonus_set_id
+        ELSE class_archetypes.class_bonus_set_id
+    END,
+    CASE WHEN class_archetypes.class_skill_set_id IS NULL THEN classes.class_skill_set_id
+        ELSE class_archetypes.class_skill_set_id
+    END,
     character_classes.level
 FROM
     character_classes

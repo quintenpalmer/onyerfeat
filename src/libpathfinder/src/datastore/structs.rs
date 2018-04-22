@@ -145,7 +145,7 @@ pub struct ClassSubSkill {
 #[table_namer(table_name = "class_skill_constructors")]
 pub struct ClassSkillConstructor {
     pub id: i32,
-    pub class_archetype_id: i32,
+    pub class_skill_set_id: i32,
     pub skill_constructor_id: i32,
 }
 

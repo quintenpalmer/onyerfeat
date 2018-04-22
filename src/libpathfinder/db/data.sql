@@ -629,7 +629,7 @@ SELECT pg_catalog.setval('public.class_saving_throws_id_seq', 90, true);
 -- Data for Name: class_skill_constructors; Type: TABLE DATA; Schema: public; Owner: pathfinder_user
 --
 
-COPY public.class_skill_constructors (id, class_archetype_id, skill_constructor_id) FROM stdin;
+COPY public.class_skill_constructors (id, class_skill_set_id, skill_constructor_id) FROM stdin;
 1	1	1
 2	1	4
 3	2	1

@@ -541,7 +541,7 @@ ALTER SEQUENCE public.class_saving_throws_id_seq OWNED BY public.class_saving_th
 
 CREATE TABLE public.class_skill_constructors (
     id integer NOT NULL,
-    class_archetype_id integer NOT NULL,
+    class_skill_set_id integer NOT NULL,
     skill_constructor_id integer NOT NULL
 );
 
@@ -1695,7 +1695,7 @@ ALTER TABLE ONLY public.class_saving_throws
 --
 
 ALTER TABLE ONLY public.class_skill_constructors
-    ADD CONSTRAINT class_skill_constructor_unique UNIQUE (class_archetype_id, skill_constructor_id);
+    ADD CONSTRAINT class_skill_constructor_unique UNIQUE (class_skill_set_id, skill_constructor_id);
 
 
 --
@@ -2108,11 +2108,11 @@ ALTER TABLE ONLY public.class_saving_throws
 
 
 --
--- Name: class_skill_constructors class_skill_constructors_class_archetype_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
+-- Name: class_skill_constructors class_skill_constructors_class_skill_set_id; Type: FK CONSTRAINT; Schema: public; Owner: pathfinder_user
 --
 
 ALTER TABLE ONLY public.class_skill_constructors
-    ADD CONSTRAINT class_skill_constructors_class_archetype_id_fkey FOREIGN KEY (class_archetype_id) REFERENCES public.class_archetypes(id);
+    ADD CONSTRAINT class_skill_constructors_class_skill_set_id FOREIGN KEY (class_skill_set_id) REFERENCES public.class_skill_sets(id);
 
 
 --
